@@ -4,9 +4,284 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LucidDesk"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid >
-        
-    </Grid>
+        xmlns:UserControl="clr-namespace:LucidDesk.UserControls"
+        mc:Ignorable="d" WindowStyle="None" Padding="0" Margin="0" 
+        Title="MainWindow" Height="500" Width="800">
+    <Window.Resources>
+        <ContextMenu x:Key="MenuContext" Style="{StaticResource CustomContextMenu}">
+            <MenuItem Style="{StaticResource ContextMenuItem}"  >
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Height="14" Width="14" Margin="10 0">
+                            <Path VerticalAlignment="Stretch"    HorizontalAlignment="Stretch" Fill="Black" StrokeThickness="1.5"  Data="M600.704 64a32 32 0 0 1 30.464 22.208l35.2 109.376c14.784 7.232 28.928 15.36 42.432 24.512l112.384-24.192a32 32 0 0 1 34.432 15.36L944.32 364.8a32 32 0 0 1-4.032 37.504l-77.12 85.12a357.12 357.12 0 0 1 0 49.024l77.12 85.248a32 32 0 0 1 4.032 37.504l-88.704 153.6a32 32 0 0 1-34.432 15.296L708.8 803.904c-13.44 9.088-27.648 17.28-42.368 24.512l-35.264 109.376A32 32 0 0 1 600.704 960H423.296a32 32 0 0 1-30.464-22.208L357.696 828.48a351.616 351.616 0 0 1-42.56-24.64l-112.32 24.256a32 32 0 0 1-34.432-15.36L79.68 659.2a32 32 0 0 1 4.032-37.504l77.12-85.248a357.12 357.12 0 0 1 0-48.896l-77.12-85.248A32 32 0 0 1 79.68 364.8l88.704-153.6a32 32 0 0 1 34.432-15.296l112.32 24.256c13.568-9.152 27.776-17.408 42.56-24.64l35.2-109.312A32 32 0 0 1 423.232 64H600.64zm-23.424 64H446.72l-36.352 113.088-24.512 11.968a294.113 294.113 0 0 0-34.816 20.096l-22.656 15.36-116.224-25.088-65.28 113.152 79.68 88.192-1.92 27.136a293.12 293.12 0 0 0 0 40.192l1.92 27.136-79.808 88.192 65.344 113.152 116.224-25.024 22.656 15.296a294.113 294.113 0 0 0 34.816 20.096l24.512 11.968L446.72 896h130.688l36.48-113.152 24.448-11.904a288.282 288.282 0 0 0 34.752-20.096l22.592-15.296 116.288 25.024 65.28-113.152-79.744-88.192 1.92-27.136a293.12 293.12 0 0 0 0-40.256l-1.92-27.136 79.808-88.128-65.344-113.152-116.288 24.96-22.592-15.232a287.616 287.616 0 0 0-34.752-20.096l-24.448-11.904L577.344 128zM512 320a192 192 0 1 1 0 384 192 192 0 0 1 0-384zm0 64a128 128 0 1 0 0 256 128 128 0 0 0 0-256z"></Path>
+                        </Viewbox>
+                        <TextBlock>Setting</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Style="{StaticResource ContextMenuItem}" >
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Height="14" Width="14" Margin="10 0" >
+                            <Path VerticalAlignment="Stretch"    HorizontalAlignment="Stretch" Stroke="Black" StrokeThickness="2" Data="M16.5 7.063C16.5 10.258 14.57 13 12 13c-2.572 0-4.5-2.742-4.5-5.938C7.5 3.868 9.16 2 12 2s4.5 1.867 4.5 5.063zM4.102 20.142C4.487 20.6 6.145 22 12 22c5.855 0 7.512-1.4 7.898-1.857a.416.416 0 0 0 .09-.317C19.9 18.944 19.106 15 12 15s-7.9 3.944-7.989 4.826a.416.416 0 0 0 .091.317z"/>
+                        </Viewbox>
+                        <TextBlock>Profile</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+
+            <MenuItem Style="{StaticResource ContextMenuItem}" >
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Height="16" Width="16" Margin="10 0" >
+                            <Path VerticalAlignment="Stretch"    HorizontalAlignment="Stretch" Stroke="Black" StrokeThickness="1.5" Data="M12.5 13C12.5 11 14 11.5 14 10C14 9.34375 13.5 8.5 12.5 8.5C11.5 8.5 11 9 10.5 9.5M12.5 16V14.5M20.5 12.5C20.5 16.9183 16.9183 20.5 12.5 20.5C8.08172 20.5 4.5 16.9183 4.5 12.5C4.5 8.08172 8.08172 4.5 12.5 4.5C16.9183 4.5 20.5 8.08172 20.5 12.5Z"/>
+                        </Viewbox>
+                        <TextBlock>Help</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+            <Separator/>
+            <MenuItem Style="{StaticResource ContextMenuItem}" Click="CloseButtonClick" >
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Height="14" Width="14" Margin="12 0" >
+                            <Path VerticalAlignment="Stretch"    HorizontalAlignment="Stretch" Fill="Black" Stroke="Black" StrokeThickness="1.5" Data="M328.96,30.2933333 L298.666667,0 L164.48,134.4 L30.2933333,0 L0,30.2933333 L134.4,164.48 L0,298.666667 L30.2933333,328.96 L164.48,194.56 L298.666667,328.96 L328.96,298.666667 L194.56,164.48 Z"/>
+                        </Viewbox>
+                        <TextBlock>Exit</TextBlock>
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+        </ContextMenu>
+
+    </Window.Resources>
+    <Border Background="{StaticResource SubColorBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid  Background="{StaticResource SubColorBrush}" Grid.Row="0" Margin="0 0 0 10" MouseDown="TitleBarMouseDown">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="160"/>
+                </Grid.ColumnDefinitions>
+                <Grid  Grid.Column="0">
+                    <TextBlock FontSize="16" Padding="15" FontWeight="DemiBold" Foreground="{StaticResource MainColorBrush}" VerticalAlignment="Center" HorizontalAlignment="Left">Desk</TextBlock>
+                </Grid>
+                <Grid Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="1">
+                        <Button Click="MinimizeButtonClick" Style="{StaticResource RectangleButton}"  >
+                            <Button.ToolTip>
+                                <ToolTip Content="Minimize"></ToolTip>
+                            </Button.ToolTip>
+                            <Path VerticalAlignment="Stretch" Height="12" Width="12"  HorizontalAlignment="Stretch" Stroke="Gray" StrokeThickness="1.5" Data="m 0  7.5 L 12 7.5"></Path>
+                        </Button>
+                    </Border>
+                    <Border Grid.Column="2">
+                        <Button Click="MaximizeButtonClick" Style="{StaticResource RectangleButton}">
+                            <Button.ToolTip>
+                                <ToolTip Content="Maximize"></ToolTip>
+                            </Button.ToolTip>
+
+                            <Path VerticalAlignment="Stretch" Height="13" Width="13"  HorizontalAlignment="Stretch" Stroke="Gray" StrokeThickness="1.5" Data="m 0 1 L 0 1 M 12 1 L 0 1 L 0 11 M 12 1 L 12 11 L 10 11 L 0 11"></Path>
+                        </Button>
+                    </Border>
+                    <Border Grid.Column="3">
+                        <Button Click="CloseButtonClick" Style="{StaticResource CloseButton}" >
+                            <Button.ToolTip>
+                                <ToolTip Content="Close"></ToolTip>
+                            </Button.ToolTip>
+                            <Path VerticalAlignment="Stretch" Height="12" Width="12"  HorizontalAlignment="Stretch" Stroke="Gray" StrokeThickness="1.5" Data="m 0 0 L 12 12 M 0 12 L 12 0"></Path>
+                        </Button>
+                    </Border>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1" Margin="4 0" Height="45" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+
+                    <ColumnDefinition  Width="*"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <Border>
+                    <Path VerticalAlignment="Stretch" Height="24" Width="24"  HorizontalAlignment="Stretch" Stroke="Green" StrokeThickness="1.5" Data="M17.4995 7.44055C17.8085 7.71643 17.8353 8.19054 17.5595 8.49952L10.4166 16.4995C10.2743 16.6589 10.0708 16.75 9.85715 16.75C9.6435 16.75 9.43999 16.6589 9.2977 16.4995L6.44055 13.2995C6.16468 12.9905 6.19152 12.5164 6.5005 12.2406C6.80947 11.9647 7.28359 11.9915 7.55946 12.3005L9.85715 14.8739L16.4406 7.5005C16.7164 7.19152 17.1905 7.16468 17.4995 7.44055Z"></Path>
+                </Border>
+                <Border Margin="0 2" Grid.Column="1">
+                    <UserControl:SearchBoxControl x:Name="SearchBoxControl" FontWeight="DemiBold" Background="White" FontSize="16"   Placeholder="Desk Id" FontFamily="Segoe UI" ></UserControl:SearchBoxControl>
+                </Border>
+                <Button Name="MenuButton" Background="{StaticResource SubColorBrush}"  IsTabStop="False" Foreground="Black" Click="MenuButtonClick" MouseRightButtonDown="MenuButtonMouseRightButtonDown" Grid.Column="2" Height="35" Width="35" VerticalAlignment="Center" HorizontalAlignment="Center"   Style="{StaticResource NormalButton}">
+                    <Button.ToolTip>
+                        <ToolTip Content="Menu"></ToolTip>
+                    </Button.ToolTip>
+                    <Path VerticalAlignment="Stretch" Height="20" Width="20"  HorizontalAlignment="Stretch" Stroke="Gray" StrokeThickness="2" Data="m 0 10 L 20 10 M 20 3 L 0 3 M 0 16 L 20 16"></Path>
+                </Button>
+            </Grid>
+
+            <TabControl Name="MainTabControl" BorderThickness="0" BorderBrush="{StaticResource SubColorBrush}" Grid.Row="2" Style="{StaticResource Tabcontrol}">
+
+                <TabItem x:Name="HomePage" BorderThickness="0" >
+                    <Grid>
+                        <Border >
+                            <ScrollViewer>
+                                <Grid  >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="50"/>
+                                        <RowDefinition Height="100"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!--<Border Grid.Row="0" Margin="2" Background="{StaticResource MainColorBrush}">
+                                        <TextBlock ></TextBlock>
+                                    </Border>-->
+                                    <Border Grid.Row="0">
+                                        <Grid>
+                                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18"  Margin="10 0" FontWeight="SemiBold" Text="Your Address">
+                                                    <TextBlock.Style>
+
+                                                        <Style TargetType="TextBlock">
+
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Foreground"  Value="{StaticResource MainColorBrush}"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"  FontSize="22" Margin="15 0" FontWeight="Bold" Text="2891 7384 7234">
+
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="{StaticResource MainColorBrush}"/>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Foreground"  Value="{Binding RelativeSource={RelativeSource Self},Path=Foreground,Converter={StaticResource ColorReduction},Mode=OneTime}"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style></TextBlock>
+                                                <Button Name="InviteButton" Height="30" FontWeight="DemiBold" Width="80"  BorderThickness="2" HorizontalContentAlignment="Center" VerticalAlignment="Center" BorderBrush="{StaticResource MainColorBrush}">
+                                                    <Button.ToolTip>
+                                                        <ToolTip Content="Invite"></ToolTip>
+                                                    </Button.ToolTip>
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Padding" Value="5"/>
+                                                            <Setter Property="FontSize" Value="15"/>
+                                                            <!--<Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>-->
+                                                            <Setter Property="BorderThickness" Value="0"/>
+                                                            <Setter Property="Foreground" Value="{StaticResource MainColorBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource SubColorBrush}"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border x:Name="BorderBox" Padding="0"  BorderThickness="{TemplateBinding BorderThickness}"  BorderBrush="{TemplateBinding BorderBrush}"  CornerRadius="3"  Background="{TemplateBinding Background}">
+                                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"></ContentPresenter>
+                                                                        </Border>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter  Property="Background"    Value="{StaticResource MainColorBrush}"/>
+                                                                    <Setter  Property="Foreground"    Value="white"/>
+                                                                </Trigger>
+                                                                <Trigger Property="IsMouseCaptured" Value="True">
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Button.Style>
+                                                    <StackPanel Orientation="Horizontal"   VerticalAlignment="Center" HorizontalAlignment="Center" >
+                                                        <Path  Width="30"   VerticalAlignment="Center" HorizontalAlignment="Center" Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button},Path=Foreground}" StrokeThickness="1.5"  Data="M14.734 15.8974L19.22 12.1374C19.3971 11.9927 19.4998 11.7761 19.4998 11.5474C19.4998 11.3187 19.3971 11.1022 19.22 10.9574L14.734 7.19743C14.4947 6.9929 14.1598 6.94275 13.8711 7.06826C13.5824 7.19377 13.3906 7.47295 13.377 7.78743V9.27043C7.079 8.17943 5.5 13.8154 5.5 16.9974C6.961 14.5734 10.747 10.1794 13.377 13.8154V15.3024C13.3888 15.6178 13.5799 15.8987 13.8689 16.0254C14.158 16.1521 14.494 16.1024 14.734 15.8974Z"></Path>
+                                                        <TextBlock  Margin="0 0 7 0"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="Invite">
+
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    <Border Grid.Row="1" Padding="15 4">
+                                        <UserControl:CustomHeaderSwicthControl x:Name="DeskSwicthControl" Foreground="gray" Margin="20 0" Height="45" ></UserControl:CustomHeaderSwicthControl>
+                                    </Border >
+
+                                    <StackPanel Name="DeskMainContainer" Grid.Row="2"  >
+                                        <StackPanel Name="RecentSessionsDeskContainer"  Margin="10 20" MinHeight="200">
+                                            <Border Height="30" BorderThickness="0 0 0 0" BorderBrush="Gray">
+                                                <DockPanel  >
+                                                    <TextBlock Padding="15 0" Foreground="Gray" FontSize="14" FontWeight="DemiBold">Recent Sessions</TextBlock>
+                                                    <CheckBox Click="RecentSessionsShowMoreClick" FontWeight="DemiBold" Style="{StaticResource ShowMoreCheckBox}" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right" >
+                                                        <CheckBox.ToolTip>
+                                                            <ToolTip Content="RecentSessions desk Show"></ToolTip>
+                                                        </CheckBox.ToolTip>
+                                                    </CheckBox>
+                                                </DockPanel>
+                                            </Border>
+                                            <WrapPanel Name="RecentSessionsDeskControlContainer"  Margin="5 10" >
+
+
+                                            </WrapPanel>
+                                        </StackPanel>
+                                        <StackPanel  Name="FavoritesDeskContainer"  Margin="10 20" MinHeight="200" >
+                                            <Border Height="30" BorderThickness="0 0 0 0" BorderBrush="{StaticResource MainColorBrush}">
+                                                <DockPanel  >
+                                                    <TextBlock Padding="15 0" Foreground="Gray" FontSize="14" FontWeight="DemiBold">Favorites</TextBlock>
+                                                    <CheckBox Click="FavoritesShowMoreClick" FontWeight="DemiBold" Style="{StaticResource ShowMoreCheckBox}" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right" >
+                                                        <CheckBox.ToolTip>
+                                                            <ToolTip Content="Favorites desk Show"></ToolTip>
+                                                        </CheckBox.ToolTip>
+                                                    </CheckBox>
+                                                </DockPanel>
+                                               
+                                            </Border>
+                                            <WrapPanel  Margin="10 5"  >
+
+                                            </WrapPanel>
+                                        </StackPanel>
+                                        <StackPanel Name="DiscoveredDeskContainer" Margin="10 20" MinHeight="200" >
+                                            <Border Height="30" BorderThickness="0 0 0 0" BorderBrush="{StaticResource MainColorBrush}">
+                                                <DockPanel  >
+                                                    <TextBlock Padding="15 0" Foreground="Gray" FontSize="14" FontWeight="DemiBold">Discovered</TextBlock>
+                                                    <CheckBox Click="DiscoveredShowMoreClick" FontWeight="DemiBold" Style="{StaticResource ShowMoreCheckBox}" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right" >
+                                                        <CheckBox.ToolTip>
+                                                            <ToolTip Content="Discovered desk Show"></ToolTip>
+                                                        </CheckBox.ToolTip>
+                                                    </CheckBox>
+                                                </DockPanel>
+                                            </Border>
+                                            <WrapPanel>
+
+                                            </WrapPanel>
+
+                                        </StackPanel>
+
+                                    </StackPanel>
+                                </Grid>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                </TabItem>
+                <TabItem Name="ScreenSharePage">
+
+                    <Grid Name="ScreenShowMainContainer"  >
+                        <Image Name="ScreenImage" Margin="10" Source="/LucidDesk;component/Resources/Screenshot (36).png"></Image>
+                    </Grid>
+                </TabItem>
+                <TabItem></TabItem>
+
+            </TabControl>
+        </Grid>
+    </Border>
+
 </Window>
+
+    

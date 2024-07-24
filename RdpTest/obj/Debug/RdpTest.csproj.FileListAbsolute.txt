@@ -1,0 +1,12 @@
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\RdpTest\obj\Debug\RdpTest.csprojAssemblyReference.cache
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\RdpTest\obj\Debug\MainWindow.g.cs
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\RdpTest\obj\Debug\App.g.cs
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\RdpTest\obj\Debug\RdpTest_MarkupCompile.cache
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\RdpTest\obj\Debug\RdpTest_MarkupCompile.lref
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\RdpTest\obj\Debug\Interop.MSTSCLib.dll
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\RdpTest\obj\Debug\RdpTest.csproj.ResolveComReference.cache
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\RdpTest\obj\Debug\MainWindow.baml
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\RdpTest\obj\Debug\RdpTest.g.resources
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\RdpTest\obj\Debug\RdpTest.Properties.Resources.resources
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\RdpTest\obj\Debug\RdpTest.csproj.GenerateResource.cache
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\RdpTest\obj\Debug\RdpTest.csproj.CoreCompileInputs.cache

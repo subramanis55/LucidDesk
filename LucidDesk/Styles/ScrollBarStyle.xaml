@@ -282,7 +282,7 @@
     
     <!--Own-->
     
-    <Color x:Key="ScrollBarColor">#C8C8C8</Color>
+    <!--<Color x:Key="ScrollBarColor">#C8C8C8</Color>
     <Color x:Key="ScrollBarBackgroundColor">#F5F0F9</Color>
 
     <Style x:Key="ScrollBarInvisiblePageButton" TargetType="RepeatButton">
@@ -439,7 +439,231 @@
                 <Setter Property="Template" Value="{StaticResource VerticalScrollBarOwn}"/>
             </Trigger>
         </Style.Triggers>
+    </Style>-->
+    <Color x:Key="ScrollBarColor">#C8C8C8</Color>
+    <Color x:Key="ScrollBarBackgroundColor">#F5F0F9</Color>
+
+    <Style x:Key="ScrollBarInvisiblePageButton" TargetType="RepeatButton">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border Background="Transparent"></Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
-  
+    <Style x:Key="ScrollBarMoveThump" TargetType="Thumb">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Border CornerRadius="6" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Margin="{TemplateBinding Margin}" BorderThickness="{TemplateBinding BorderThickness}"></Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ScrollBarButton" TargetType="RepeatButton">
+        <Setter Property="SnapsToDevicePixels"
+          Value="True" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="#F0F0F0"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="OverridesDefaultStyle"
+          Value="true" />
+        <Setter Property="Focusable"
+          Value="false" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border x:Name="Border"
+                      Background="{TemplateBinding Background}"
+                CornerRadius="0" 
+              >
+                        <Path x:Name="Arrow"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Data="{Binding Content, 
+            RelativeSource={RelativeSource TemplatedParent}}" >
+                            <Path.Fill>
+                                <SolidColorBrush Color="{StaticResource ScrollBarColor}"/>
+                            </Path.Fill>
+                        </Path>
+                    </Border>
+                    <ControlTemplate.Triggers >
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" >
+                                <Setter.Value>
+                                    <SolidColorBrush Color="Gainsboro"></SolidColorBrush>
+                                </Setter.Value>
+                            </Setter>
+
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+               
+            </Setter.Value>
+        </Setter>
+       
+             
+    </Style>
+
+    <ControlTemplate x:Key="HorizontalScrollBarOwn" TargetType="ScrollBar">
+        <Border>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="18"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="18"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="3"></Border>
+                <RepeatButton Name="LeftButton" Grid.Column="0" Content="M 4 0 L 4 8 L 0 4 Z" Style="{StaticResource ScrollBarButton}" Command="ScrollBar.LineLeftCommand"></RepeatButton>
+                <Track x:Name="PART_Track" Grid.Column="1">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource ScrollBarInvisiblePageButton}" Command="ScrollBar.PageLeftCommand"></RepeatButton>
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Margin="0" Style="{StaticResource ScrollBarMoveThump}">
+                            <Thumb.Background>
+                                <SolidColorBrush Color="{StaticResource ScrollBarColor}"></SolidColorBrush>
+                            </Thumb.Background>
+                        </Thumb>
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource ScrollBarInvisiblePageButton}" Command="ScrollBar.PageRightCommand"></RepeatButton>
+                    </Track.IncreaseRepeatButton>
+                </Track>
+                <RepeatButton Name="RightButton" Grid.Column="2" Content="M 0 0 L 4 4 L 0 8 Z" Style="{StaticResource ScrollBarButton}" Command="ScrollBar.LineRightCommand"></RepeatButton>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation To="10" Storyboard.TargetProperty="Height"   Duration="0:0:0:0.3"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation To="6" Storyboard.TargetProperty="Height" Duration="0:0:0:0.3"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+
+                <Setter TargetName="LeftButton" Property="Width" Value="18"></Setter>
+                <Setter TargetName="RightButton" Property="Width" Value="18"></Setter>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="Width" Value="6"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="VerticalScrollBarOwn" TargetType="ScrollBar">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="18"/>
+            </Grid.RowDefinitions>
+            <Border Grid.RowSpan="3"></Border>
+            <RepeatButton Name="UpButton" Grid.Row="0" Width="10"  Height="0"  Style="{StaticResource ScrollBarButton}" Command="ScrollBar.LineUpCommand" Content="M 0 4 L 8 4 L 4 0 Z"></RepeatButton>
+            <Track Grid.Row="1" x:Name="PART_Track"  IsDirectionReversed="true">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton Style="{StaticResource ScrollBarInvisiblePageButton}" Command="ScrollBar.PageUpCommand"></RepeatButton>
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb  >
+                    <Thumb  Style="{StaticResource ScrollBarMoveThump}">
+                        <Thumb.Background>
+                            <SolidColorBrush Color="{StaticResource ScrollBarColor}"></SolidColorBrush>
+                        </Thumb.Background>
+                    </Thumb>
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton Style="{StaticResource ScrollBarInvisiblePageButton}" Command="ScrollBar.PageDownCommand"></RepeatButton>
+                </Track.IncreaseRepeatButton>
+            </Track>
+            <RepeatButton Name="DownButton" Grid.Row="2" Height="0" Width="10" Style="{StaticResource ScrollBarButton}" Command="ScrollBar.LineDownCommand" Content="M 0 0 L 4 4 L 8 0 Z"></RepeatButton>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation To="10" Storyboard.TargetProperty="(Track.Width)"    Duration="0:0:0:0.3"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation To="6" Storyboard.TargetProperty="(Track.Width)" Duration="0:0:0:0.3"></DoubleAnimation> 
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+             
+                <Setter TargetName="UpButton" Property="Height" Value="18"></Setter>
+                <Setter TargetName="DownButton" Property="Height" Value="18"></Setter>
+            </Trigger>
+           
+         
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="{x:Type ScrollBar}" TargetType="ScrollBar">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Margin" Value="2 1"/>
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="Height" Value="6"/>
+                <Setter Property="Template" Value="{StaticResource HorizontalScrollBarOwn}"/>
+            </Trigger>
+            <Trigger Property="Orientation" Value="Vertical">
+                <Setter Property="Width" Value="6"/>
+                <Setter Property="Template" Value="{StaticResource VerticalScrollBarOwn}"/>
+            </Trigger>
+            <!--<MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="Orientation" Value="Horizontal"/>
+                </MultiTrigger.Conditions>
+                --><!--<Setter Property="Height" Value="14"/>--><!--
+                <MultiTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation To="14" Storyboard.TargetProperty="Height" Duration="0:0:0:0.1"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiTrigger.EnterActions>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="Orientation" Value="Vertical"/>
+                </MultiTrigger.Conditions>
+                --><!--<Setter Property="Width" Value="14"/>--><!--
+                <MultiTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation To="14" Storyboard.TargetProperty="Width" Duration="0:0:0:0.01"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiTrigger.EnterActions>
+            </MultiTrigger>-->
+        </Style.Triggers>
+    </Style>
+
+
 </ResourceDictionary>

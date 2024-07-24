@@ -36,6 +36,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -48,16 +50,66 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="UserControls\ProfileU.xaml.cs">
-      <DependentUpon>ProfileU.xaml</DependentUpon>
+    <Compile Include="ConnectWindow.xaml.cs">
+      <DependentUpon>ConnectWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\RoundedImage.cs" />
+    <Compile Include="FeaturesFuntionMangerClasses\Class1.cs" />
+    <Compile Include="FeaturesFuntionMangerClasses\ColorReductionConverter.cs" />
+    <Compile Include="FeaturesFuntionMangerClasses\NullToVisibilityConverter.cs" />
+    <Compile Include="InviteAcceptWindow.xaml.cs">
+      <DependentUpon>InviteAcceptWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InviteWindow.xaml.cs">
+      <DependentUpon>InviteWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="loginWindow.xaml.cs">
+      <DependentUpon>loginWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Manager\ClientNetworkManager.cs" />
+    <Compile Include="Manager\ServerNetworkManager.cs" />
+    <Compile Include="Manager\SystemInformationManager.cs" />
+    <Compile Include="TestWindow.xaml.cs">
+      <DependentUpon>TestWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Common\CustomTextBox.xaml.cs">
+      <DependentUpon>CustomTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CustomHeaderSwicthControl.xaml.cs">
+      <DependentUpon>CustomHeaderSwicthControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DeskProfile.xaml.cs">
+      <DependentUpon>DeskProfile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Common\RoundedImage.cs" />
+    <Compile Include="UserControls\PageSelectContextMenu.xaml.cs">
+      <DependentUpon>PageSelectContextMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SearchBoxControl.xaml.cs">
+      <DependentUpon>SearchBoxControl.xaml</DependentUpon>
+    </Compile>
+    <Page Include="ConnectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InviteAcceptWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InviteWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="loginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,6 +122,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Styles\DeskCustomStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\ScrollBarStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -78,13 +134,33 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\UIFrameWorkComponentStyles.xaml">
+    <Page Include="Styles\UIFrameworkStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ProfileU.xaml">
+    <Page Include="TestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Common\CustomTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\CustomHeaderSwicthControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DeskProfile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\PageSelectContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SearchBoxControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -112,8 +188,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Screenshot %2836%29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\groups.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\loadingGif.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

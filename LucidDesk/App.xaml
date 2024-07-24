@@ -6,7 +6,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles/UIFrameWorkComponentStyles.xaml"/>
+                <ResourceDictionary Source="Styles/UIFrameworkStyles.xaml"/>
+                <ResourceDictionary Source="Styles/ScrollBarStyle.xaml"/>
+                <ResourceDictionary Source="Styles/Theme.xaml"/>
+                <ResourceDictionary Source="Styles/DeskCustomStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

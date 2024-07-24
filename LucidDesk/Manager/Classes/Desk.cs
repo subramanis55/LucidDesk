@@ -13,6 +13,7 @@ namespace LucidDesk.Manager
         public event PropertyChangedEventHandler PropertyChanged;
         private int id;
         private string iPAddress;
+        private bool isFavorite;
         private string hostName;
         private string profileName;
         private BitmapImage profileImage;
@@ -20,6 +21,7 @@ namespace LucidDesk.Manager
         private string password;
         private string macAddress;
         private string osName;
+        private string pcName;
         public int Id
         {
             get
@@ -124,6 +126,35 @@ namespace LucidDesk.Manager
                 OnPropertyChanged(nameof(OsName));
             }
         }
+
+        public bool IsFavorite
+        {
+            get
+            {
+                return isFavorite;
+            }
+
+            set
+            {
+                isFavorite = value;
+      
+                OnPropertyChanged(nameof(IsFavorite));
+            }
+        }
+
+        public string PcName
+        {
+            get
+            {
+                return pcName;
+            }
+
+            set
+            {
+                pcName = value;
+            }
+        }
+
         protected virtual void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
