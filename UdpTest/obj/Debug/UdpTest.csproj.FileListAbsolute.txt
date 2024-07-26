@@ -1,0 +1,15 @@
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\bin\Debug\UdpTest.exe.config
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\bin\Debug\UdpTest.exe
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\bin\Debug\UdpTest.pdb
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\obj\Debug\UdpTest.csprojAssemblyReference.cache
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\obj\Debug\MainWindow.g.cs
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\obj\Debug\App.g.cs
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\obj\Debug\UdpTest_MarkupCompile.cache
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\obj\Debug\UdpTest_MarkupCompile.lref
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\obj\Debug\MainWindow.baml
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\obj\Debug\UdpTest.g.resources
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\obj\Debug\UdpTest.Properties.Resources.resources
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\obj\Debug\UdpTest.csproj.GenerateResource.cache
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\obj\Debug\UdpTest.csproj.CoreCompileInputs.cache
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\obj\Debug\UdpTest.exe
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\UdpTest\obj\Debug\UdpTest.pdb

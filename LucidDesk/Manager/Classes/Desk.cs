@@ -22,6 +22,7 @@ namespace LucidDesk.Manager
         private string macAddress;
         private string osName;
         private string pcName;
+        private DateTime recentLoginTime;
         public int Id
         {
             get
@@ -152,6 +153,20 @@ namespace LucidDesk.Manager
             set
             {
                 pcName = value;
+            }
+        }
+
+        public DateTime RecentLoginTime
+        {
+            get
+            {
+                return recentLoginTime;
+            }
+
+            set
+            {
+                recentLoginTime = value;
+                OnPropertyChanged(nameof(RecentLoginTime));
             }
         }
 

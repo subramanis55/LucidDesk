@@ -34,6 +34,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\ExpenseTracker\Evalution2\bin\Debug\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>D:\Softwares\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -72,8 +78,13 @@
     <Compile Include="loginWindow.xaml.cs">
       <DependentUpon>loginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Manager\ClientNetworkManager.cs" />
-    <Compile Include="Manager\ServerNetworkManager.cs" />
+    <Compile Include="Manager\File\FileManager.cs" />
+    <Compile Include="Manager\Network\ClientNetworkManager.cs" />
+    <Compile Include="Manager\Database\DeskProfileManager.cs" />
+    <Compile Include="Manager\Database\LocalDatabaseManager.cs" />
+    <Compile Include="Manager\Database\ServerDatabaseManager.cs" />
+    <Compile Include="Manager\Network\ServerNetworkManager.cs" />
+    <Compile Include="Manager\Security\SecurityManager.cs" />
     <Compile Include="Manager\SystemInformationManager.cs" />
     <Compile Include="TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
@@ -204,6 +215,9 @@
     <Resource Include="Resources\loadingGif.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
