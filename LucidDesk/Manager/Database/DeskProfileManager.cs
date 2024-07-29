@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft;
 using Newtonsoft.Json;
 using System.IO;
+using LucidDesk.UserControls;
 
 namespace LucidDesk.Manager.Database
 {
@@ -50,6 +51,24 @@ namespace LucidDesk.Manager.Database
             {
                 return false;
             }
+        }
+        public static bool UpdateDeskProfiledata(Desk deskProfile)
+        {
+            try
+            {
+                string deskProfileData = JsonConvert.SerializeObject(deskProfile);
+                string encodedData = SecurityManager.Encrypt(deskProfileData);
+                string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath + deskProfile.Id + ".txt";
+                if (Directory.Exists(deskProfilePath))
+                    Directory.CreateDirectory(deskProfilePath);
+                File.WriteAllText(deskProfilePath, encodedData);
+                return true;
+            }
+            catch(Exception e)
+            {
+               
+            }
+            return false;
         }
     }
 }

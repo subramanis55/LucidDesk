@@ -56,7 +56,7 @@ namespace LucidDesk.Manager
                 OnPropertyChanged(nameof(HostName));
             }
         }
-        public string DeskUserName
+        public string ProfileName
         {
             get
             {
@@ -65,7 +65,7 @@ namespace LucidDesk.Manager
             set
             {
                 profileName = value;
-                OnPropertyChanged(nameof(DeskUserName));
+                OnPropertyChanged(nameof(ProfileName));
             }
         }
         public BitmapImage ProfileImage

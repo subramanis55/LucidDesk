@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace LucidDesk.Manager.File
+namespace LucidDesk.Manager.Files
 {
     public static class FileManager
     {
@@ -16,6 +16,13 @@ namespace LucidDesk.Manager.File
             string imageString = Convert.ToBase64String(imageBytes);
             return imageString;
         }
+        public static string ImageToString(BitmapImage Image)
+        {
+            byte[] imageBytes = ResizeImage(Image, 60000);
+            string imageString = Convert.ToBase64String(imageBytes);
+            return imageString;
+        }
+
         public static BitmapImage ConvertBase64ToBitmapImage(string base64String)
         {
             BitmapImage bitmapImage = new BitmapImage();
@@ -53,6 +60,40 @@ namespace LucidDesk.Manager.File
             int newWidth = (int)(width * scale);
             int newHeight = (int)(height * scale);
             BitmapSource resizedBitmap = new TransformedBitmap(bitmap, new System.Windows.Media.ScaleTransform(scale, scale));
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                BitmapEncoder encoder = new JpegBitmapEncoder(); // You can change to PngBitmapEncoder for PNG
+                encoder.Frames.Add(BitmapFrame.Create(resizedBitmap));
+                encoder.Save(ms);
+                return ms.ToArray();
+            }
+        }
+        public static byte[] ResizeImage(BitmapImage bitmap, int maxFileSizeInBytes)
+        {
+            int width = bitmap.PixelWidth;
+            int height = bitmap.PixelHeight;
+
+            // Calculate scale based on desired file size and current dimensions
+            double scale = Math.Sqrt(maxFileSizeInBytes / (double)(width * height * 4)); // Assuming 4 bytes per pixel
+
+            // No need to resize if already small enough
+            if (scale >= 1)
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    BitmapEncoder encoder = new JpegBitmapEncoder(); // You can change to PngBitmapEncoder for PNG
+                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                    encoder.Save(ms);
+                    return ms.ToArray();
+                }
+            }
+
+            int newWidth = (int)(width * scale);
+            int newHeight = (int)(height * scale);
+
+            // Create the transformed (resized) bitmap
+            TransformedBitmap resizedBitmap = new TransformedBitmap(bitmap, new System.Windows.Media.ScaleTransform(scale, scale));
 
             using (MemoryStream ms = new MemoryStream())
             {
