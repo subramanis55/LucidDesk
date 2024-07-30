@@ -1,4 +1,5 @@
 ﻿using LucidDesk.Manager;
+using LucidDesk.Manager.Database;
 using LucidDesk.UserControls;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,15 @@ namespace LucidDesk
         public static ServerNetworkManager ServerNetworkManager=new ServerNetworkManager();
         public static DeskProfile SelectedDeskProfile;
         private Thread listenerThread;
-       
+        private bool isConnected;
+        public bool IsConnected{
+        set{
+                isConnected = value;
+        }
+        get{
+              return  isConnected;
+            }
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -47,27 +56,111 @@ namespace LucidDesk
             DeskSwicthControl.OnclickFavoritesButton += DeskSwicthControlOnclickFavoritesButton;
             DeskSwicthControl.OnclickRecentSessionsButton += DeskSwicthControlOnclickRecentSessionsButton;
 
-            DeskProfile deskProfile1 = new DeskProfile() { Desk = new Desk() { IPAddress = "192.168.3.201", DeskUserName = "Sharuk", PcName = "SEZ-01", Id = 712345678 }, Height = 200, Width = 280, Margin = new Thickness(15), Foreground = Brushes.White };
-            DeskProfile deskProfile2 = new DeskProfile() { Desk = new Desk() { IPAddress = "192.168.3.50", DeskUserName = "Subramani.S", PcName = "SEZ-01", Id = 912345678, DesktopImage = SystemInformationManager.GetDesktopWallpaper() }, Height = 200, Width = 280, Margin = new Thickness(15), Foreground = Brushes.White };
-            deskProfile1.OnclickConnect += DeskProfile1OnclickConnect;
-            deskProfile2.OnclickConnect += DeskProfile1OnclickConnect;
+            MethodSubscribe();
+            SetUpCheck();
+        //    StartServerConnection();
+        }
 
-            RecentSessionsDeskControlContainer.Children.Add(deskProfile1);
-            RecentSessionsDeskControlContainer.Children.Add(deskProfile2);
+        private void SetUpCheck()
+        {
+            LocalDatabaseManager.SetUp();
+             ServerDatabaseManager.Setup();
+            if (!ServerDatabaseManager.IsDeskExits(SystemInformationManager.GetMacAddress())) {
+                ServerDatabaseManager.CreateDeskProfile(new Desk() { IPAddress = SystemInformationManager.GetIpAddresss(SystemInformationManager.GetMacAddress()), IsFavorite = false, HostName = SystemInformationManager.GetHostName(), ProfileName = "UnKnown", ProfileImage = null, DesktopImage = SystemInformationManager.GetDesktopWallpaper(), Password = "", MacAddress = SystemInformationManager.GetMacAddress(), OsName = SystemInformationManager.GetOsName(), PcName = SystemInformationManager.GetPcUserName(), RecentLoginTime = DateTime.MinValue });
+                DeskProfileManager.DeskProfilesDictionary = ServerDatabaseManager.GetDeskProfiles();
+                List<Desk> deskProfiles = DeskProfileManager.DeskProfilesDictionary.Values.ToList();
+                for (int i = 0; i < deskProfiles.Count; i++)
+                {
+               
+                        DeskProfileManager.CreateDeskProfiledata(deskProfiles[i]);
+                }
+            }
+            else {
+                //DeskProfileManager.DeskProfilesDictionary = ServerDatabaseManager.GetDeskProfiles();
+                //List<Desk> deskProfiles = DeskProfileManager.DeskProfilesDictionary.Values.ToList();
+                //for (int i = 0; i < deskProfiles.Count; i++)
+                //{
+                //    DeskProfileManager.UpdateDeskProfiledata(deskProfiles[i]);
+                //}
+            }
 
+            DeskProfileManager.DeskProfilesDictionary = DeskProfileManager.GetDeskProfilesData();
+            List<Desk> deskProfileList = DeskProfileManager.DeskProfilesDictionary.Values.ToList();
+
+            //DeskProfile Control Create
+            for (int i = 0; i < deskProfileList.Count; i++) {
+                if (SystemInformationManager.GetMacAddress() != deskProfileList[i].MacAddress){
+                if(deskProfileList[i].RecentLoginTime.Month==DateTime.Now.Month&& deskProfileList[i].RecentLoginTime.Year == DateTime.Now.Year) {
+                        DeskProfile deskProfile = new DeskProfile()
+                        {
+                            Height = 180,
+                            Width = 280,
+                            Foreground = Brushes.White,
+                            Margin = new Thickness(15)
+                        };
+                        deskProfile.Desk = deskProfileList[i];
+                        deskProfile.OnclickConnect += DeskProfile1OnclickConnect;
+                        RecentSessionsDeskControlContainer.Children.Add(deskProfile);
+                    }
+                    if(deskProfileList[i].IsFavorite){
+                        DeskProfile deskProfile = new DeskProfile()
+                        {
+                            Height = 180,
+                            Width = 280,
+                            Foreground = Brushes.White,
+                            Margin = new Thickness(15)
+                        };
+                        deskProfile.Desk = deskProfileList[i];
+                        deskProfile.OnclickConnect += DeskProfile1OnclickConnect;
+                        FavoritesDeskControlContainer.Children.Add(deskProfile);
+                    }
+                    DeskProfile deskProfileDicoverd = new DeskProfile()
+                    {
+                        Height = 180,
+                        Width = 280,
+                        Foreground = Brushes.White,
+                        Margin = new Thickness(15)
+                    };
+                    deskProfileDicoverd.Desk = deskProfileList[i];
+                    deskProfileDicoverd.OnclickConnect += DeskProfile1OnclickConnect;
+                    DiscoveredDeskControlContainer.Children.Add(deskProfileDicoverd);
+                }
+                  
+            }
+            }
+
+        public void MethodSubscribe (){
             ClientNetworkManager.ConnectedToSeverInvoke += ClientNetworkManagerConnectedToSeverInvoke;
             ClientNetworkManager.ScreenShareUpdateInvoke += ClientNetworkManagerScreenShareUpdateInvoke;
             ClientNetworkManager.DisConnectedToSeverInvoke += ClientNetworkManagerDisConnectedToSeverInvoke;
 
-           ScreenImage.MouseRightButtonUp += ScreenImage_MouseRightButtonUp;
+            ScreenImage.MouseRightButtonUp += ScreenImage_MouseRightButtonUp;
             ScreenImage.MouseRightButtonDown += ScreenImage_MouseRightButtonDown;
             ScreenImage.MouseUp += ScreenImage_MouseUp;
             ScreenImage.MouseMove += ScreenImage_MouseMove;
-            ScreenImage.MouseDown+= ScreenImage_MouseDown;
+            ScreenImage.MouseDown += ScreenImage_MouseDown;
 
             this.KeyDown += Window_KeyDown;
             this.KeyUp += Window_KeyUp;
-        //    StartServerConnection();
+
+            Closed += MainWindowClosed;
+            SessionTabHeader.OnClickClose += SessionTabHeaderOnClickClose;
+        }
+
+        private void SessionTabHeaderOnClickClose(object sender, EventArgs e)
+        {
+            
+        }
+
+     
+
+        private void MainWindowClosed(object sender, EventArgs e)
+        {
+            List<Desk> deskProfiles = DeskProfileManager.DeskProfilesDictionary.Values.ToList();
+            for (int i = 0; i < deskProfiles.Count; i++)
+            {
+                DeskProfileManager.UpdateDeskProfiledata(deskProfiles[i]);
+            }
         }
 
         private void ClientNetworkManagerDisConnectedToSeverInvoke(object sender, EventArgs e)
@@ -77,6 +170,9 @@ namespace LucidDesk
                 MainTabControl.SelectedItem = HomePage;
                 SearchBoxControl.Text = "";
                 SearchBoxControl.IsReadOnly = false;
+                SearchBoxControl.IsConnected = false;
+                SessionTabHeader.IsCloseButtonVisible = false;
+                SessionTabHeader.Header = "New session";
                 ScreenImage.Focus();
             });
         }
@@ -94,9 +190,12 @@ namespace LucidDesk
             Dispatcher.Invoke(() =>
             {
                 MainTabControl.SelectedItem = ScreenSharePage;
-            SearchBoxControl.Text = SelectedDeskProfile.Desk.IPAddress;
+                SearchBoxControl.Text = SelectedDeskProfile.Desk.IPAddress;
                 SearchBoxControl.IsReadOnly = true;
+                SearchBoxControl.IsConnected = true;
                 ScreenImage.Focus();
+                SessionTabHeader.IsCloseButtonVisible = true;
+                SessionTabHeader.Header = SelectedDeskProfile.DeskId;
             });
         }
 
@@ -296,6 +395,17 @@ namespace LucidDesk
         }
 
         private void DiscoveredShowMoreClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NewSessionCreateButtonOnClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+      
+        private void InviteButtonClick(object sender, RoutedEventArgs e)
         {
 
         }

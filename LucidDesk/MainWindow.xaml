@@ -70,6 +70,17 @@
                 <Grid  Grid.Column="0">
                     <TextBlock FontSize="16" Padding="15" FontWeight="DemiBold" Foreground="{StaticResource MainColorBrush}" VerticalAlignment="Center" HorizontalAlignment="Left">Desk</TextBlock>
                 </Grid>
+                <Grid Grid.Column="1">
+                    <WrapPanel  Name="HeaderSessionContainer" Margin="0 5 0 0" >
+                        <UserControl:SessionHeaderControl  x:Name="SessionTabHeader"  Height="30" ></UserControl:SessionHeaderControl>
+                        <Button Name="NewSessionCreateButton" Click="NewSessionCreateButtonOnClick"  Width="30" Height="30" Background="{StaticResource SubColorBrush}" Style="{StaticResource NormalButton}"  >
+                            <Button.ToolTip>
+                                <ToolTip Content="Minimize"></ToolTip>
+                            </Button.ToolTip>
+                            <Path VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Stroke="Gray" StrokeThickness="1.5" Data="{StaticResource AddDesktop}"></Path>
+                        </Button>
+                    </WrapPanel>
+                </Grid>
                 <Grid Grid.Column="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -169,7 +180,7 @@
                                                             </Style.Triggers>
                                                         </Style>
                                                     </TextBlock.Style></TextBlock>
-                                                <Button Name="InviteButton" Height="30" FontWeight="DemiBold" Width="80"  BorderThickness="2" HorizontalContentAlignment="Center" VerticalAlignment="Center" BorderBrush="{StaticResource MainColorBrush}">
+                                                <Button Name="InviteButton" Click="InviteButtonClick" Height="30" FontWeight="DemiBold" Width="80"  BorderThickness="2" HorizontalContentAlignment="Center" VerticalAlignment="Center" BorderBrush="{StaticResource MainColorBrush}">
                                                     <Button.ToolTip>
                                                         <ToolTip Content="Invite"></ToolTip>
                                                     </Button.ToolTip>
@@ -241,9 +252,9 @@
                                                         </CheckBox.ToolTip>
                                                     </CheckBox>
                                                 </DockPanel>
-                                               
+
                                             </Border>
-                                            <WrapPanel  Margin="10 5"  >
+                                            <WrapPanel Name="FavoritesDeskControlContainer"  Margin="10 5"  >
 
                                             </WrapPanel>
                                         </StackPanel>
@@ -258,7 +269,7 @@
                                                     </CheckBox>
                                                 </DockPanel>
                                             </Border>
-                                            <WrapPanel>
+                                            <WrapPanel Name="DiscoveredDeskControlContainer"  Margin="10 5"  >
 
                                             </WrapPanel>
 

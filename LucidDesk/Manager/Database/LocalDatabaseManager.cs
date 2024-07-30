@@ -15,15 +15,15 @@ namespace LucidDesk.Manager.Database
         public static string SettingFolderPath = @"c:/Desk/Setting";
         public static bool SetUp()
         {
-            if (Directory.Exists(ApplicationFolderPath))
+            if (!Directory.Exists(ApplicationFolderPath))
             {
                 Directory.CreateDirectory(ApplicationFolderPath);
             }
-            if (Directory.Exists(DatabaseFolderPath))
+            if (!Directory.Exists(DatabaseFolderPath))
             {
                 Directory.CreateDirectory(DatabaseFolderPath);
             }
-            if (Directory.Exists(SettingFolderPath))
+            if (!Directory.Exists(SettingFolderPath))
             {
                 Directory.CreateDirectory(SettingFolderPath);
             }

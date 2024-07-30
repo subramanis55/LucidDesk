@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LucidDesk.UserControls.Common"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"  MouseEnter="ControlMouseEnter" MouseLeave="ControlMouseLeave"  Opacity ="0.9"
              d:DesignHeight="200" d:DesignWidth="300">
     <UserControl.Resources>
         <Style x:Key="MenuButton" TargetType="Button">
@@ -41,6 +41,7 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
+  
     <Border Name="MainContainer"  CornerRadius="8" Background="{Binding BackgroundColor}" >
         <Border.ContextMenu>
             <ContextMenu Style="{StaticResource CustomContextMenu}" Foreground="Black" >
@@ -101,7 +102,7 @@
         </Border.ContextMenu>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="2.5*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -112,9 +113,9 @@
                     <ColumnDefinition Width="3.5*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Column="0" Padding="2">
-                    <local:RoundedImage x:Name="DeskUserProfileImage" Margin="0 2 0 0"  Stretch="Uniform" ZoomFactor="2" Image="/LucidDesk;component/Resources/Screenshot (36).png"   Style="{StaticResource RoundedImage3}"  ></local:RoundedImage>
-                </Border>
+                <Grid Grid.Column="0" >
+                    <local:RoundedImage x:Name="DeskUserProfileImage" Margin="4 6 0 0" Stretch="Uniform" ZoomFactor="2" Image="/LucidDesk;component/Resources/Screenshot (36).png"   Style="{StaticResource RoundedImage3}"  ></local:RoundedImage>
+                </Grid>
                 <Border Grid.Column="1" Padding="5 0">
                     <Grid>
                         <Grid.RowDefinitions>

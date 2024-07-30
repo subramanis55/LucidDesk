@@ -18,6 +18,8 @@ namespace LucidDesk.Manager.Files
         }
         public static string ImageToString(BitmapImage Image)
         {
+            if (Image == null)
+                return "";
             byte[] imageBytes = ResizeImage(Image, 60000);
             string imageString = Convert.ToBase64String(imageBytes);
             return imageString;

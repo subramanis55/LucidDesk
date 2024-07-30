@@ -9,5 +9,6 @@
         Title="TestWindow" Height="450" Width="800">
     <Grid>
         <Usercontrol:CustomHeaderSwicthControl Height="40" Foreground="Black"></Usercontrol:CustomHeaderSwicthControl>
+        <Usercontrol:DeskProfile x:Name="myDesk" HorizontalAlignment="Left" Height="150" Margin="280,25,0,0" VerticalAlignment="Top" Width="409"/>
     </Grid>
 </Window>

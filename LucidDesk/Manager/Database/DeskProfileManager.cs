@@ -41,10 +41,18 @@ namespace LucidDesk.Manager.Database
             {
                 string deskProfileData = JsonConvert.SerializeObject(deskProfile);
                 string encodedData = SecurityManager.Encrypt(deskProfileData);
-                string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath + deskProfile.Id + ".txt";
-                if (Directory.Exists(deskProfilePath))
-                    Directory.CreateDirectory(deskProfilePath);
-                File.WriteAllText(deskProfilePath, encodedData);
+                string folderPath = LocalDatabaseManager.DatabaseFolderPath;
+                string fileName = "/"+deskProfile.Id + ".txt";
+                string filePath = folderPath+ fileName;
+
+                // Ensure the directory exists
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                // Write to the file
+                File.WriteAllText(filePath, encodedData);
                 return true;
             }
             catch (Exception e)
@@ -58,15 +66,35 @@ namespace LucidDesk.Manager.Database
             {
                 string deskProfileData = JsonConvert.SerializeObject(deskProfile);
                 string encodedData = SecurityManager.Encrypt(deskProfileData);
-                string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath + deskProfile.Id + ".txt";
-                if (Directory.Exists(deskProfilePath))
-                    Directory.CreateDirectory(deskProfilePath);
+                string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath +"/"+ deskProfile.Id + ".txt";
+             
                 File.WriteAllText(deskProfilePath, encodedData);
                 return true;
             }
             catch(Exception e)
             {
                
+            }
+            return false;
+        }
+        public static bool UpdateDeskProfilesdata(List<Desk> deskProfiles)
+        {
+            try
+            {
+            for(int i=0;i< deskProfiles.Count;i++){
+                    string deskProfileData = JsonConvert.SerializeObject(deskProfiles[i]);
+                    string encodedData = SecurityManager.Encrypt(deskProfileData);
+                    string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath + deskProfiles[i].Id + ".txt";
+                    //if (Directory.Exists(deskProfilePath))
+                    //    Directory.CreateDirectory(deskProfilePath);
+                    File.WriteAllText(deskProfilePath, encodedData);
+                }
+               
+                return true;
+            }
+            catch (Exception e)
+            {
+
             }
             return false;
         }

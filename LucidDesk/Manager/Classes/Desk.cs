@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LucidDesk.Manager.Files;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -16,8 +18,12 @@ namespace LucidDesk.Manager
         private bool isFavorite;
         private string hostName;
         private string profileName;
+        [JsonIgnore]
         private BitmapImage profileImage;
+        [JsonIgnore]
         private BitmapImage desktopImage;
+        private string profileImageString;
+        private string desktopImageString;
         private string password;
         private string macAddress;
         private string osName;
@@ -68,6 +74,7 @@ namespace LucidDesk.Manager
                 OnPropertyChanged(nameof(ProfileName));
             }
         }
+        [JsonIgnore]
         public BitmapImage ProfileImage
         {
             get
@@ -104,6 +111,7 @@ namespace LucidDesk.Manager
                 OnPropertyChanged(nameof(MacAddress));
             }
         }
+        [JsonIgnore]
         public BitmapImage DesktopImage
         {
             get
@@ -170,9 +178,38 @@ namespace LucidDesk.Manager
             }
         }
 
+        public string DesktopImageString
+        {
+            get
+            {
+                return desktopImageString;
+            }
+
+            set
+            {
+                desktopImageString = value;
+                desktopImage = FileManager.ConvertBase64ToBitmapImage(desktopImageString);
+            }
+        }
+
+        public string ProfileImageString
+        {
+            get
+            {
+                return profileImageString;
+            }
+
+            set
+            {
+                profileImageString = value;
+                profileImage = FileManager.ConvertBase64ToBitmapImage(profileImageString);
+            }
+        }
+
         protected virtual void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+       
     }
 }

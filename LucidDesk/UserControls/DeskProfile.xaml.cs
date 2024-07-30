@@ -1,4 +1,5 @@
-﻿using LucidDesk.Manager;
+﻿using LucidDesk.FeaturesFuntionMangerClasses;
+using LucidDesk.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,35 +25,48 @@ namespace LucidDesk.UserControls
         public event EventHandler OnclickConnect;
         private Desk desk;
 
-        public Desk Desk{
-        set{
+        public Desk Desk
+        {
+            set
+            {
                 desk = value;
+                if (desk.ProfileImage == null)
+                {
+                    DeskUserProfileImage.Image = ColorFeatures.CreateBitmapImageWithCharacter(90, 90, ColorFeatures.GetColorBasedOnFirstChar(DeskUserName = desk.ProfileName), desk.ProfileName[0], "Arial", 17, Colors.White);
+                }
+                else
+                    DeskUserProfileImage.Image = desk.ProfileImage;
                 IsFavorite = desk.IsFavorite;
-                DeskUserName = desk.DeskUserName;
+                DeskUserName = desk.ProfileName;
                 PCName = desk.PcName;
                 DeskOSName = desk.OsName;
-                DeskId =""+ desk.Id;
+                DeskId = "" + desk.Id;
                 DesktopWallPaper.Image = desk.DesktopImage;
-                DeskUserProfileImage.Image = desk.ProfileImage;
-        }
-        get{
+            }
+            get
+            {
                 return desk;
+            }
         }
-        } 
         private bool isFavorite;
-        public bool IsFavorite{
-        set{
+        public bool IsFavorite
+        {
+            set
+            {
                 isFavorite = value;
-                if(isFavorite){
+                if (!isFavorite)
+                {
                     IsFavoriteIcon.Fill = Brushes.Transparent;
                 }
-                else{
+                else
+                {
                     IsFavoriteIcon.Fill = Brushes.Gold;
                 }
-        }
-        get{
+            }
+            get
+            {
                 return isFavorite;
-        }
+            }
         }
         public string DeskUserName
         {
@@ -101,20 +115,20 @@ namespace LucidDesk.UserControls
             get { return (Brush)GetValue(BackgroundColorProperty); }
             set { SetValue(BackgroundColorProperty, value); }
         }
-   
+
         public static readonly DependencyProperty BackgroundColorProperty =
             DependencyProperty.Register("BackgroundColor", typeof(Brush), typeof(DeskProfile), new PropertyMetadata(new SolidColorBrush(Colors.DodgerBlue)));
 
-       
+
 
         public DeskProfile()
         {
             InitializeComponent();
-           
+
             DataContext = this;
         }
 
-  
+
 
         private void MenuButtonClick(object sender, RoutedEventArgs e)
         {
@@ -129,6 +143,7 @@ namespace LucidDesk.UserControls
         private void IsFavoriteIconMouseDown(object sender, MouseButtonEventArgs e)
         {
             IsFavorite = !IsFavorite;
+            Desk.IsFavorite = IsFavorite;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -139,6 +154,21 @@ namespace LucidDesk.UserControls
         private void ConnectClick(object sender, RoutedEventArgs e)
         {
             OnclickConnect?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void ControlMouseEnter(object sender, MouseEventArgs e)
+        {
+            Opacity = 1;
+        }
+
+        private void ControlMouseLeave(object sender, MouseEventArgs e)
+        {
+            Opacity = 0.9;
         }
     }
 }

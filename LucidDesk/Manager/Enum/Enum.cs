@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LucidDesk.FeaturesFuntionMangerClasses
+namespace LucidDesk.Manager.Enum
 {
-    class Class1
-    {
-    }
+ public enum AccessType{
+    Default,ScreenShareing,FullAccess
+ }  
 }

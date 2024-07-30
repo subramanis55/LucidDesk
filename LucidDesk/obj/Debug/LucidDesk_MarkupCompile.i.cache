@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\ayyan\Desktop\LucidDesk\LucidDesk\obj\Debug\
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\
 LucidDesk
 none
 false
 DEBUG;TRACE
-C:\Users\ayyan\Desktop\LucidDesk\LucidDesk\App.xaml
-15-647522606
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\App.xaml
+17-1848626922
 
-29418396818
-18-1033428681
-ConnectWindow.xaml;InviteAcceptWindow.xaml;InviteWindow.xaml;loginWindow.xaml;MainWindow.xaml;Styles\DeskCustomStyle.xaml;Styles\ScrollBarStyle.xaml;Styles\Theme.xaml;Styles\UIFrameworkStyles.xaml;TestWindow.xaml;UserControls\Common\CustomTextBox.xaml;UserControls\CustomHeaderSwicthControl.xaml;UserControls\DeskProfile.xaml;UserControls\PageSelectContextMenu.xaml;UserControls\SearchBoxControl.xaml;
+34-1923537932
+18-1072058449
+ConnectWindow.xaml;InviteAcceptWindow.xaml;InviteWindow.xaml;loginWindow.xaml;MainWindow.xaml;Styles\DeskCustomStyle.xaml;Styles\Icons.xaml;Styles\ScrollBarStyle.xaml;Styles\Theme.xaml;Styles\UIFrameworkStyles.xaml;TestWindow.xaml;UserControls\Common\CustomTextBox.xaml;UserControls\CustomHeaderSwicthControl.xaml;UserControls\DeskProfile.xaml;UserControls\PageSelectContextMenu.xaml;UserControls\SearchBoxControl.xaml;UserControls\SessionHeaderControl.xaml;
 
 False
 

@@ -20,6 +20,22 @@ namespace LucidDesk.UserControls
     /// </summary>
     public partial class SearchBoxControl : UserControl
     {
+        private bool isConnected=false;
+        public bool IsConnected
+        {
+          set{
+                isConnected = value;
+                if(isConnected){
+                    SearchBoxMainGrid.ColumnDefinitions[2].Width = new GridLength(0);
+                }
+                else{
+                    SearchBoxMainGrid.ColumnDefinitions[2].Width = new GridLength(120);
+                }
+          }
+          get{
+                return isConnected;
+          }
+        }
         private bool isLabelVisible;
         public static readonly DependencyProperty PlaceholderProperty = DependencyProperty.Register("Placeholder", typeof(string), typeof(SearchBoxControl), new PropertyMetadata(""));
         public static readonly DependencyProperty PlaceholderColorProperty = DependencyProperty.Register("PlaceholderColor", typeof(Brush), typeof(SearchBoxControl), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DDDDDD"))));
@@ -55,9 +71,10 @@ namespace LucidDesk.UserControls
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
-            set {
-            SetValue(TextProperty, value); 
-            Textbox.Focus();
+            set
+            {
+                SetValue(TextProperty, value);
+                Textbox.Focus();
             }
         }
 
@@ -83,32 +100,40 @@ namespace LucidDesk.UserControls
                 return (Brush)GetValue(PlaceholderColorProperty);
             }
         }
-       public bool IsLabelVisible{
-           set{
+        public bool IsLabelVisible
+        {
+            set
+            {
                 isLabelVisible = value;
-                if(isLabelVisible){
+                if (isLabelVisible)
+                {
                     Panel.SetZIndex(IsLabel, 1);
                     Textbox.Visibility = Visibility.Hidden;
                     PlaceholderLabel.Visibility = Visibility.Hidden;
                 }
-                else{
+                else
+                {
                     Panel.SetZIndex(IsLabel, -1);
                     Textbox.Visibility = Visibility.Visible;
                     PlaceholderLabel.Visibility = Visibility.Visible;
                 }
-           }
-           get{
+            }
+            get
+            {
                 return isLabelVisible;
-           }
-       }
-        public bool IsReadOnly{
-        set{
+            }
+        }
+        public bool IsReadOnly
+        {
+            set
+            {
                 Textbox.IsReadOnly = value;
                 IsLabelVisible = Textbox.IsReadOnly;
-        }
-        get{
+            }
+            get
+            {
                 return Textbox.IsReadOnly;
-        }
+            }
         }
         public SearchBoxControl()
         {
@@ -128,7 +153,7 @@ namespace LucidDesk.UserControls
 
         private void TextboxLostFocus(object sender, RoutedEventArgs e)
         {
-           
+
             if (string.IsNullOrEmpty(Textbox.Text))
             {
                 PlaceholderLabel.Visibility = Visibility.Visible;
@@ -141,7 +166,7 @@ namespace LucidDesk.UserControls
 
         private void TextboxGotFocus(object sender, RoutedEventArgs e)
         {
-          
+
             PlaceholderLabel.Visibility = Visibility.Hidden;
         }
 
@@ -151,6 +176,6 @@ namespace LucidDesk.UserControls
             e.Handled = true;
         }
 
-       
+
     }
 }

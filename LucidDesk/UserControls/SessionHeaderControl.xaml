@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="LucidDesk.UserControls.SessionHeaderControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LucidDesk.UserControls"
+             mc:Ignorable="d"   MinHeight="30"  Margin="5 0" 
+             d:DesignHeight="50" d:DesignWidth="250">
+    <Border Name="MainContainer" Background="White"  HorizontalAlignment="Stretch" BorderBrush="Gainsboro" BorderThickness="1"  VerticalAlignment="Stretch" CornerRadius="4">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="35"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" VerticalAlignment="Stretch" >
+                <Viewbox Height="15" Width="15" MouseDown="CancelMouseDown">
+                    <Path Name="SectionIconPath" Fill="Black" Stroke="Black" StrokeThickness="1" Data="{StaticResource PC}"></Path>
+                </Viewbox>
+            </Border>
+            <Border Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="10 5" >
+                <TextBlock  Text="{Binding Header}" FontSize="14"   LineStackingStrategy="BlockLineHeight" 
+                   LineHeight="16"   Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Foreground}"   VerticalAlignment="Center"  MaxHeight="50" HorizontalAlignment="Stretch" TextWrapping="Wrap"></TextBlock>
+            </Border>
+
+            <Border Grid.Column="2" VerticalAlignment="Stretch" >
+                <Button Name="CloseButton" Visibility="Hidden" Margin="4" Click="CancelMouseDown" Background="{Binding Background,ElementName=MainContainer,Mode=TwoWay}" Style="{StaticResource NormalButton}">
+                    <Button.ToolTip>
+                        <ToolTip Content="Close"></ToolTip>
+                    </Button.ToolTip>
+                    <Viewbox Height="10" Width="10" >
+                        <Path Stroke="Black" StrokeThickness="1" Data="{StaticResource Cancel}"></Path>
+                    </Viewbox>
+                </Button>
+              
+            </Border>
+
+        </Grid>
+    </Border>
+</UserControl>
