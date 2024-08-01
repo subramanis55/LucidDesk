@@ -73,9 +73,9 @@
                 <Grid Grid.Column="1">
                     <WrapPanel  Name="HeaderSessionContainer" Margin="0 5 0 0" >
                         <UserControl:SessionHeaderControl  x:Name="SessionTabHeader"  Height="30" ></UserControl:SessionHeaderControl>
-                        <Button Name="NewSessionCreateButton" Click="NewSessionCreateButtonOnClick"  Width="30" Height="30" Background="{StaticResource SubColorBrush}" Style="{StaticResource NormalButton}"  >
+                        <Button  Name="NewSessionCreateButton" Click="NewSessionCreateButtonOnClick"  Width="30" Height="30" Background="{StaticResource SubColorBrush}" Style="{StaticResource NormalButton}"  >
                             <Button.ToolTip>
-                                <ToolTip Content="Minimize"></ToolTip>
+                                <ToolTip Content="New Session"></ToolTip>
                             </Button.ToolTip>
                             <Path VerticalAlignment="Stretch"  HorizontalAlignment="Stretch" Stroke="Gray" StrokeThickness="1.5" Data="{StaticResource AddDesktop}"></Path>
                         </Button>
@@ -262,7 +262,7 @@
                                             <Border Height="30" BorderThickness="0 0 0 0" BorderBrush="{StaticResource MainColorBrush}">
                                                 <DockPanel  >
                                                     <TextBlock Padding="15 0" Foreground="Gray" FontSize="14" FontWeight="DemiBold">Discovered</TextBlock>
-                                                    <CheckBox Click="DiscoveredShowMoreClick" FontWeight="DemiBold" Style="{StaticResource ShowMoreCheckBox}" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right" >
+                                                    <CheckBox Click="DiscoveredShowMoreClick"  FontWeight="DemiBold" Style="{StaticResource ShowMoreCheckBox}" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right" >
                                                         <CheckBox.ToolTip>
                                                             <ToolTip Content="Discovered desk Show"></ToolTip>
                                                         </CheckBox.ToolTip>

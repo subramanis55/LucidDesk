@@ -66,10 +66,7 @@ namespace LucidDesk.UserControls
 
         private void CancelMouseDown(object sender, RoutedEventArgs e)
         {
-            if (this.Parent is WrapPanel panel)
-            {
-                panel.Children.Remove(this);
-            }
+           
             OnClickClose?.Invoke(this, EventArgs.Empty);
         }
     }

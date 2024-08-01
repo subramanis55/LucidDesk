@@ -79,6 +79,7 @@
     <Compile Include="loginWindow.xaml.cs">
       <DependentUpon>loginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Manager\Classes\DeskConnectionInformation.cs" />
     <Compile Include="Manager\Enum\Enum.cs" />
     <Compile Include="Manager\Files\FileManager.cs" />
     <Compile Include="Manager\Network\ClientNetworkManager.cs" />

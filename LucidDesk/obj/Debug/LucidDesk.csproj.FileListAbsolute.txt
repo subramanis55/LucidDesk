@@ -54,8 +54,6 @@ C:\Users\ayyan\Desktop\LucidDesk\LucidDesk\obj\Debug\App.g.cs
 C:\Users\ayyan\Desktop\LucidDesk\LucidDesk\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\ayyan\Desktop\LucidDesk\LucidDesk\obj\Debug\LucidDesk_MarkupCompile.cache
 C:\Users\ayyan\Desktop\LucidDesk\LucidDesk\obj\Debug\LucidDesk_MarkupCompile.lref
-C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\bin\Debug\MySql.Data.dll
-C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\LucidDesk.csproj.CopyComplete
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\UserControls\SessionHeaderControl.g.cs
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\Styles\Icons.baml

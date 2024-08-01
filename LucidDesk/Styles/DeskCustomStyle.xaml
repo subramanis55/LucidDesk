@@ -13,9 +13,11 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="false">
                             <Setter TargetName="Textblock" Property="TextBlock.Text" Value="Show more" />
+                            <Setter Property="Foreground" Value="{StaticResource MainColorBrush}" />
                         </Trigger>
                         <Trigger Property="IsChecked" Value="true">
                             <Setter TargetName="Textblock" Property="TextBlock.Text" Value="Show less" />
+                            <Setter Property="Foreground" Value="Gray" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

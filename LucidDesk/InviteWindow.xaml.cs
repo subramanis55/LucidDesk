@@ -1,4 +1,5 @@
 ﻿using LucidDesk.Manager;
+using LucidDesk.Manager.Classes;
 using LucidDesk.Manager.Enum;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,9 @@ namespace LucidDesk
     /// </summary>
     public partial class InviteWindow : Window
     {
+        public event EventHandler<DeskConnectionInformation> OnClickInviteButton;
         private Desk desk;
+        public DeskConnectionInformation DeskConnectionInformation;
         public Desk Desk
         {
             set
@@ -41,7 +44,7 @@ namespace LucidDesk
                 UserIdLabelTextblock.Text = value;
             }
         }
-        public event EventHandler OnClickInviteButton;
+ 
         public InviteWindow()
         {
             InitializeComponent();
@@ -70,23 +73,15 @@ namespace LucidDesk
 
         }
 
-
-
         private void KeyboardAccessCheckBoxClick(object sender, RoutedEventArgs e)
         {
 
         }
 
-
-
         private void MouseAccessCheckBoxClick(object sender, RoutedEventArgs e)
         {
 
         }
-
-
-
-
 
         private void FileAccessCheckBoxClick(object sender, RoutedEventArgs e)
         {
@@ -100,7 +95,7 @@ namespace LucidDesk
 
         private void InviteButtonClick(object sender, RoutedEventArgs e)
         {
-            OnClickInviteButton?.Invoke(this, EventArgs.Empty);
+            OnClickInviteButton?.Invoke(this, new DeskConnectionInformation() { AccessType = (AccessType)Enum.Parse(typeof(AccessType), AccessTypeCombobox.SelectedItem.ToString()), Desk = this.Desk });
         }
 
         private void AccessTypeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -110,7 +105,37 @@ namespace LucidDesk
 
         private void AccessTypeComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(AccessTypeCombobox.SelectedItem.ToString()==AccessType.FullAccess.ToString()){
+                KeyboardAccessCheckBox.IsChecked = true;
+                MouseAccessCheckBox.IsChecked = true;
+                ClipboardAccessCheckBox.IsChecked = true;
+                AudioAccessCheckBox.IsChecked = true;
+            }
+            else if(AccessTypeCombobox.SelectedItem.ToString() == AccessType.ScreenShareing.ToString()){
+                KeyboardAccessCheckBox.IsChecked = false;
+                MouseAccessCheckBox.IsChecked = false;
+                ClipboardAccessCheckBox.IsChecked = false;
+                AudioAccessCheckBox.IsChecked = false;
+            }
+            else{
+                KeyboardAccessCheckBox.IsChecked = true;
+                MouseAccessCheckBox.IsChecked = true;
+                ClipboardAccessCheckBox.IsChecked = true;
+                AudioAccessCheckBox.IsChecked = false;
+            }
+        }
 
+        private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void TopPanelMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+        if(e.ButtonState==MouseButtonState.Pressed){
+                this.DragMove();
+            }
+            e.Handled=true;
         }
     }
 }

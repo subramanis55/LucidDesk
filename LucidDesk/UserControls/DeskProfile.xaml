@@ -55,7 +55,7 @@
                         </StackPanel>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Style="{StaticResource ContextMenuItem}" >
+                <MenuItem Style="{StaticResource ContextMenuItem}" Click="InviteClick" >
                     <MenuItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <Viewbox Height="14" Width="14" Margin="10 0" >

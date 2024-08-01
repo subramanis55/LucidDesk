@@ -20,7 +20,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="true">
-                    <Setter Property="FontWeight" Value="Normal"/>
+                  
                 </Trigger>
             </Style.Triggers>
         </Style>

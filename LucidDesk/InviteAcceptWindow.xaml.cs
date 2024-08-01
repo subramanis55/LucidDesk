@@ -1,4 +1,6 @@
 ﻿using LucidDesk.Manager;
+using LucidDesk.Manager.Classes;
+using LucidDesk.Manager.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +24,7 @@ namespace LucidDesk
     {
         private Desk desk;
 
+        private DeskConnectionInformation deskConnectionInformation;
         public Desk Desk
         {
             set
@@ -29,7 +32,6 @@ namespace LucidDesk
                 desk = value;
                
                 DeskUserNameTextBlock.Text = desk.ProfileName;
-
                 DeskIdTextBlock.Text = "" + desk.Id;
                 DeskUserProfileImageComponent.Image = desk.DesktopImage;
              
@@ -39,24 +41,49 @@ namespace LucidDesk
                 return desk;
             }
         }
+
+        public DeskConnectionInformation DeskConnectionInformation
+        {
+            get
+            {
+                return deskConnectionInformation;
+            }
+
+            set
+            {
+                deskConnectionInformation = value;
+
+            }
+        }
+
         public InviteAcceptWindow()
         {
             InitializeComponent();
         }
 
+        public InviteAcceptWindow(DeskConnectionInformation deskConnectionInformation)
+        {
+            InitializeComponent();
+            AccessTypeCombobox.ItemsSource = Enum.GetNames(typeof(AccessType));
+            DeskConnectionInformation = deskConnectionInformation;
+            AccessTypeCombobox.SelectedItem = deskConnectionInformation.AccessType.ToString();
+            Desk = deskConnectionInformation.Desk;
+
+        }
+
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
 
         private void MaximizeButtonClick(object sender, RoutedEventArgs e)
         {
-
+            WindowState = WindowState.Normal;
         }
 
         private void MinimizeButtonClick(object sender, RoutedEventArgs e)
         {
-
+            WindowState = WindowState.Minimized;
         }
 
        
@@ -64,6 +91,51 @@ namespace LucidDesk
         private void AcceptClick(object sender, RoutedEventArgs e)
         {
 
+        }
+
+       
+
+        private void AccessTypeComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (AccessTypeCombobox.SelectedItem.ToString() == AccessType.FullAccess.ToString())
+            {
+                KeyboardAccessCheckBox.IsChecked = true;
+                MouseAccessCheckBox.IsChecked = true;
+                ClipboardAccessCheckBox.IsChecked = true;
+                AudioAccessCheckBox.IsChecked = true;
+            }
+            else if (AccessTypeCombobox.SelectedItem.ToString() == AccessType.ScreenShareing.ToString())
+            {
+                KeyboardAccessCheckBox.IsChecked = false;
+                MouseAccessCheckBox.IsChecked = false;
+                ClipboardAccessCheckBox.IsChecked = false;
+                AudioAccessCheckBox.IsChecked = false;
+            }
+            else
+            {
+                KeyboardAccessCheckBox.IsChecked = true;
+                MouseAccessCheckBox.IsChecked = true;
+                ClipboardAccessCheckBox.IsChecked = true;
+                AudioAccessCheckBox.IsChecked = false;
+            }
+        }
+
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void TopPanelMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if(e.ButtonState==MouseButtonState.Pressed){
+                this.DragMove();
+            }
+            e.Handled = true;
         }
     }
 }

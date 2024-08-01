@@ -23,6 +23,7 @@ namespace LucidDesk.UserControls
     public partial class DeskProfile : UserControl
     {
         public event EventHandler OnclickConnect;
+        public event EventHandler<Desk> OnInviteConnect;
         private Desk desk;
 
         public Desk Desk
@@ -169,6 +170,11 @@ namespace LucidDesk.UserControls
         private void ControlMouseLeave(object sender, MouseEventArgs e)
         {
             Opacity = 0.9;
+        }
+
+        private void InviteClick(object sender, RoutedEventArgs e)
+        {
+            OnInviteConnect?.Invoke(this,Desk);
         }
     }
 }

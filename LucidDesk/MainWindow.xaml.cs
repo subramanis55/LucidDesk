@@ -1,5 +1,7 @@
 ﻿using LucidDesk.Manager;
+using LucidDesk.Manager.Classes;
 using LucidDesk.Manager.Database;
+using LucidDesk.Manager.Enum;
 using LucidDesk.UserControls;
 using System;
 using System.Collections.Generic;
@@ -55,9 +57,9 @@ namespace LucidDesk
             DeskSwicthControl.OnclickDiscoverdButton += DeskSwicthControlOnclickDiscoverdButton;
             DeskSwicthControl.OnclickFavoritesButton += DeskSwicthControlOnclickFavoritesButton;
             DeskSwicthControl.OnclickRecentSessionsButton += DeskSwicthControlOnclickRecentSessionsButton;
-
             MethodSubscribe();
             SetUpCheck();
+        
         //    StartServerConnection();
         }
 
@@ -100,7 +102,9 @@ namespace LucidDesk
                         };
                         deskProfile.Desk = deskProfileList[i];
                         deskProfile.OnclickConnect += DeskProfile1OnclickConnect;
+                        deskProfile.OnInviteConnect += DeskProfileOnInviteConnect;
                         RecentSessionsDeskControlContainer.Children.Add(deskProfile);
+                      
                     }
                     if(deskProfileList[i].IsFavorite){
                         DeskProfile deskProfile = new DeskProfile()
@@ -112,7 +116,9 @@ namespace LucidDesk
                         };
                         deskProfile.Desk = deskProfileList[i];
                         deskProfile.OnclickConnect += DeskProfile1OnclickConnect;
+                        deskProfile.OnInviteConnect += DeskProfileOnInviteConnect;
                         FavoritesDeskControlContainer.Children.Add(deskProfile);
+                     
                     }
                     DeskProfile deskProfileDicoverd = new DeskProfile()
                     {
@@ -123,11 +129,32 @@ namespace LucidDesk
                     };
                     deskProfileDicoverd.Desk = deskProfileList[i];
                     deskProfileDicoverd.OnclickConnect += DeskProfile1OnclickConnect;
+                    deskProfileDicoverd.OnInviteConnect += DeskProfileOnInviteConnect;
                     DiscoveredDeskControlContainer.Children.Add(deskProfileDicoverd);
-                }
-                  
+
+                    RecentSessionsDeskControlContainer.MaxHeight = 220;
+                    FavoritesDeskControlContainer.MaxHeight = 220;
+                    DiscoveredDeskControlContainer.MaxHeight = 220;
+                } 
             }
             }
+
+        private void DeskProfileOnInviteConnect(object sender, Desk desk)
+        {
+
+          
+            InviteWindow inviteWindow = new InviteWindow(desk);
+            inviteWindow.OnClickInviteButton += InviteWindowOnClickInviteButton;
+            inviteWindow.ShowDialog();
+        }
+        private void InviteRequestArrived(object sender, DeskConnectionInformation deskConnectionInformation){
+
+        }
+
+        private void InviteWindowOnClickInviteButton(object sender, DeskConnectionInformation deskConnectionInformation)
+        {
+            ((Window)(this)).Close();
+        }
 
         public void MethodSubscribe (){
             ClientNetworkManager.ConnectedToSeverInvoke += ClientNetworkManagerConnectedToSeverInvoke;
@@ -142,17 +169,14 @@ namespace LucidDesk
 
             this.KeyDown += Window_KeyDown;
             this.KeyUp += Window_KeyUp;
-
             Closed += MainWindowClosed;
             SessionTabHeader.OnClickClose += SessionTabHeaderOnClickClose;
         }
 
         private void SessionTabHeaderOnClickClose(object sender, EventArgs e)
         {
-            
+            ClientNetworkManagerDisConnectedToSeverInvoke(this, EventArgs.Empty);
         }
-
-     
 
         private void MainWindowClosed(object sender, EventArgs e)
         {
@@ -386,28 +410,53 @@ namespace LucidDesk
 
         private void RecentSessionsShowMoreClick(object sender, RoutedEventArgs e)
         {
+            if (RecentSessionsDeskControlContainer.MaxHeight == Double.PositiveInfinity)
+            {
+                RecentSessionsDeskControlContainer.MaxHeight = 220;
+            }
+            else
+            {
 
+                RecentSessionsDeskControlContainer.MaxHeight = Double.PositiveInfinity;
+            }
         }
 
         private void FavoritesShowMoreClick(object sender, RoutedEventArgs e)
         {
-
+            if (FavoritesDeskControlContainer.MaxHeight == Double.PositiveInfinity)
+            {
+                FavoritesDeskControlContainer.MaxHeight = 220;
+            }
+            else
+            {
+                FavoritesDeskControlContainer.MaxHeight = Double.PositiveInfinity;
+            }
         }
 
         private void DiscoveredShowMoreClick(object sender, RoutedEventArgs e)
         {
-
+            if (DiscoveredDeskControlContainer.MaxHeight == Double.PositiveInfinity)
+            {
+                DiscoveredDeskControlContainer.MaxHeight = 220;
+            }
+            else
+            {
+             
+                DiscoveredDeskControlContainer.MaxHeight = Double.PositiveInfinity;
+            }
         }
 
         private void NewSessionCreateButtonOnClick(object sender, RoutedEventArgs e)
         {
-
+            InviteAcceptWindow inviteAcceptWindow = new InviteAcceptWindow(new DeskConnectionInformation() { AccessType = AccessType.Default, Desk = DeskProfileManager.DeskProfilesDictionary["1000002"] });
+            inviteAcceptWindow.ShowDialog();
         }
 
       
         private void InviteButtonClick(object sender, RoutedEventArgs e)
         {
-
+            InviteWindow inviteWindow = new InviteWindow();
+            inviteWindow.ShowDialog();
         }
     }
 }

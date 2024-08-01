@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LucidDesk.UserControls"
-             mc:Ignorable="d"   MinHeight="30"  Margin="5 0" 
+             mc:Ignorable="d"   MinHeight="30"  Margin="5 0"  Foreground="#111111"
              d:DesignHeight="50" d:DesignWidth="250">
     <Border Name="MainContainer" Background="White"  HorizontalAlignment="Stretch" BorderBrush="Gainsboro" BorderThickness="1"  VerticalAlignment="Stretch" CornerRadius="4">
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
@@ -19,7 +19,7 @@
                 </Viewbox>
             </Border>
             <Border Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="10 5" >
-                <TextBlock  Text="{Binding Header}" FontSize="14"   LineStackingStrategy="BlockLineHeight" 
+                <TextBlock  Text="{Binding Header}" FontSize="14"  FontWeight="Medium"  LineStackingStrategy="BlockLineHeight" 
                    LineHeight="16"   Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=Foreground}"   VerticalAlignment="Center"  MaxHeight="50" HorizontalAlignment="Stretch" TextWrapping="Wrap"></TextBlock>
             </Border>
 
