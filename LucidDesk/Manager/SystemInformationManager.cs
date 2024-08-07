@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
@@ -55,6 +56,22 @@ namespace LucidDesk.Manager
                 }
             }
             return "No MAC Address Found";
+        }
+        public static string GetPcIPAddress(string hostName)
+        {
+            try
+            {
+                IPAddress[] iparray = Dns.GetHostAddresses(hostName);
+                foreach (IPAddress ip in iparray)
+                {
+                    if (ip.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        return ip.ToString();
+                    }
+                }
+            }
+            catch(Exception e) { }
+            return "";
         }
         public static string GetIpAddresss(string macAddress)
         {

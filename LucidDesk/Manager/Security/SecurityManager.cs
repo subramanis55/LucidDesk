@@ -12,8 +12,6 @@ namespace LucidDesk.Manager.Security
         private readonly static string Key = "Desk123456789012"; // 16-byte secret key
         private readonly static string InitializationVector = "Desk123456789012";  // 16-byte initialization vector (IV)
 
-
-
         public static string Encrypt(string plainText)
         {
             using (Aes aes = Aes.Create())

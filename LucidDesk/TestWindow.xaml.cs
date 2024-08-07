@@ -23,10 +23,7 @@ namespace LucidDesk
         public TestWindow()
         {
             InitializeComponent();
-            myDesk.Desk = new Manager.Desk()
-            {
-                HostName = "1122434"
-            };
+            aa.IsConnected = true;
         }
     }
 }

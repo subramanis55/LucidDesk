@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -20,22 +21,32 @@ namespace LucidDesk.UserControls
     /// </summary>
     public partial class SearchBoxControl : UserControl
     {
-        private bool isConnected=false;
+        public event EventHandler OnClickFullScreen;
+        public event EventHandler OnClickScreenStrech;
+        public event EventHandler OnClickScreenZoom;
+        public event EventHandler OnClickScreenNormal;
+        private bool isConnected = true;
         public bool IsConnected
         {
-          set{
+            set
+            {
                 isConnected = value;
-                if(isConnected){
-                    SearchBoxMainGrid.ColumnDefinitions[2].Width = new GridLength(0);
-                }
-                else{
+                if (isConnected)
+                {
                     SearchBoxMainGrid.ColumnDefinitions[2].Width = new GridLength(120);
                 }
-          }
-          get{
+                else
+                {
+                    SearchBoxMainGrid.ColumnDefinitions[2].Width = new GridLength(0);
+                }
+            }
+            get
+            {
                 return isConnected;
-          }
+            }
         }
+        public ContextMenu ScreenButtonMenu;
+
         private bool isLabelVisible;
         public static readonly DependencyProperty PlaceholderProperty = DependencyProperty.Register("Placeholder", typeof(string), typeof(SearchBoxControl), new PropertyMetadata(""));
         public static readonly DependencyProperty PlaceholderColorProperty = DependencyProperty.Register("PlaceholderColor", typeof(Brush), typeof(SearchBoxControl), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DDDDDD"))));
@@ -138,12 +149,13 @@ namespace LucidDesk.UserControls
         public SearchBoxControl()
         {
             InitializeComponent();
-
-            Loaded += SearchBoxControlLoaded;
+           
+          Loaded += SearchBoxControlLoaded;
             PlaceholderLabel.MouseDown += CustomTextBoxMouseDown;
             Textbox.GotFocus += TextboxGotFocus;
             Textbox.LostFocus += TextboxLostFocus;
             DataContext = this;
+            ScreenButtonMenu = Resources["ScreenButtonContext"] as ContextMenu;
         }
 
         private void SearchBoxControlLoaded(object sender, RoutedEventArgs e)
@@ -176,6 +188,52 @@ namespace LucidDesk.UserControls
             e.Handled = true;
         }
 
+      
+        private void ScreenButtonClick(object sender, RoutedEventArgs e)
+        {
+            ScreenButtonContextShow();
+        }
 
+        private void ScreenButtonContextShow()
+        {
+    
+
+            ScreenButtonMenu.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            Size contextMenuSize = ScreenButtonMenu.DesiredSize;
+            double x = ScreenButton.ActualWidth/2 - contextMenuSize.Width / 2;
+            ScreenButtonMenu.PlacementTarget = ScreenButton;
+            double y = ScreenButton.ActualHeight;
+            ScreenButtonMenu.Placement = PlacementMode.Relative;
+      
+            ScreenButtonMenu.HorizontalOffset = x;
+            ScreenButtonMenu.VerticalOffset = y;
+            ScreenButtonMenu.IsOpen = true;
+        }
+
+      
+
+        private void ScreenButtonMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ScreenButtonContextShow();
+        }
+        private void FullScreenClick(object sender, RoutedEventArgs e)
+        {
+            OnClickFullScreen?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ScreenStrechClick(object sender, RoutedEventArgs e)
+        {
+            OnClickScreenStrech?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ScreenZoomClick(object sender, RoutedEventArgs e)
+        {
+            OnClickScreenZoom?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ScreenNormalClick(object sender, RoutedEventArgs e)
+        {
+            OnClickScreenNormal?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

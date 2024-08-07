@@ -13,6 +13,7 @@ namespace LucidDesk.Manager.Database
 {
     public static class DeskProfileManager
     {
+        public static Desk UserDesk;
         public static List<Desk> DeskProfiles;
         public static Dictionary<string, Desk> DeskProfilesDictionary;
 
@@ -27,6 +28,9 @@ namespace LucidDesk.Manager.Database
                     string deskProfiledata = File.ReadAllText(DeskProfilesDataPath[i]);
                     Desk desk = JsonConvert.DeserializeObject<Desk>(SecurityManager.Decrypt(deskProfiledata));
                     deskProfilesDictionary.Add("" + desk.Id, desk);
+                    if(desk.MacAddress==SystemInformationManager.GetMacAddress()){
+                        UserDesk = desk;
+                    }
                 }
                 catch (Exception e)
                 {

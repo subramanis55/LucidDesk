@@ -23,7 +23,7 @@
 
 //namespace LucidDesk.Manager
 //{
-//    public  class ServerNetworkManager
+//    public class ServerNetworkManager
 //    {
 
 //        public event EventHandler OnclickServerStart;
@@ -36,7 +36,7 @@
 //        private const uint KEYEVENTF_KEYUP = 0x0002;
 //        private const uint MOUSEEVENTF_RIGHTDOWN = 0x08;
 //        private const uint MOUSEEVENTF_RIGHTUP = 0x10;
-//        private bool  isCtrlpressed = false;
+//        private bool isCtrlpressed = false;
 //        public bool isStarted = false;
 
 //        [DllImport("user32.dll", SetLastError = true)]
@@ -75,15 +75,15 @@
 //                    }
 //                    catch (Exception ex)
 //                    {
-//                            MessageBox.Show("Error accepting client: " + ex.Message);
-//                            Application.Current.Shutdown();
+//                        MessageBox.Show("Error accepting client: " + ex.Message);
+//                        Application.Current.Shutdown();
 //                    }
 //                }
 //            }
 //            catch (Exception ex)
 //            {
-//                    MessageBox.Show("Server stopped: " + ex.Message);
-//                    Application.Current.Shutdown();
+//                MessageBox.Show("Server stopped: " + ex.Message);
+//                Application.Current.Shutdown();
 //            }
 
 //        }
@@ -101,7 +101,7 @@
 //                        string eventMessage = reader.ReadLine();
 //                        if (eventMessage != null)
 //                        {
-//                                HandleRemoteEvent(eventMessage);
+//                            HandleRemoteEvent(eventMessage);
 //                        }
 //                        else
 //                        {  // If no data, the client might have disconnected
@@ -165,7 +165,7 @@
 //                }
 //                catch (Exception ex)
 //                {
-//                        MessageBox.Show("Error capturing screen: " + ex.Message);
+//                    MessageBox.Show("Error capturing screen: " + ex.Message);
 //                }
 //                Thread.Sleep(3); // Capture the screen every 100ms
 //            }
@@ -246,88 +246,106 @@
 //            else if (eventType == "ClipboardText")
 //            {
 //                string clipboardText = parts[1];
-//                    Clipboard.SetText(clipboardText);
+//                Clipboard.SetText(clipboardText);
 //                return;
 //            }
 
-//                // Calculate the scale factor based on the client's screen resolution
-//                double scaleX = SystemParameters.PrimaryScreenWidth / clientScreenWidth;
-//                double scaleY = SystemParameters.PrimaryScreenHeight / clientScreenHeight;
+//            // Calculate the scale factor based on the client's screen resolution
+//            double scaleX = SystemParameters.PrimaryScreenWidth / clientScreenWidth;
+//            double scaleY = SystemParameters.PrimaryScreenHeight / clientScreenHeight;
 
-//                // Translate the image coordinates to screen coordinates
-//                int screenX = (int)(x * scaleX);
-//                int screenY = (int)(y * scaleY);
+//            // Translate the image coordinates to screen coordinates
+//            int screenX = (int)(x * scaleX);
+//            int screenY = (int)(y * scaleY);
 
-//                // Update the cursor position
-//                System.Drawing.Point screenPos = new System.Drawing.Point(screenX, screenY);
+//            // Update the cursor position
+//            System.Drawing.Point screenPos = new System.Drawing.Point(screenX, screenY);
 
-//                switch (eventType)
-//                {
-//                    case "MouseDown":
-//                        System.Windows.Forms.Cursor.Position = screenPos;
-//                        mouse_event(MOUSEEVENTF_LEFTDOWN, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
-//                        break;
-//                    case "MouseMove":
-//                        System.Windows.Forms.Cursor.Position = screenPos;
-//                        break;
-//                    case "MouseUp":
-//                        System.Windows.Forms.Cursor.Position = screenPos;
-//                        mouse_event(MOUSEEVENTF_LEFTUP, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
-//                        break;
-//                    case "MouseRightDown":
-//                        System.Windows.Forms.Cursor.Position = screenPos;
-//                        mouse_event(MOUSEEVENTF_RIGHTDOWN, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
-//                        break;
-//                    case "MouseRightUp":
-//                        System.Windows.Forms.Cursor.Position = screenPos;
-//                        mouse_event(MOUSEEVENTF_RIGHTUP, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
-//                        break;
-//                    case "KeyDown":
-//                        keybd_event(keyCode, 0, KEYEVENTF_KEYDOWN, UIntPtr.Zero);
-//                        break;
-//                    case "KeyUp":
-//                        keybd_event(keyCode, 0, KEYEVENTF_KEYUP, UIntPtr.Zero);
-//                        break;
-//                }
+//            switch (eventType)
+//            {
+//                case "MouseDown":
+//                    System.Windows.Forms.Cursor.Position = screenPos;
+//                    mouse_event(MOUSEEVENTF_LEFTDOWN, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+//                    break;
+//                case "MouseMove":
+//                    System.Windows.Forms.Cursor.Position = screenPos;
+//                    break;
+//                case "MouseUp":
+//                    System.Windows.Forms.Cursor.Position = screenPos;
+//                    mouse_event(MOUSEEVENTF_LEFTUP, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+//                    break;
+//                case "MouseRightDown":
+//                    System.Windows.Forms.Cursor.Position = screenPos;
+//                    mouse_event(MOUSEEVENTF_RIGHTDOWN, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+//                    break;
+//                case "MouseRightUp":
+//                    System.Windows.Forms.Cursor.Position = screenPos;
+//                    mouse_event(MOUSEEVENTF_RIGHTUP, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+//                    break;
+//                case "KeyDown":
+//                    keybd_event(keyCode, 0, KEYEVENTF_KEYDOWN, UIntPtr.Zero);
+//                    break;
+//                case "KeyUp":
+//                    keybd_event(keyCode, 0, KEYEVENTF_KEYUP, UIntPtr.Zero);
+//                    break;
+//            }
 //        }
 //    }
 //}
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using NAudio.Wave;
+using System.Windows.Threading;
+using System.Runtime.Serialization.Formatters.Binary;
+using Newtonsoft.Json;
+using LucidDesk.Manager.Classes;
 
 namespace LucidDesk.Manager
 {
-    public class ServerNetworkManager
+   
+    public partial class ServerNetworkManager
     {
-        public Socket Socket;
-        public int port=8000;
-        private EndPoint EndPoint;
-        private byte[] buffer;
+       
         public event EventHandler OnclickServerStart;
-        private UdpClient udpServer;
-        private List<IPEndPoint> clients = new List<IPEndPoint>();
-        private CancellationTokenSource cts = new CancellationTokenSource();
+        public event EventHandler<DeskConnectionInformation> InviteRequestReceivedInvoke;
+        private TcpListener _tcpListener;
+        private CancellationTokenSource _cancellationTokenSource;
+        private Thread _listenerThread;
+        private CancellationTokenSource cancellationTokenSource;
+        private TcpListener server;
+        private Thread listenerThread;
+        private List<TcpClient> clients = new List<TcpClient>();
         private const uint MOUSEEVENTF_LEFTDOWN = 0x02;
         private const uint MOUSEEVENTF_LEFTUP = 0x04;
         private const uint KEYEVENTF_KEYDOWN = 0x0000;
         private const uint KEYEVENTF_KEYUP = 0x0002;
         private const uint MOUSEEVENTF_RIGHTDOWN = 0x08;
         private const uint MOUSEEVENTF_RIGHTUP = 0x10;
-        private bool isCtrlpressed = false;
-        public bool isStarted = false;
+        private const uint MOUSEEVENTF_WHEEL = 0x0800;
+        private const uint MOUSEEVENTF_HWHEEL = 0x01000;
+        public bool isStarted = false, isMouseAcess, isKeyboardAcess, isAudioAcess, isClipboardAcess;
+        private byte VK_TAB = 0x09, VK_MENU = 0x12;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, IntPtr dwExtraInfo);
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
@@ -335,54 +353,236 @@ namespace LucidDesk.Manager
         [DllImport("user32.dll", SetLastError = true)]
         private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);
 
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int ToAscii(byte uVirtKey, byte uScanCode, byte[] pKeyState, out byte pChar, uint wFlags);
 
-        public void StartListening()
+        public  void StartServer()
         {
-            udpServer = new UdpClient(8000);
-            try
+            ReceiveInviteRequest();
+
+            if (isStarted) return;
+            isAudioAcess = true;
+            isKeyboardAcess = true;
+            isClipboardAcess = true;
+            isMouseAcess = true;
+            cancellationTokenSource = new CancellationTokenSource();
+            listenerThread = new Thread(new ThreadStart(StartListening))
             {
-                OnclickServerStart?.Invoke(this, EventArgs.Empty);
-                Task.Run(() => ListenForClients(cts.Token), cts.Token);
-                Task.Run(() => CaptureScreen(cts.Token), cts.Token);
-                isStarted = true;
-            }
-            catch (Exception ex)
+                IsBackground = true
+            };
+            listenerThread.Start();
+            isStarted = true;
+            if (isAudioAcess)
             {
-                System.Windows.MessageBox.Show("Server stopped: " + ex.Message);
-                System.Windows.Application.Current.Shutdown();
+                _cancellationTokenSource = new CancellationTokenSource();
+                _tcpListener = new TcpListener(IPAddress.Any, 12345);
+                _tcpListener.Start();
+                _listenerThread = new Thread(() => AcceptClients(_cancellationTokenSource.Token));
+                _listenerThread.Start();
             }
         }
 
-        private async Task ListenForClients(CancellationToken token)
+        private void AcceptClients(CancellationToken cancellationToken)
         {
-            while (!token.IsCancellationRequested)
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                var client = _tcpListener.AcceptTcpClient();
+                var clientThread = new Thread(() => HandleClient(client, cancellationToken));
+                clientThread.Start();
+            }
+        }
+
+        private void HandleClient(TcpClient client, CancellationToken cancellationToken)
+        {
+            for (int n = 0; n < WaveInEvent.DeviceCount; n++)
+            {
+                var capabilities = WaveInEvent.GetCapabilities(n);
+                Console.WriteLine($"Device {n}: {capabilities.ProductName}");
+            }
+            using (var networkStream = client.GetStream())
+            {
+                var waveIn = new WaveInEvent();
+                try
+                {
+                    waveIn = new WaveInEvent
+                    {
+                        WaveFormat = new WaveFormat(44100, 16, 2)
+                    };
+
+                    waveIn.DataAvailable += (s, a) =>
+                    {
+                        networkStream.Write(a.Buffer, 0, a.BytesRecorded);
+                    };
+
+                    waveIn.StartRecording();
+                }
+                catch (NAudio.MmException ex)
+                {
+                    MessageBox.Show("Error initializing audio input device: " + ex.Message);
+                }
+
+
+                try
+                {
+                    while (!cancellationToken.IsCancellationRequested)
+                    {
+                        Thread.Sleep(100);
+                    }
+                }
+                finally
+                {
+                    waveIn.StopRecording();
+                }
+            }
+
+        }
+
+        private void SendClipboardText(TcpClient client)
+        {
+            //NetworkStream stream = client.GetStream();
+            //while (true)
+            //{
+            //    string clipboardText = GetClipboardText();
+            //    if (!string.IsNullOrEmpty(clipboardText))
+            //    {
+            //        byte[] data = Encoding.UTF8.GetBytes(clipboardText);
+            //        stream.Write(data, 0, data.Length);
+            //    }
+            //    Thread.Sleep(100);
+            //}
+        }
+
+        private string GetClipboardText()
+        {
+            string text = string.Empty;
+            Thread startThread = new Thread(
+            delegate ()
             {
                 try
                 {
-                    UdpReceiveResult result = await udpServer.ReceiveAsync();
-                    IPEndPoint clientEndPoint = result.RemoteEndPoint;
-                    byte[] data = result.Buffer;
-
-                    lock (clients)
-                    {
-                        if (!clients.Contains(clientEndPoint))
-                        {
-                            clients.Add(clientEndPoint);
-                        }
-                    }
-
-                    string eventMessage = Encoding.UTF8.GetString(data);
-                    HandleRemoteEvent(eventMessage);
+                    text = Clipboard.GetText();
                 }
                 catch (Exception ex)
                 {
-                    System.Windows.MessageBox.Show("Error receiving data: " + ex.Message);
+                    MessageBox.Show("Error accessing clipboard: " + ex.Message);
+                }
+            });
+            startThread.SetApartmentState(ApartmentState.STA);
+            startThread.Start();
+            startThread.Join();
+            return text;
+        }
+
+        private void StartListening()
+        {
+            server = new TcpListener(IPAddress.Any, 8000);
+            try
+            {
+                server.Start();
+                MessageBox.Show("Server started");
+
+                Task.Run(() => CaptureScreen(cancellationTokenSource.Token));
+
+                while (!cancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    try
+                    {
+                        TcpClient client = server.AcceptTcpClient();
+                        lock (clients)
+                        {
+                            clients.Add(client);
+                        }
+                        Thread clientThread = new Thread(HandleClient)
+                        {
+                            IsBackground = true
+                        };
+                        clientThread.Start(client);
+                    }
+                    catch (Exception ex)
+                    {
+                       
+                            MessageBox.Show("Error accepting client: " + ex.Message);
+                            StopServer();
+                            Application.Current.Shutdown();
+                      
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+               
+                    MessageBox.Show("Server stopped: " + ex.Message);
+                    StopServer();
+                    Application.Current.Shutdown();
+               
+            }
+        }
+
+        private void HandleClient(object obj)
+        {
+            TcpClient client = (TcpClient)obj;
+            NetworkStream networkStream = client.GetStream();
+            Thread sendThread = new Thread(() => SendClipboardText(client))
+            {
+                IsBackground = true
+            };
+            sendThread.Start();
+            try
+            {
+                using (StreamReader reader = new StreamReader(networkStream))
+                {
+                    while (true)
+                    {
+                        string eventMessage = reader.ReadLine();
+                        if (eventMessage != null)
+                        {
+                          
+                                HandleRemoteEvent(eventMessage);
+                           
+                        }
+                        else
+                        {
+                            // If no data, the client might have disconnected
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (IOException ex) when (ex.InnerException is SocketException socketEx &&
+                                        (socketEx.SocketErrorCode == SocketError.ConnectionReset ||
+                                         socketEx.SocketErrorCode == SocketError.ConnectionAborted))
+            {
+                StopServer();
+                Application.Current.Shutdown();
+            }
+            finally
+            {
+                lock (clients)
+                {
+                    clients.Remove(client);
+                }
+                client.Close();
+            }
+        }
+        private void ReceiveInviteRequest()
+        {
+            TcpListener listener = new TcpListener(IPAddress.Any, 5000);
+            listener.Start();
+            Console.WriteLine("Server started...");
+
+            while (true)
+            {
+                using (TcpClient client = listener.AcceptTcpClient())
+                using (NetworkStream stream = client.GetStream())
+                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+                {
+                    string json = reader.ReadToEnd();
+                    DeskConnectionInformation deskConnectionInformation = JsonConvert.DeserializeObject<DeskConnectionInformation>(json);
+                    InviteRequestReceivedInvoke?.Invoke(this, deskConnectionInformation);
                 }
             }
         }
 
+
+       
         private void CaptureScreen(CancellationToken token)
         {
             while (!token.IsCancellationRequested)
@@ -404,15 +604,15 @@ namespace LucidDesk.Manager
                             // Send the image data to all connected clients
                             lock (clients)
                             {
-                                foreach (IPEndPoint client in clients.ToList())
+                                foreach (TcpClient client in clients.ToList())
                                 {
-                                    try
+                                    if (client.Connected)
                                     {
-                                        udpServer.Send(imageData, imageData.Length, client);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        System.Windows.MessageBox.Show("Error sending image data to client: " + ex.Message);
+                                        NetworkStream stream = client.GetStream();
+                                        BinaryWriter writer = new BinaryWriter(stream);
+                                        writer.Write(imageData.Length);
+                                        writer.Write(imageData);
+                                        writer.Flush();
                                     }
                                 }
                             }
@@ -421,9 +621,11 @@ namespace LucidDesk.Manager
                 }
                 catch (Exception ex)
                 {
-                    System.Windows.MessageBox.Show("Error capturing screen: " + ex.Message);
+                   
+                        MessageBox.Show("Error capturing screen: " + ex.Message);
+                  
                 }
-                Thread.Sleep(100); // Capture the screen every 100ms
+                //Thread.Sleep(3); // Capture the screen every 100ms
             }
         }
 
@@ -437,38 +639,54 @@ namespace LucidDesk.Manager
 
         private void StopServer()
         {
-            cts.Cancel();
             lock (clients)
             {
+                foreach (var client in clients)
+                {
+                    client.Close();
+                }
                 clients.Clear();
             }
-            udpServer.Close();
+            server.Stop();
+            listenerThread.Join();
             isStarted = false;
+            _cancellationTokenSource.Cancel();
+            _tcpListener.Stop();
+            _listenerThread.Join();
         }
 
         private void SendClipboard()
         {
             lock (clients)
             {
-                foreach (IPEndPoint client in clients.ToList())
+                foreach (var client in clients.ToList())
                 {
-                    if (System.Windows.Clipboard.ContainsText())
+                    if (client.Connected)
                     {
-                        string clipboardText = System.Windows.Clipboard.GetText();
-                        byte[] clipboardData = Encoding.UTF8.GetBytes($"ClipboardText:{clipboardText}");
-                        udpServer.Send(clipboardData, clipboardData.Length, client);
+                        NetworkStream stream = client.GetStream();
+                        StreamWriter writer = new StreamWriter(stream);
+
+                        if (Clipboard.ContainsText())
+                        {
+                            string clipboardText = Clipboard.GetText();
+                            writer.WriteLine($"ClipboardText:{clipboardText}");
+                            writer.Flush();
+                        }
+                        // You can handle other clipboard content types (e.g., images) similarly
                     }
                 }
             }
         }
 
-        private void HandleRemoteEvent(string eventMessage)
+
+        private void HandleRemoteEvent(string eventMessage) //"MouseDown:223.777777777778,232:1920,108j0" //"KeyDown:0,0:1920:1080:68"
         {
             string[] parts = eventMessage.Split(':');
             string eventType = parts[0];
+            double delta = 0;
             byte keyCode = 0;
             double clientScreenWidth = 0, clientScreenHeight = 0, x = 0, y = 0;
-            if (eventType.Contains("Mouse"))
+            if (eventType.Contains("Mouse") && isMouseAcess)
             {
                 string[] coords = parts[1].Split(',');
                 x = double.Parse(coords[0]);
@@ -476,63 +694,78 @@ namespace LucidDesk.Manager
                 string[] screenSize = parts[2].Split(',');
                 clientScreenWidth = double.Parse(screenSize[0]);
                 clientScreenHeight = double.Parse(screenSize[1]);
+                double scaleX = SystemParameters.PrimaryScreenWidth / clientScreenWidth;
+                double scaleY = SystemParameters.PrimaryScreenHeight / clientScreenHeight;
+                if (eventType.Contains("Scroll"))
+                {
+                    delta = double.Parse(parts[3]);
+                }
+                int screenX = (int)(x * scaleX);
+                int screenY = (int)(y * scaleY);
+                System.Drawing.Point screenPos = new System.Drawing.Point(screenX, screenY);
+
+                switch (eventType)
+                {
+                    case "MouseDown":
+                        System.Windows.Forms.Cursor.Position = screenPos;
+                        mouse_event(MOUSEEVENTF_LEFTDOWN, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+                        break;
+                    case "MouseMove":
+                        System.Windows.Forms.Cursor.Position = screenPos;
+                        break;
+                    case "MouseUp":
+                        System.Windows.Forms.Cursor.Position = screenPos;
+                        mouse_event(MOUSEEVENTF_LEFTUP, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+                        break;
+                    case "MouseRightDown":
+                        System.Windows.Forms.Cursor.Position = screenPos;
+                        mouse_event(MOUSEEVENTF_RIGHTDOWN, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+                        break;
+                    case "MouseRightUp":
+                        System.Windows.Forms.Cursor.Position = screenPos;
+                        mouse_event(MOUSEEVENTF_RIGHTUP, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+                        break;
+                    case "MouseScroll":
+                        mouse_event(MOUSEEVENTF_WHEEL, (uint)screenX, (uint)screenY, (uint)delta, UIntPtr.Zero);
+                        break;
+                }
             }
-            else if (eventType.Contains("Key"))
+            else if (eventType.Contains("Key") && isKeyboardAcess)
             {
                 keyCode = byte.Parse(parts[4]);
                 string[] coords = parts[1].Split(',');
                 x = double.Parse(coords[0]);
                 y = double.Parse(coords[1]);
-                clientScreenWidth = double.Parse(parts[2]);
-                clientScreenHeight = double.Parse(parts[3]);
+                if (eventType == "KeyDown") keybd_event(keyCode, 0, KEYEVENTF_KEYDOWN, UIntPtr.Zero);
+                else if (eventType == "KeyUp") keybd_event(keyCode, 0, KEYEVENTF_KEYUP, UIntPtr.Zero);
             }
             else if (eventType == "ClipboardText")
             {
                 string clipboardText = parts[1];
-                System.Windows.Clipboard.SetText(clipboardText);
+                Clipboard.SetText(clipboardText);
                 return;
             }
-
-            // Calculate the scale factor based on the client's screen resolution
-            double scaleX = SystemParameters.PrimaryScreenWidth / clientScreenWidth;
-            double scaleY = SystemParameters.PrimaryScreenHeight / clientScreenHeight;
-
-            // Translate the image coordinates to screen coordinates
-            int screenX = (int)(x * scaleX);
-            int screenY = (int)(y * scaleY);
-
-            // Update the cursor position
-            System.Drawing.Point screenPos = new System.Drawing.Point(screenX, screenY);
-
+            else if (eventType == "ClipBoardOpen" && isClipboardAcess)
+            {
+                keybd_event(0x5B, 0, 0, IntPtr.Zero);
+                keybd_event(0x56, 0, 0, IntPtr.Zero);
+                keybd_event(0x56, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
+                keybd_event(0x5B, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
+            }
             switch (eventType)
             {
-                case "MouseDown":
-                    System.Windows.Forms.Cursor.Position = screenPos;
-                    mouse_event(MOUSEEVENTF_LEFTDOWN, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+                case "AltTab":
+                    keybd_event(VK_MENU, 0, 0, IntPtr.Zero);
+                    keybd_event(VK_TAB, 0, 0, IntPtr.Zero);
                     break;
-                case "MouseMove":
-                    System.Windows.Forms.Cursor.Position = screenPos;
-                    break;
-                case "MouseUp":
-                    System.Windows.Forms.Cursor.Position = screenPos;
-                    mouse_event(MOUSEEVENTF_LEFTUP, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
-                    break;
-                case "MouseRightDown":
-                    System.Windows.Forms.Cursor.Position = screenPos;
-                    mouse_event(MOUSEEVENTF_RIGHTDOWN, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
-                    break;
-                case "MouseRightUp":
-                    System.Windows.Forms.Cursor.Position = screenPos;
-                    mouse_event(MOUSEEVENTF_RIGHTUP, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
-                    break;
-                case "KeyDown":
-                    keybd_event(keyCode, 0, KEYEVENTF_KEYDOWN, UIntPtr.Zero);
-                    break;
-                case "KeyUp":
-                    keybd_event(keyCode, 0, KEYEVENTF_KEYUP, UIntPtr.Zero);
+                case "WindowKey":
+                    keybd_event(0x5B, 0, 0, IntPtr.Zero);
+                    keybd_event(0x5B, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
                     break;
             }
         }
     }
 }
+
+
 

@@ -1,6 +1,5 @@
 ﻿
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\App.xaml;;
-FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\ConnectWindow.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\InviteAcceptWindow.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\InviteWindow.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\loginWindow.xaml;;
@@ -17,4 +16,5 @@ FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\DeskProfile.xa
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\PageSelectContextMenu.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\SearchBoxControl.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\SessionHeaderControl.xaml;;
+FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\WhileSearchDeskProfileShowControl.xaml;;
 

@@ -1,5 +1,6 @@
 ﻿using LucidDesk.Manager;
 using LucidDesk.Manager.Classes;
+using LucidDesk.Manager.Database;
 using LucidDesk.Manager.Enum;
 using System;
 using System.Collections.Generic;
@@ -70,7 +71,7 @@ namespace LucidDesk
 
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
 
         private void KeyboardAccessCheckBoxClick(object sender, RoutedEventArgs e)
@@ -95,7 +96,7 @@ namespace LucidDesk
 
         private void InviteButtonClick(object sender, RoutedEventArgs e)
         {
-            OnClickInviteButton?.Invoke(this, new DeskConnectionInformation() { AccessType = (AccessType)Enum.Parse(typeof(AccessType), AccessTypeCombobox.SelectedItem.ToString()), Desk = this.Desk });
+            OnClickInviteButton?.Invoke(this, new DeskConnectionInformation() { AccessType = (AccessType)Enum.Parse(typeof(AccessType),AccessTypeCombobox.SelectedItem.ToString()), AudioAccess=(bool)AudioAccessCheckBox.IsChecked, ClipboardAccess= (bool)ClipboardAccessCheckBox.IsChecked, KeyboardAccess = (bool)KeyboardAccessCheckBox.IsChecked,MouseAccess = (bool)MouseAccessCheckBox.IsChecked ,SenderDesk= DeskProfileManager.UserDesk, ReceiverDesk = this.Desk, });
         }
 
         private void AccessTypeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)

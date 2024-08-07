@@ -31,18 +31,23 @@ namespace LucidDesk.UserControls
             set
             {
                 desk = value;
-                if (desk.ProfileImage == null)
-                {
-                    DeskUserProfileImage.Image = ColorFeatures.CreateBitmapImageWithCharacter(90, 90, ColorFeatures.GetColorBasedOnFirstChar(DeskUserName = desk.ProfileName), desk.ProfileName[0], "Arial", 17, Colors.White);
+                try{
+                    if (desk.ProfileImage == null)
+                    {
+                        DeskUserProfileImage.Image = ColorFeatures.CreateBitmapImageWithCharacter(90, 90, ColorFeatures.GetColorBasedOnFirstChar(DeskUserName = desk.ProfileName), desk.ProfileName[0], "Arial", 17, Colors.White);
+                    }
+                    else
+                        DeskUserProfileImage.Image = desk.ProfileImage;
+                    IsFavorite = desk.IsFavorite;
+                    DeskUserName = desk.ProfileName;
+                    PCName = desk.PcName;
+                    DeskOSName = desk.OsName;
+                    DeskId = "" + desk.Id;
+                    DesktopWallPaper.Image = desk.DesktopImage;
                 }
-                else
-                    DeskUserProfileImage.Image = desk.ProfileImage;
-                IsFavorite = desk.IsFavorite;
-                DeskUserName = desk.ProfileName;
-                PCName = desk.PcName;
-                DeskOSName = desk.OsName;
-                DeskId = "" + desk.Id;
-                DesktopWallPaper.Image = desk.DesktopImage;
+                 catch{
+
+                 }
             }
             get
             {

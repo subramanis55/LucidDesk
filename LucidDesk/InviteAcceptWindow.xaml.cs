@@ -23,6 +23,7 @@ namespace LucidDesk
     public partial class InviteAcceptWindow : Window
     {
         private Desk desk;
+        public event EventHandler<DeskConnectionInformation> OnClickGetStatus;
 
         private DeskConnectionInformation deskConnectionInformation;
         public Desk Desk
@@ -67,13 +68,16 @@ namespace LucidDesk
             AccessTypeCombobox.ItemsSource = Enum.GetNames(typeof(AccessType));
             DeskConnectionInformation = deskConnectionInformation;
             AccessTypeCombobox.SelectedItem = deskConnectionInformation.AccessType.ToString();
-            Desk = deskConnectionInformation.Desk;
+            Desk = deskConnectionInformation.SenderDesk;
 
         }
 
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
+            DeskConnectionInformation.InviteStatus = false;
+            OnClickGetStatus?.Invoke(this, DeskConnectionInformation);
             this.Close();
+
         }
 
         private void MaximizeButtonClick(object sender, RoutedEventArgs e)
@@ -90,7 +94,8 @@ namespace LucidDesk
 
         private void AcceptClick(object sender, RoutedEventArgs e)
         {
-
+            DeskConnectionInformation.InviteStatus = true;
+            OnClickGetStatus?.Invoke(this, DeskConnectionInformation);
         }
 
        
@@ -136,6 +141,12 @@ namespace LucidDesk
                 this.DragMove();
             }
             e.Handled = true;
+        }
+
+        private void RejectButtonClick(object sender, RoutedEventArgs e)
+        {
+            DeskConnectionInformation.InviteStatus = false;
+            OnClickGetStatus?.Invoke(this, DeskConnectionInformation);
         }
     }
 }
