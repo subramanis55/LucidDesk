@@ -267,10 +267,21 @@ namespace LucidDesk.Manager
 
     public partial class ClientNetworkManager
     {
+        public DeskConnectionInformation deskConnectionInformation;
+        public DeskConnectionInformation DeskConnectionInformation {
+            set{
+                deskConnectionInformation = value;
+                ClientIpaddress = deskConnectionInformation.ReceiverDesk.IPAddress;
+            }
+            get{
+                return deskConnectionInformation;
+            }
+        }
 
         public event EventHandler<BitmapImage> ScreenShareUpdateInvoke;
         public event EventHandler ConnectedToSeverInvoke;
         public event EventHandler DisConnectedToSeverInvoke;
+        public event EventHandler ConnectionEstabishFailInvoke;
         public ClientNetworkManager()
         {
             _proc = HookCallback;
@@ -396,14 +407,20 @@ namespace LucidDesk.Manager
 
         public void InviteRequestSent(DeskConnectionInformation deskConnectionInformation)
         {
-            using (TcpClient client = new TcpClient(ClientIpaddress, 5000))
-            using (NetworkStream stream = client.GetStream())
-            using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
-            {
-                string json = JsonConvert.SerializeObject(deskConnectionInformation);
-                writer.Write(json);
-                writer.Flush();
+            try{
+                using (TcpClient client = new TcpClient(ClientIpaddress, 5000))
+                using (NetworkStream stream = client.GetStream())
+                using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
+                {
+                    string json = JsonConvert.SerializeObject(deskConnectionInformation);
+                    writer.Write(json);
+                    writer.Flush();
+                }
             }
+            catch{
+                ConnectionEstabishFailInvoke?.Invoke(this, EventArgs.Empty);
+            }
+           
         }
 
         public async Task ConnectToServer()
@@ -480,7 +497,7 @@ namespace LucidDesk.Manager
 
         public void SendMouseScrollEvent(string eventType, double x, double y, double delta = 0)
         {
-            if (client != null && client.Connected)
+            if (client != null && client.Connected&& deskConnectionInformation.MouseAccess)
             {
                 NetworkStream stream = client.GetStream();
                 StreamWriter writer = new StreamWriter(stream);
@@ -499,7 +516,7 @@ namespace LucidDesk.Manager
 
         public void SendMouseEvent(Point position, string eventType, double ScreenImageActualWidth, double ScreenImageActualHeight)
         {
-            if (client != null && client.Connected)
+            if (client != null && client.Connected&& deskConnectionInformation.MouseAccess)
             {
                 NetworkStream stream = client.GetStream();
                 StreamWriter writer = new StreamWriter(stream);
@@ -517,7 +534,7 @@ namespace LucidDesk.Manager
 
         public void SendClipboardContentToServer()
         {
-            if (client != null && client.Connected)
+            if (client != null && client.Connected && deskConnectionInformation.ClipboardAccess)
             {
                 NetworkStream stream = client.GetStream();
                 StreamWriter writer = new StreamWriter(stream);
@@ -551,25 +568,31 @@ namespace LucidDesk.Manager
 
         public void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.V && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-            {
-                SendClipboardContentToServer();
+        if(deskConnectionInformation.KeyboardAccess){
+                if (e.Key == Key.V && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                {
+                    SendClipboardContentToServer();
+                }
+                if (e.Key == Key.C && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                {
+                    //  receiveThread = new Thread(ReceiveClipboard);
+                }
+                SendKeyEvent(e.Key, "KeyDown");
             }
-            if (e.Key == Key.C && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-            {
-                //  receiveThread = new Thread(ReceiveClipboard);
-            }
-            SendKeyEvent(e.Key, "KeyDown");
+           
         }
 
         public void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            SendKeyEvent(e.Key, "KeyUp");
+            if (deskConnectionInformation.KeyboardAccess)
+            {
+                SendKeyEvent(e.Key, "KeyUp");
+            }
         }
 
         public void SendKeyEvent(Key key, string eventType)
         {
-            if (client != null && client.Connected)
+            if (client != null && client.Connected&& deskConnectionInformation.KeyboardAccess)
             {
                 NetworkStream stream = client.GetStream();
                 StreamWriter writer = new StreamWriter(stream);
@@ -589,7 +612,7 @@ namespace LucidDesk.Manager
 
         public void SendMouseRightEvent(Point position, string eventType, double ScreenImageActualWidth, double ScreenImageActualHeight)
         {
-            if (client != null && client.Connected)
+            if (client != null && client.Connected&& deskConnectionInformation.MouseAccess)
             {
                 NetworkStream stream = client.GetStream();
                 StreamWriter writer = new StreamWriter(stream);

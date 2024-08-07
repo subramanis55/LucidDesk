@@ -317,6 +317,7 @@ using System.Windows.Threading;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using LucidDesk.Manager.Classes;
+using LucidDesk.Manager.Database;
 
 namespace LucidDesk.Manager
 {
@@ -326,12 +327,14 @@ namespace LucidDesk.Manager
        
         public event EventHandler OnclickServerStart;
         public event EventHandler<DeskConnectionInformation> InviteRequestReceivedInvoke;
+        public event EventHandler<DeskConnectionInformation> InviteRequestStatusInvoke;
         private TcpListener _tcpListener;
         private CancellationTokenSource _cancellationTokenSource;
         private Thread _listenerThread;
         private CancellationTokenSource cancellationTokenSource;
         private TcpListener server;
         private Thread listenerThread;
+        Dictionary<string,DeskConnectionInformation> DeskConnectionInformationList = new Dictionary<string, DeskConnectionInformation>();
         private List<TcpClient> clients = new List<TcpClient>();
         private const uint MOUSEEVENTF_LEFTDOWN = 0x02;
         private const uint MOUSEEVENTF_LEFTUP = 0x04;
@@ -356,7 +359,12 @@ namespace LucidDesk.Manager
 
         public  void StartServer()
         {
-            ReceiveInviteRequest();
+            Thread listenerThread1 = new Thread(new ThreadStart(ReceiveInviteRequest))
+            {
+                IsBackground = true
+            };
+            listenerThread1.Start();
+           
 
             if (isStarted) return;
             isAudioAcess = true;
@@ -508,11 +516,9 @@ namespace LucidDesk.Manager
             }
             catch (Exception ex)
             {
-               
                     MessageBox.Show("Server stopped: " + ex.Message);
                     StopServer();
                     Application.Current.Shutdown();
-               
             }
         }
 
@@ -566,7 +572,7 @@ namespace LucidDesk.Manager
         {
             TcpListener listener = new TcpListener(IPAddress.Any, 5000);
             listener.Start();
-            Console.WriteLine("Server started...");
+            // Console.WriteLine("Server started...");
 
             while (true)
             {
@@ -576,7 +582,12 @@ namespace LucidDesk.Manager
                 {
                     string json = reader.ReadToEnd();
                     DeskConnectionInformation deskConnectionInformation = JsonConvert.DeserializeObject<DeskConnectionInformation>(json);
+                    if (deskConnectionInformation.ReceiverDesk.MacAddress== DeskProfileManager.UserDesk.MacAddress)
                     InviteRequestReceivedInvoke?.Invoke(this, deskConnectionInformation);
+                    if(deskConnectionInformation.SenderDesk.MacAddress == DeskProfileManager.UserDesk.MacAddress)
+                    {
+                        InviteRequestStatusInvoke?.Invoke(this, deskConnectionInformation);
+                    }
                 }
             }
         }

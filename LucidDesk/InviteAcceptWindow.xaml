@@ -20,7 +20,7 @@
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
             <Grid  Grid.Column="0">
-                <TextBlock FontSize="16" Padding="15" FontWeight="DemiBold" Foreground="{StaticResource MainColorBrush}" VerticalAlignment="Center" HorizontalAlignment="Left">Desk</TextBlock>
+                <TextBlock FontSize="16" Padding="15" FontWeight="DemiBold" Foreground="{StaticResource MainColorBrush}" VerticalAlignment="Center" HorizontalAlignment="Left">Request</TextBlock>
             </Grid>
             <Button Grid.Column="1" Click="MinimizeButtonClick" Style="{StaticResource RectangleButton}"  >
                 <Button.ToolTip>

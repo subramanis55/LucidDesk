@@ -154,6 +154,7 @@ namespace LucidDesk
             }
         }
 
+         //Invite and connect Part
         private void DeskProfileOnInviteConnect(object sender, Desk desk)
         {
 
@@ -204,16 +205,43 @@ namespace LucidDesk
             );
         }
 
-        private void InviteAcceptWindowOnClickGetStatus(object sender, DeskConnectionInformation e)
+        private void InviteAcceptWindowOnClickGetStatus(object sender, DeskConnectionInformation deskConnectionInformation)
         {
-
+           if(deskConnectionInformation.InviteStatus==true){
+                ClientNetworkManager.ClientIpaddress = deskConnectionInformation.SenderDesk.IPAddress;
+                ClientNetworkManager.DeskConnectionInformation = deskConnectionInformation;
+                if (!ClientNetworkManager.isConnected)
+                {
+                    Task.Run(() => ClientNetworkManager.ConnectToServer());
+                }
+            }
+           else
+           {
+                ClientNetworkManager.DeskConnectionInformation = deskConnectionInformation;
+                ClientNetworkManager.ClientIpaddress = deskConnectionInformation.SenderDesk.IPAddress;
+                ClientNetworkManager.InviteRequestSent(deskConnectionInformation);
+           }
         }
 
         private void InviteWindowOnClickInviteButton(object sender, DeskConnectionInformation deskConnectionInformation)
         {
-            ClientNetworkManager.ClientIpaddress = deskConnectionInformation.ReceiverDesk.IPAddress;
+            ClientNetworkManager.DeskConnectionInformation = deskConnectionInformation;
             ClientNetworkManager.InviteRequestSent(deskConnectionInformation);
             ((Window)(this)).Close();
+        }
+        private void InviteButtonClick(object sender, RoutedEventArgs e)
+        {
+            InviteWindow inviteWindow = new InviteWindow();
+            inviteWindow.OnClickInviteButton += InviteWindowOnClickInviteButton;
+            inviteWindow.ShowDialog();
+        }
+        private void ServerNetworkManagerInviteRequestStatusInvoke(object sender, DeskConnectionInformation deskConnectionInformation)
+        {
+            ClientNetworkManager.DeskConnectionInformation = deskConnectionInformation;
+            if (!ClientNetworkManager.isConnected)
+            {
+                Task.Run(() => ClientNetworkManager.ConnectToServer());
+            }
         }
 
         public void MethodSubscribe()
@@ -224,6 +252,7 @@ namespace LucidDesk
             SearchBoxControl.OnClickScreenZoom += SearchBoxControlOnClickScreenZoom;
 
             ServerNetworkManager.InviteRequestReceivedInvoke += InviteRequestArrived;
+            ServerNetworkManager.InviteRequestStatusInvoke += ServerNetworkManagerInviteRequestStatusInvoke;
 
             ClientNetworkManager.ConnectedToSeverInvoke += ClientNetworkManagerConnectedToSeverInvoke;
             ClientNetworkManager.ScreenShareUpdateInvoke += ClientNetworkManagerScreenShareUpdateInvoke;
@@ -240,6 +269,8 @@ namespace LucidDesk
             Closed += MainWindowClosed;
             SessionTabHeader.OnClickClose += SessionTabHeaderOnClickClose;
         }
+
+     
 
         private void SearchBoxControlOnClickScreenZoom(object sender, EventArgs e)
         {
@@ -303,20 +334,23 @@ namespace LucidDesk
             Dispatcher.Invoke(() =>
             {
                 MainTabControl.SelectedItem = ScreenSharePage;
-                SearchBoxControl.Text = SelectedDeskProfile.Desk.IPAddress;
+                SearchBoxControl.Text = ""+ClientNetworkManager.deskConnectionInformation.ReceiverDesk.Id;
                 SearchBoxControl.IsReadOnly = true;
                 SearchBoxControl.IsConnected = true;
                 ScreenImage.Focus();
                 SessionTabHeader.IsCloseButtonVisible = true;
-                SessionTabHeader.Header = SelectedDeskProfile.DeskId;
+                SessionTabHeader.Header = "" + ClientNetworkManager.deskConnectionInformation.ReceiverDesk.Id;
             });
         }
 
         private void DeskProfile1OnclickConnect(object sender, EventArgs e)
         {
             SelectedDeskProfile = (DeskProfile)(sender);
+            ClientNetworkManager.DeskConnectionInformation = new DeskConnectionInformation() { AccessType = AccessType.FullAccess, AudioAccess = true, ClipboardAccess = true, KeyboardAccess = true, MouseAccess = true, SenderDesk = DeskProfileManager.UserDesk, ReceiverDesk = SelectedDeskProfile.Desk };
             ClientNetworkManager.ClientIpaddress = SystemInformationManager.GetPcIPAddress(SelectedDeskProfile.Desk.HostName);
-            // ClientNetworkManager.ClientIpaddress = "192.168.3.25";
+            if(SelectedDeskProfile.Desk.IPAddress!= ClientNetworkManager.ClientIpaddress) {
+                SelectedDeskProfile.Desk.IPAddress = ClientNetworkManager.ClientIpaddress;
+            }
             if (!ClientNetworkManager.isConnected)
             {
                 Task.Run(() => ClientNetworkManager.ConnectToServer());
@@ -417,9 +451,9 @@ namespace LucidDesk
             //ShowInTaskbar = false;
             //ServerNetworkManager.StartServer;
             ServerNetworkManager.StartServer();
-
             // ServerNetworkManager.isStarted = true;
-        }
+       
+       }
 
 
         //Screen Share Client Details
@@ -542,11 +576,7 @@ namespace LucidDesk
         }
 
 
-        private void InviteButtonClick(object sender, RoutedEventArgs e)
-        {
-            InviteWindow inviteWindow = new InviteWindow();
-            inviteWindow.ShowDialog();
-        }
+      
 
         //Connection window
         private BitmapImage _gifImage;

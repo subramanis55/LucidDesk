@@ -122,6 +122,10 @@
     <Compile Include="UserControls\Common\CustomTextBox.xaml.cs">
       <DependentUpon>CustomTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Common\NotificationControl.xaml.cs">
+      <DependentUpon>NotificationControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Common\NotificationManager.cs" />
     <Compile Include="UserControls\CustomHeaderSwicthControl.xaml.cs">
       <DependentUpon>CustomHeaderSwicthControl.xaml</DependentUpon>
     </Compile>
@@ -192,6 +196,10 @@
     <Page Include="UserControls\Common\CustomTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Common\NotificationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\CustomHeaderSwicthControl.xaml">
       <SubType>Designer</SubType>

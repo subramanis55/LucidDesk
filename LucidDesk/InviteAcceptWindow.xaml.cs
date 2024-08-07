@@ -33,7 +33,7 @@ namespace LucidDesk
                 desk = value;
                
                 DeskUserNameTextBlock.Text = desk.ProfileName;
-                DeskIdTextBlock.Text = "" + desk.Id;
+                DeskIdTextBlock.Text = "(" + desk.Id+ ")";
                 DeskUserProfileImageComponent.Image = desk.DesktopImage;
              
             }

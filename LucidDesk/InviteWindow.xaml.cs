@@ -96,7 +96,10 @@ namespace LucidDesk
 
         private void InviteButtonClick(object sender, RoutedEventArgs e)
         {
-            OnClickInviteButton?.Invoke(this, new DeskConnectionInformation() { AccessType = (AccessType)Enum.Parse(typeof(AccessType),AccessTypeCombobox.SelectedItem.ToString()), AudioAccess=(bool)AudioAccessCheckBox.IsChecked, ClipboardAccess= (bool)ClipboardAccessCheckBox.IsChecked, KeyboardAccess = (bool)KeyboardAccessCheckBox.IsChecked,MouseAccess = (bool)MouseAccessCheckBox.IsChecked ,SenderDesk= DeskProfileManager.UserDesk, ReceiverDesk = this.Desk, });
+        if(desk!=null){
+                OnClickInviteButton?.Invoke(this, new DeskConnectionInformation() { AccessType = (AccessType)Enum.Parse(typeof(AccessType), AccessTypeCombobox.SelectedItem.ToString()), AudioAccess = (bool)AudioAccessCheckBox.IsChecked, ClipboardAccess = (bool)ClipboardAccessCheckBox.IsChecked, KeyboardAccess = (bool)KeyboardAccessCheckBox.IsChecked, MouseAccess = (bool)MouseAccessCheckBox.IsChecked, SenderDesk = DeskProfileManager.UserDesk, ReceiverDesk = this.Desk, });
+            }
+           
         }
 
         private void AccessTypeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
