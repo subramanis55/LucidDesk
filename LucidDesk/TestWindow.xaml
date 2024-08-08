@@ -8,8 +8,18 @@
         mc:Ignorable="d"
         Title="TestWindow" Height="450" Width="800">
     <Grid>
-        <Usercontrol:CustomHeaderSwicthControl Height="40" Foreground="Black"></Usercontrol:CustomHeaderSwicthControl>
-        <!--<Usercontrol:DeskProfile x:Name="myDesk" HorizontalAlignment="Left" Height="150" Margin="280,25,0,0" VerticalAlignment="Top" Width="409"/>-->
-        <Usercontrol:SearchBoxControl x:Name="aa" IsConnected="true" Height="60" Width="600" Margin="94,256,98,103"></Usercontrol:SearchBoxControl>
+      
+       
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+     
+        <StackPanel Grid.Column="1">
+            <TextBox Name="MessageTextBox" FontSize="28" Height="45" Margin="15"></TextBox>
+            <Button Height="50" Click="CreateNotificationClick" Width="100" Margin="15" Content="CreateNotification"></Button>
+            <Button Height="50" Click="CreateDeskNotificationClick" Width="100" Margin="15" Content="CreateNotification"></Button>
+            <Button Height="50" Click="Create3NotificationClick" Width="100" Margin="15" Content="CreateNotification"></Button>
+        </StackPanel>
     </Grid>
 </Window>

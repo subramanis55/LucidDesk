@@ -318,15 +318,18 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using LucidDesk.Manager.Classes;
 using LucidDesk.Manager.Database;
+using LucidDesk.Manager.Enum;
 
 namespace LucidDesk.Manager
 {
-   
+
     public partial class ServerNetworkManager
     {
-       
+
         public event EventHandler OnclickServerStart;
         public event EventHandler<DeskConnectionInformation> InviteRequestReceivedInvoke;
+        public event EventHandler<DeskConnectionInformation> ConnectRequestReceivedInvoke;
+        public event EventHandler<DeskConnectionInformation> ConnectRequestStatusInvoke;
         public event EventHandler<DeskConnectionInformation> InviteRequestStatusInvoke;
         private TcpListener _tcpListener;
         private CancellationTokenSource _cancellationTokenSource;
@@ -334,7 +337,7 @@ namespace LucidDesk.Manager
         private CancellationTokenSource cancellationTokenSource;
         private TcpListener server;
         private Thread listenerThread;
-        Dictionary<string,DeskConnectionInformation> DeskConnectionInformationList = new Dictionary<string, DeskConnectionInformation>();
+        Dictionary<string, DeskConnectionInformation> DeskConnectionInformationList = new Dictionary<string, DeskConnectionInformation>();
         private List<TcpClient> clients = new List<TcpClient>();
         private const uint MOUSEEVENTF_LEFTDOWN = 0x02;
         private const uint MOUSEEVENTF_LEFTUP = 0x04;
@@ -356,15 +359,19 @@ namespace LucidDesk.Manager
         [DllImport("user32.dll", SetLastError = true)]
         private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);
 
+        JsonSerializerSettings JsonSettings = new JsonSerializerSettings
+        {
+            DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate
+        };
 
-        public  void StartServer()
+        public void StartServer()
         {
             Thread listenerThread1 = new Thread(new ThreadStart(ReceiveInviteRequest))
             {
                 IsBackground = true
             };
             listenerThread1.Start();
-           
+
 
             if (isStarted) return;
             isAudioAcess = true;
@@ -506,19 +513,19 @@ namespace LucidDesk.Manager
                     }
                     catch (Exception ex)
                     {
-                       
-                            MessageBox.Show("Error accepting client: " + ex.Message);
-                            StopServer();
-                            Application.Current.Shutdown();
-                      
+
+                        MessageBox.Show("Error accepting client: " + ex.Message);
+                        StopServer();
+                        Application.Current.Shutdown();
+
                     }
                 }
             }
             catch (Exception ex)
             {
-                    MessageBox.Show("Server stopped: " + ex.Message);
-                    StopServer();
-                    Application.Current.Shutdown();
+                MessageBox.Show("Server stopped: " + ex.Message);
+                StopServer();
+                Application.Current.Shutdown();
             }
         }
 
@@ -540,9 +547,8 @@ namespace LucidDesk.Manager
                         string eventMessage = reader.ReadLine();
                         if (eventMessage != null)
                         {
-                          
-                                HandleRemoteEvent(eventMessage);
-                           
+
+                            HandleRemoteEvent(eventMessage);
                         }
                         else
                         {
@@ -581,19 +587,38 @@ namespace LucidDesk.Manager
                 using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
                 {
                     string json = reader.ReadToEnd();
-                    DeskConnectionInformation deskConnectionInformation = JsonConvert.DeserializeObject<DeskConnectionInformation>(json);
-                    if (deskConnectionInformation.ReceiverDesk.MacAddress== DeskProfileManager.UserDesk.MacAddress)
-                    InviteRequestReceivedInvoke?.Invoke(this, deskConnectionInformation);
-                    if(deskConnectionInformation.SenderDesk.MacAddress == DeskProfileManager.UserDesk.MacAddress)
+                    DeskConnectionInformation deskConnectionInformation = JsonConvert.DeserializeObject<DeskConnectionInformation>(json, JsonSettings);
+                    if (deskConnectionInformation.ReceiverDesk.MacAddress == DeskProfileManager.UserDesk.MacAddress  )
                     {
-                        InviteRequestStatusInvoke?.Invoke(this, deskConnectionInformation);
+                        if (deskConnectionInformation.ConnectionType == ConnectionType.Invite)
+                        {
+                            InviteRequestReceivedInvoke?.Invoke(this, deskConnectionInformation);
+                        }
+                        else if (deskConnectionInformation.ConnectionType == ConnectionType.Connect)
+                        {
+                            ConnectRequestReceivedInvoke?.Invoke(this, deskConnectionInformation);
+                        }
+                    }
+
+
+                    if (deskConnectionInformation.SenderDesk.MacAddress == DeskProfileManager.UserDesk.MacAddress)
+                    {
+
+                        if (deskConnectionInformation.ConnectionType == ConnectionType.Invite)
+                        {
+                            InviteRequestStatusInvoke?.Invoke(this, deskConnectionInformation);
+                        }
+                        else if (deskConnectionInformation.ConnectionType == ConnectionType.Connect)
+                        {
+                            ConnectRequestStatusInvoke?.Invoke(this, deskConnectionInformation);
+                        }
                     }
                 }
             }
         }
 
 
-       
+
         private void CaptureScreen(CancellationToken token)
         {
             while (!token.IsCancellationRequested)
@@ -632,9 +657,9 @@ namespace LucidDesk.Manager
                 }
                 catch (Exception ex)
                 {
-                   
-                        MessageBox.Show("Error capturing screen: " + ex.Message);
-                  
+
+                    MessageBox.Show("Error capturing screen: " + ex.Message);
+
                 }
                 //Thread.Sleep(3); // Capture the screen every 100ms
             }

@@ -11,6 +11,7 @@ namespace LucidDesk.Manager.Classes
     public class DeskConnectionInformation
     {
         private AccessType accessType;
+        private ConnectionType connectionType;
         public Desk ReceiverDesk { get; set; }
         public Desk SenderDesk { get; set; }
         public bool AudioAccess { get; set; }
@@ -24,27 +25,7 @@ namespace LucidDesk.Manager.Classes
             set
             {
                 accessType = value;
-                if (accessType == AccessType.FullAccess)
-                {
-                    AudioAccess = true;
-                    KeyboardAccess = true;
-                    ClipboardAccess = true;
-                    MouseAccess = true;
-                }
-                else if (accessType == AccessType.ScreenShareing)
-                {
-                    AudioAccess = false;
-                    KeyboardAccess = false;
-                    ClipboardAccess = false;
-                    MouseAccess = false;
-                }
-                else
-                {
-                    AudioAccess = true;
-                    KeyboardAccess = true;
-                    ClipboardAccess = true;
-                    VideoAccess = false;
-                }
+                
             }
             get
             {
@@ -53,5 +34,18 @@ namespace LucidDesk.Manager.Classes
             }
         }
         public TcpClient TcpClient { get; set; }
+
+        public ConnectionType ConnectionType
+        {
+            get
+            {
+                return connectionType;
+            }
+
+            set
+            {
+                connectionType = value;
+            }
+        }
     }
 }

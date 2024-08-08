@@ -78,5 +78,7 @@ C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\bin\Debug\NAudio.WinForms.xm
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\bin\Debug\NAudio.WinMM.xml
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\bin\Debug\System.Security.AccessControl.xml
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\bin\Debug\System.Security.Principal.Windows.xml
-C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\LucidDesk.csprojAssemblyReference.cache
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\UserControls\Common\NotificationControl.g.cs
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\UserControls\Common\NotificationControl.baml
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\LucidDesk.csprojAssemblyReference.cache
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\bin\Debug\MySql.Data.dll

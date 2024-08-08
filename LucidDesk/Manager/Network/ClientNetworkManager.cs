@@ -282,6 +282,7 @@ namespace LucidDesk.Manager
         public event EventHandler ConnectedToSeverInvoke;
         public event EventHandler DisConnectedToSeverInvoke;
         public event EventHandler ConnectionEstabishFailInvoke;
+    
         public ClientNetworkManager()
         {
             _proc = HookCallback;

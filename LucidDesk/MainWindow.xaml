@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LucidDesk"
         xmlns:UserControl="clr-namespace:LucidDesk.UserControls"
         mc:Ignorable="d" WindowStyle="None" Padding="0" Margin="0" 
-        Title="MainWindow" Height="500" Width="800">
+        Title="MainWindow" Height="500" Width="800" Icon="/LucidDesk;Component/Resources/DeskIcon.png">
     <Window.Resources>
         <ContextMenu x:Key="MenuContext" Style="{StaticResource CustomContextMenu}">
             <MenuItem Style="{StaticResource ContextMenuItem}"  >

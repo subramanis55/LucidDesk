@@ -8,5 +8,9 @@ namespace LucidDesk.Manager.Enum
 {
  public enum AccessType{
     Default,ScreenShareing,FullAccess
- }  
+ }
+    public enum ConnectionType
+    {
+        Invite,Connect,Password
+    }
 }

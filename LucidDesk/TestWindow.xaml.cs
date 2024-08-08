@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Forms.Integration;
+using LucidDesk.UserControls.Common;
 
 namespace LucidDesk
 {
@@ -20,10 +21,29 @@ namespace LucidDesk
     /// </summary>
     public partial class TestWindow : Window
     {
+        
+            NotificationManager notificationManager = new NotificationManager();
         public TestWindow()
         {
             InitializeComponent();
-            aa.IsConnected = true;
+           
+        }
+
+     
+
+        private void CreateNotificationClick(object sender, RoutedEventArgs e)
+        {
+            notificationManager.CreateNotification(MessageTextBox.Text, NotificationType.Information);
+        }
+
+        private void CreateDeskNotificationClick(object sender, RoutedEventArgs e)
+        {
+            notificationManager.CreateInviteRequestNotification(new Manager.Classes.DeskConnectionInformation() { SenderDesk = new Manager.Desk() { Id = 10000001, ProfileName = "Subramani" } });
+        }
+
+        private void Create3NotificationClick(object sender, RoutedEventArgs e)
+        {
+            notificationManager.CreateNotification(MessageTextBox.Text, NotificationType.Error);
         }
     }
 }

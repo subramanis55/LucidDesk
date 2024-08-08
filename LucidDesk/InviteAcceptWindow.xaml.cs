@@ -20,7 +20,7 @@ namespace LucidDesk
     /// <summary>
     /// Interaction logic for InviteAcceptWindow.xaml
     /// </summary>
-    public partial class InviteAcceptWindow : Window
+    public partial class ConnectAcceptWindow : Window
     {
         private Desk desk;
         public event EventHandler<DeskConnectionInformation> OnClickGetStatus;
@@ -57,12 +57,12 @@ namespace LucidDesk
             }
         }
 
-        public InviteAcceptWindow()
+        public ConnectAcceptWindow()
         {
             InitializeComponent();
         }
 
-        public InviteAcceptWindow(DeskConnectionInformation deskConnectionInformation)
+        public ConnectAcceptWindow(DeskConnectionInformation deskConnectionInformation)
         {
             InitializeComponent();
             AccessTypeCombobox.ItemsSource = Enum.GetNames(typeof(AccessType));
