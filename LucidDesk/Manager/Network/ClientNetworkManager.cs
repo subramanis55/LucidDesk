@@ -263,17 +263,20 @@ using System.Windows.Shapes;
 
 namespace LucidDesk.Manager
 {
-  
+
 
     public partial class ClientNetworkManager
     {
         public DeskConnectionInformation deskConnectionInformation;
-        public DeskConnectionInformation DeskConnectionInformation {
-            set{
+        public DeskConnectionInformation DeskConnectionInformation
+        {
+            set
+            {
                 deskConnectionInformation = value;
                 ClientIpaddress = deskConnectionInformation.ReceiverDesk.IPAddress;
             }
-            get{
+            get
+            {
                 return deskConnectionInformation;
             }
         }
@@ -282,20 +285,20 @@ namespace LucidDesk.Manager
         public event EventHandler ConnectedToSeverInvoke;
         public event EventHandler DisConnectedToSeverInvoke;
         public event EventHandler ConnectionEstabishFailInvoke;
-    
+
         public ClientNetworkManager()
         {
             _proc = HookCallback;
             _hookID = SetHook(_proc);
         }
-        private TcpClient _tcpClient;
+        private TcpClient AudioTcpClient;
         private WaveOutEvent _waveOut;
         private BufferedWaveProvider _bufferedWaveProvider;
         private CancellationTokenSource _cancellationTokenSource;
         private TcpClient client;
         private NetworkStream stream;
         private Thread receiveThread;
-       public bool isConnected;
+        public bool isConnected;
         private LowLevelKeyboardProc _proc;
         private IntPtr _hookID = IntPtr.Zero;
         public string ClientIpaddress;
@@ -364,10 +367,10 @@ namespace LucidDesk.Manager
 
                 Task.Run(() => ConnectToServer());
                 _cancellationTokenSource = new CancellationTokenSource();
-                _tcpClient = new TcpClient();
+                AudioTcpClient = new TcpClient();
                 try
                 {
-                    _tcpClient.Connect(ClientIpaddress, 12345);
+                    AudioTcpClient.Connect(ClientIpaddress, 12345);
 
                     _waveOut = new WaveOutEvent();
                     _bufferedWaveProvider = new BufferedWaveProvider(new WaveFormat(44100, 16, 2));
@@ -386,7 +389,7 @@ namespace LucidDesk.Manager
 
         private void ReceiveAudio()
         {
-            using (var networkStream = _tcpClient.GetStream())
+            using (var networkStream = AudioTcpClient.GetStream())
             {
                 var buffer = new byte[1024];
                 int bytesRead;
@@ -408,7 +411,8 @@ namespace LucidDesk.Manager
 
         public void InviteRequestSent(DeskConnectionInformation deskConnectionInformation)
         {
-            try{
+            try
+            {
                 using (TcpClient client = new TcpClient(ClientIpaddress, 5000))
                 using (NetworkStream stream = client.GetStream())
                 using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
@@ -418,10 +422,11 @@ namespace LucidDesk.Manager
                     writer.Flush();
                 }
             }
-            catch{
+            catch
+            {
                 ConnectionEstabishFailInvoke?.Invoke(this, EventArgs.Empty);
             }
-           
+
         }
 
         public async Task ConnectToServer()
@@ -471,16 +476,16 @@ namespace LucidDesk.Manager
                                                     (socketEx.SocketErrorCode == SocketError.ConnectionReset ||
                                                      socketEx.SocketErrorCode == SocketError.ConnectionAborted))
                     {
-                       
-                            MessageBox.Show("Connection to the server was lost: " + ex.Message);
-                       
+
+                        MessageBox.Show("Connection to the server was lost: " + ex.Message);
+
                         isConnected = false;
                         DisConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
                     }
                     catch (Exception ex)
                     {
-                      
-                            MessageBox.Show("Error receiving image data: " + ex.Message);
+
+                        MessageBox.Show("Error receiving image data: " + ex.Message);
                         DisConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
                         isConnected = false;
                     }
@@ -488,8 +493,8 @@ namespace LucidDesk.Manager
             }
             catch (Exception ex)
             {
-             
-                    MessageBox.Show("Error connecting to server: " + ex.Message);
+
+                MessageBox.Show("Error connecting to server: " + ex.Message);
                 DisConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
                 isConnected = false;
             }
@@ -498,7 +503,7 @@ namespace LucidDesk.Manager
 
         public void SendMouseScrollEvent(string eventType, double x, double y, double delta = 0)
         {
-            if (client != null && client.Connected&& deskConnectionInformation.MouseAccess)
+            if (client != null && client.Connected && deskConnectionInformation.MouseAccess)
             {
                 NetworkStream stream = client.GetStream();
                 StreamWriter writer = new StreamWriter(stream);
@@ -511,13 +516,13 @@ namespace LucidDesk.Manager
                 writer.Flush();
             }
         }
-       
+
 
 
 
         public void SendMouseEvent(Point position, string eventType, double ScreenImageActualWidth, double ScreenImageActualHeight)
         {
-            if (client != null && client.Connected&& deskConnectionInformation.MouseAccess)
+            if (client != null && client.Connected && deskConnectionInformation.MouseAccess)
             {
                 NetworkStream stream = client.GetStream();
                 StreamWriter writer = new StreamWriter(stream);
@@ -569,7 +574,8 @@ namespace LucidDesk.Manager
 
         public void Window_KeyDown(object sender, KeyEventArgs e)
         {
-        if(deskConnectionInformation.KeyboardAccess){
+            if (deskConnectionInformation.KeyboardAccess)
+            {
                 if (e.Key == Key.V && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
                 {
                     SendClipboardContentToServer();
@@ -580,7 +586,7 @@ namespace LucidDesk.Manager
                 }
                 SendKeyEvent(e.Key, "KeyDown");
             }
-           
+
         }
 
         public void Window_KeyUp(object sender, KeyEventArgs e)
@@ -593,7 +599,7 @@ namespace LucidDesk.Manager
 
         public void SendKeyEvent(Key key, string eventType)
         {
-            if (client != null && client.Connected&& deskConnectionInformation.KeyboardAccess)
+            if (client != null && client.Connected && deskConnectionInformation.KeyboardAccess)
             {
                 NetworkStream stream = client.GetStream();
                 StreamWriter writer = new StreamWriter(stream);
@@ -613,7 +619,7 @@ namespace LucidDesk.Manager
 
         public void SendMouseRightEvent(Point position, string eventType, double ScreenImageActualWidth, double ScreenImageActualHeight)
         {
-            if (client != null && client.Connected&& deskConnectionInformation.MouseAccess)
+            if (client != null && client.Connected && deskConnectionInformation.MouseAccess)
             {
                 NetworkStream stream = client.GetStream();
                 StreamWriter writer = new StreamWriter(stream);
@@ -626,7 +632,14 @@ namespace LucidDesk.Manager
                 writer.Flush();
             }
         }
-      
+        public void ConnectionClose()
+        {
+
+            if (client != null)
+                client.Close();
+            if (AudioTcpClient != null)
+                AudioTcpClient.Close();
+        }
 
 
     }

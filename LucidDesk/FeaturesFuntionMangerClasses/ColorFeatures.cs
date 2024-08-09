@@ -87,7 +87,7 @@ namespace LucidDesk.FeaturesFuntionMangerClasses
                 case 'R': color = Colors.Gold; break;
                 case 'S': color = (Color)ColorConverter.ConvertFromString("#00B9CC"); break;
                 case 'T': color = Colors.Violet; break;
-                case 'U': color = (Color)ColorConverter.ConvertFromString("#707981"); break;
+                case 'U': color = (Color)ColorConverter.ConvertFromString("#41A5FF"); break;
                 case 'V': color = Colors.Honeydew; break;
                 case 'W': color = Colors.Lavender; break;
                 case 'X': color = Colors.Salmon; break;

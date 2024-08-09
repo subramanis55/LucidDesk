@@ -24,6 +24,54 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="SuggestionDeskMenuItem" TargetType="MenuItem">
+       
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MenuItem">
+                    <Border CornerRadius="2" Name="Border" 
+                      
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        Padding="{TemplateBinding Padding}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" 
+                               Margin="3" 
+                               Source="{Binding DesktopImage,Mode=OneTime}"/>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1.2*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Margin="1" 
+                                       Padding="25 0 0 0" 
+                                       Name="IdTextBlock" 
+                                       Text="{Binding Id,Mode=OneTime}" 
+                                       FontSize="14" 
+                                       FontWeight="DemiBold"  
+                                       Grid.Row="0"/>
+                                <TextBlock Name="ProfileNameTextBlock" 
+                                       Padding="25 0 0 0" 
+                                       Text="{Binding ProfileName,Mode=OneTime}"  
+                                       FontSize="11" 
+                                       Grid.Row="1"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{Binding RelativeSource={RelativeSource Self},Path=Background,Converter={StaticResource ColorReduction},Mode=OneTime}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="AccessIconCheckBox"  TargetType="CheckBox">
         <Setter Property="Template">
             <Setter.Value>
@@ -38,7 +86,6 @@
                         </Trigger>
                         <Trigger Property="IsChecked"  Value="false">
                             <Setter Property="Foreground" Value="#B3B4B9"></Setter>
-                       
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

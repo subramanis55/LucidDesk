@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LucidDesk"
          xmlns:Usercontrol="clr-namespace:LucidDesk.UserControls.Common"
         mc:Ignorable="d"   ResizeMode="NoResize"   WindowStartupLocation="CenterScreen"
-        Title="InviteWindow" Height="350" Width="600" WindowStyle="None"  Background="{StaticResource SubColorBrush}">
+        Title="InviteWindow" Height="350" Width="600" WindowStyle="None"  BorderBrush="Gainsboro" BorderThickness="1" Background="{StaticResource SubColorBrush}">
          
     <Grid>
         <Grid.RowDefinitions>
@@ -27,7 +27,7 @@
             <StackPanel Margin="2">
                 <TextBlock FontSize="14" FontWeight="Medium" Margin="10">User Id</TextBlock>
                 <Grid>
-                    <Usercontrol:CustomTextBox FontSize="15" FontWeight="Medium" Background="White" BorderThickness="1" BorderBrush="Gainsboro" Height="40" Width="350"></Usercontrol:CustomTextBox>
+                    <Usercontrol:CustomTextBox x:Name="Textbox" FontSize="15" GotFocus="TextboxGotFocus" LostFocus="TextboxLostFocus" TextChanged="TextboxTextChanged"  FontWeight="Medium" Background="White" BorderThickness="1" BorderBrush="Gainsboro" Height="40" Width="350"></Usercontrol:CustomTextBox>
                     <Border Name="UserIdLabelContainer" Panel.ZIndex="-1"  Background="White" BorderThickness="1"  CornerRadius="2" Height="40" Width="350" BorderBrush="Gainsboro" >
                         <TextBlock Name="UserIdLabelTextblock"   VerticalAlignment="Center" Padding="12"  FontSize="15"  FontWeight="Medium"    ></TextBlock>
                     </Border>

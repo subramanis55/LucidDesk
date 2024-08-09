@@ -20,28 +20,27 @@ namespace LucidDesk.UserControls
     /// <summary>
     /// Interaction logic for DeskProfile.xaml
     /// </summary>
-    public partial class DeskProfile : UserControl
+    public partial class DeskProfile : UserControl,IDisposable
     {
-        public event EventHandler OnclickConnect;
+        public event EventHandler<Desk> OnClickConnect;
         public event EventHandler<Desk> OnInviteConnect;
+        public event EventHandler OnClickIsFavorite;
         private Desk desk;
 
         public Desk Desk
         {
             set
             {
+                MainContainer.DataContext = value;
                 desk = value;
                 try{
                     if (desk.ProfileImage == null)
                     {
-                        DeskUserProfileImage.Image = ColorFeatures.CreateBitmapImageWithCharacter(90, 90, ColorFeatures.GetColorBasedOnFirstChar(DeskUserName = desk.ProfileName), desk.ProfileName[0], "Arial", 17, Colors.White);
+                        DeskUserProfileImage.Image = ColorFeatures.CreateBitmapImageWithCharacter(90, 90, ColorFeatures.GetColorBasedOnFirstChar( desk.ProfileName), desk.ProfileName[0], "Arial", 17, Colors.White);
                     }
                     else
                         DeskUserProfileImage.Image = desk.ProfileImage;
-                    IsFavorite = desk.IsFavorite;
-                    DeskUserName = desk.ProfileName;
-                    PCName = desk.PcName;
-                    DeskOSName = desk.OsName;
+                   
                     DeskId = "" + desk.Id;
                     DesktopWallPaper.Image = desk.DesktopImage;
                 }
@@ -54,56 +53,7 @@ namespace LucidDesk.UserControls
                 return desk;
             }
         }
-        private bool isFavorite;
-        public bool IsFavorite
-        {
-            set
-            {
-                isFavorite = value;
-                if (!isFavorite)
-                {
-                    IsFavoriteIcon.Fill = Brushes.Transparent;
-                }
-                else
-                {
-                    IsFavoriteIcon.Fill = Brushes.Gold;
-                }
-            }
-            get
-            {
-                return isFavorite;
-            }
-        }
-        public string DeskUserName
-        {
-            get { return (string)GetValue(DeskUserNameProperty); }
-            set { SetValue(DeskUserNameProperty, value); }
-        }
-
-        public static readonly DependencyProperty DeskUserNameProperty =
-            DependencyProperty.Register("DeskUserName", typeof(string), typeof(DeskProfile), new PropertyMetadata("Name"));
-
-        public string PCName
-        {
-            get { return (string)GetValue(PCNameProperty); }
-            set { SetValue(PCNameProperty, value); }
-        }
-
-        public static readonly DependencyProperty PCNameProperty =
-            DependencyProperty.Register("PCName", typeof(string), typeof(DeskProfile), new PropertyMetadata("PcName"));
-
-
-
-        public string DeskOSName
-        {
-            get { return (string)GetValue(DeskOSNameProperty); }
-            set { SetValue(DeskOSNameProperty, value); }
-        }
-
-        public static readonly DependencyProperty DeskOSNameProperty =
-            DependencyProperty.Register("DeskOSName", typeof(string), typeof(DeskProfile), new PropertyMetadata("Windows"));
-
-
+      
 
         public string DeskId
         {
@@ -130,15 +80,21 @@ namespace LucidDesk.UserControls
         public DeskProfile()
         {
             InitializeComponent();
+            MainContainer. DataContext = Desk;
+        }
+        public DeskProfile(Desk desk)
+        {
+            InitializeComponent();
+            Desk = desk;
 
-            DataContext = this;
+
         }
 
 
 
         private void MenuButtonClick(object sender, RoutedEventArgs e)
         {
-
+            MainContainer.ContextMenu.IsOpen = true;
         }
 
         private void IsFavoriteIcon_MouseDown(object sender, MouseButtonEventArgs e)
@@ -148,8 +104,9 @@ namespace LucidDesk.UserControls
 
         private void IsFavoriteIconMouseDown(object sender, MouseButtonEventArgs e)
         {
-            IsFavorite = !IsFavorite;
-            Desk.IsFavorite = IsFavorite;
+            Desk.IsFavorite = !Desk.IsFavorite;
+
+            OnClickIsFavorite?.Invoke(this, EventArgs.Empty);
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -159,7 +116,7 @@ namespace LucidDesk.UserControls
 
         private void ConnectClick(object sender, RoutedEventArgs e)
         {
-            OnclickConnect?.Invoke(this, EventArgs.Empty);
+            OnClickConnect?.Invoke(this, Desk);
         }
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
@@ -180,6 +137,23 @@ namespace LucidDesk.UserControls
         private void InviteClick(object sender, RoutedEventArgs e)
         {
             OnInviteConnect?.Invoke(this,Desk);
+        }
+
+        public void Dispose()
+        {
+           
+        }
+
+        private void IsFavoriteClick(object sender, RoutedEventArgs e)
+        {
+            Desk.IsFavorite = !Desk.IsFavorite;
+
+            OnClickIsFavorite?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void RemoveButtonClick(object sender, RoutedEventArgs e)
+        {
+          MessageBox.Show("Do want to remove this desk?", "Conformation", MessageBoxButton.YesNo);
         }
     }
 }

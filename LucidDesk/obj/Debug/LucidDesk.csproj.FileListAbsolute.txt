@@ -32,8 +32,6 @@ C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\Styles\DeskCustomS
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\InviteWindow.g.cs
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\InviteWindow.baml
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\Styles\UIFrameworkStyles.baml
-C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\InviteAcceptWindow.g.cs
-C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\InviteAcceptWindow.baml
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\loginWindow.g.cs
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\loginWindow.baml
 C:\Users\ayyan\Desktop\LucidDesk\LucidDesk\obj\Debug\LucidDesk.csproj.AssemblyReference.cache
@@ -80,5 +78,7 @@ C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\bin\Debug\System.Security.Ac
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\bin\Debug\System.Security.Principal.Windows.xml
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\UserControls\Common\NotificationControl.g.cs
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\UserControls\Common\NotificationControl.baml
-C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\LucidDesk.csprojAssemblyReference.cache
 C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\bin\Debug\MySql.Data.dll
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\ConnectionAcceptWindow.g.cs
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\ConnectionAcceptWindow.baml
+C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\LucidDesk.csprojAssemblyReference.cache

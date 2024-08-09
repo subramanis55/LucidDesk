@@ -1,6 +1,12 @@
-﻿using System;
+﻿using LucidDesk.Manager;
+using LucidDesk.Manager.Classes;
+using LucidDesk.Manager.Database;
+using LucidDesk.Manager.Enum;
+using LucidDesk.UserControls.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,10 +27,15 @@ namespace LucidDesk.UserControls
     /// </summary>
     public partial class SearchBoxControl : UserControl
     {
+      
+
         public event EventHandler OnClickFullScreen;
         public event EventHandler OnClickScreenStrech;
         public event EventHandler OnClickScreenZoom;
         public event EventHandler OnClickScreenNormal;
+        public event EventHandler<Desk> OnClickConnect;
+        private ContextMenu SuggestionsDeskMenu = new ContextMenu() { Focusable = false };
+        private Style SuggestionsDeskMenuStyle = Application.Current.Resources["SuggestionDeskMenuItem"] as Style;
         private bool isConnected = true;
         public bool IsConnected
         {
@@ -34,10 +45,12 @@ namespace LucidDesk.UserControls
                 if (isConnected)
                 {
                     SearchBoxMainGrid.ColumnDefinitions[2].Width = new GridLength(120);
+                    ConnectButton.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     SearchBoxMainGrid.ColumnDefinitions[2].Width = new GridLength(0);
+                    ConnectButton.Visibility = Visibility.Visible;
                 }
             }
             get
@@ -146,26 +159,81 @@ namespace LucidDesk.UserControls
                 return Textbox.IsReadOnly;
             }
         }
+
         public SearchBoxControl()
         {
             InitializeComponent();
-           
-          Loaded += SearchBoxControlLoaded;
+            Loaded += SearchBoxControlLoaded;
             PlaceholderLabel.MouseDown += CustomTextBoxMouseDown;
             Textbox.GotFocus += TextboxGotFocus;
             Textbox.LostFocus += TextboxLostFocus;
             DataContext = this;
             ScreenButtonMenu = Resources["ScreenButtonContext"] as ContextMenu;
+          
+        }
+
+        private void SuggestionDeskShowInvoke()
+        {
+            SuggestionsDeskMenu.Items.Clear();
+            int count = 0;
+            //DeskProfile Control Create
+            for (int i = 0; i < DeskProfileManager.DeskProfiles.Count; i++)
+            {
+                if (("" + DeskProfileManager.DeskProfiles[i].Id).Contains(Textbox.Text) || DeskProfileManager.DeskProfiles[i].ProfileName.Contains(Textbox.Text))
+                {
+                    MenuItem menuItem = new MenuItem { Foreground = Brushes.Black, MinWidth = this.ActualWidth-3, Background = Brushes.White };
+                    menuItem.Style = SuggestionsDeskMenuStyle;
+                    menuItem.DataContext = DeskProfileManager.DeskProfiles[i];
+                    menuItem.Click += SuggestionDeskClick;
+                    SuggestionsDeskMenu.Items.Add(menuItem);
+                    count++;
+                }
+                if (count == 10)
+                    break;
+            }
+
+            SuggestionDeskShow();
+            Textbox.Focus();
+        }
+        private void SuggestionDeskShow()
+        {
+            SuggestionsDeskMenu.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            Size SuggestionsDeskMenuSize = SuggestionsDeskMenu.DesiredSize;
+            SuggestionsDeskMenu.Style = Application.Current.Resources["CustomContextMenu"] as Style;
+            SuggestionsDeskMenu.PlacementTarget = this;
+            SuggestionsDeskMenu.Placement = PlacementMode.Relative;
+            double y = ScreenButton.ActualHeight;
+            SuggestionsDeskMenu.HorizontalOffset = 0;
+            SuggestionsDeskMenu.VerticalOffset = y;
+            SuggestionsDeskMenu.IsOpen = true;
+        }
+        private void SuggestionDeskClick(object sender, RoutedEventArgs e)
+        {
+            Textbox.Text = ""+((Desk)((MenuItem)(sender)).DataContext).Id;
+            SuggestionsDeskMenu.IsOpen = false;
         }
 
         private void SearchBoxControlLoaded(object sender, RoutedEventArgs e)
         {
+
             SearchBoxMainGrid.ColumnDefinitions[2].Width = new GridLength(0);
+            SuggestionsDeskMenu.ContextMenuOpening += SuggestionsDeskMenuContextMenuOpening;
+            SuggestionsDeskMenu.ContextMenuClosing += SuggestionsDeskMenuContextMenuClosing;
+        }
+
+        private void SuggestionsDeskMenuContextMenuClosing(object sender, ContextMenuEventArgs e)
+        {
+            SuggestionsDeskMenu.IsOpen = false;
+        }
+
+        private void SuggestionsDeskMenuContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            SuggestionsDeskMenu.IsOpen = true;
         }
 
         private void TextboxLostFocus(object sender, RoutedEventArgs e)
         {
-
+            SuggestionsDeskMenu.IsOpen = false;
             if (string.IsNullOrEmpty(Textbox.Text))
             {
                 PlaceholderLabel.Visibility = Visibility.Visible;
@@ -188,7 +256,6 @@ namespace LucidDesk.UserControls
             e.Handled = true;
         }
 
-      
         private void ScreenButtonClick(object sender, RoutedEventArgs e)
         {
             ScreenButtonContextShow();
@@ -196,21 +263,18 @@ namespace LucidDesk.UserControls
 
         private void ScreenButtonContextShow()
         {
-    
-
             ScreenButtonMenu.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             Size contextMenuSize = ScreenButtonMenu.DesiredSize;
-            double x = ScreenButton.ActualWidth/2 - contextMenuSize.Width / 2;
+            double x = ScreenButton.ActualWidth / 2 - contextMenuSize.Width / 2;
             ScreenButtonMenu.PlacementTarget = ScreenButton;
             double y = ScreenButton.ActualHeight;
             ScreenButtonMenu.Placement = PlacementMode.Relative;
-      
             ScreenButtonMenu.HorizontalOffset = x;
             ScreenButtonMenu.VerticalOffset = y;
             ScreenButtonMenu.IsOpen = true;
         }
 
-      
+
 
         private void ScreenButtonMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -234,6 +298,25 @@ namespace LucidDesk.UserControls
         private void ScreenNormalClick(object sender, RoutedEventArgs e)
         {
             OnClickScreenNormal?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void Textbox_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void TextboxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            SuggestionDeskShowInvoke();
+        }
+
+        private void ConnectClick(object sender, RoutedEventArgs e)
+        {
+          
+           
+            if (DeskProfileManager.DeskProfilesDictionary.ContainsKey("" + Textbox.Text))
+                OnClickConnect?.Invoke(this,  DeskProfileManager.DeskProfilesDictionary[Textbox.Text] );
+            else
+                MainWindow.NotificationManager.CreateNotification("Id Doesn't exits", NotificationType.Information);
         }
     }
 }

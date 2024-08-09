@@ -21,9 +21,12 @@ namespace LucidDesk.UserControls.Common
     /// </summary>
     public partial class CustomTextBox : UserControl
     {
+        public event RoutedEventHandler LostFocus;
+        public event RoutedEventHandler GotFocus;
+        public event TextChangedEventHandler TextChanged;
         public static readonly DependencyProperty PlaceholderProperty = DependencyProperty.Register("Placeholder",typeof(string),typeof(CustomTextBox),new PropertyMetadata(""));
         public static readonly DependencyProperty PlaceholderColorProperty=DependencyProperty.Register("PlaceholderColor", typeof(Brush), typeof(CustomTextBox), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DDDDDD"))));
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(CustomTextBox));
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(CustomTextBox), new PropertyMetadata(""));
         public static readonly DependencyProperty TextPaddingProperty = DependencyProperty.Register("TextPadding", typeof(Thickness), typeof(CustomTextBox), new PropertyMetadata(new Thickness(10, 5, 10, 5)));
         public static readonly DependencyProperty TextboxBorderThicknessProperty =
          DependencyProperty.Register("TextboxBorderThickness", typeof(Thickness), typeof(CustomTextBox), new PropertyMetadata(new Thickness(0)));
@@ -96,12 +99,14 @@ namespace LucidDesk.UserControls.Common
            else{
                 PlaceholderLabel.Visibility = Visibility.Hidden;
             }
+            LostFocus?.Invoke(this,e);
         }
 
         private void TextboxGotFocus(object sender, RoutedEventArgs e)
         {
             TextboxBorderThickness = new Thickness(0, 0, 0, 3);
                 PlaceholderLabel.Visibility = Visibility.Hidden;
+            GotFocus?.Invoke(this, e);
         }
 
         private void CustomTextBoxMouseDown(object sender, MouseButtonEventArgs e)
@@ -110,5 +115,14 @@ namespace LucidDesk.UserControls.Common
             e.Handled = true;
         }
 
+     
+
+        private void TextboxTextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextChanged?.Invoke(this, e);
+        }
+        public void Focus(){
+            Textbox.Focus();
+        }
     }
 }
