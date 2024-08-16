@@ -12,6 +12,7 @@ namespace LucidDesk.Manager
 {
     public class Desk : INotifyPropertyChanged
     {
+        public event EventHandler OnClickDeleted;
         public event PropertyChangedEventHandler PropertyChanged;
         private int id;
         private string iPAddress;
@@ -210,6 +211,8 @@ namespace LucidDesk.Manager
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-       
+        public void Dispose(){
+            OnClickDeleted?.Invoke(this,EventArgs.Empty);
+        }
     }
 }

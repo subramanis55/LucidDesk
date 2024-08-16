@@ -55,7 +55,7 @@ namespace LucidDesk.Manager
                     }
                 }
             }
-            return "No MAC Address Found";
+            return null;
         }
         public static string GetPcIPAddress(string hostName)
         {

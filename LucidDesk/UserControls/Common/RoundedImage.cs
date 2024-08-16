@@ -115,6 +115,6 @@ namespace LucidDesk.UserControls.Common
                return (Brush)GetValue(BorderBrushProperty);
             }
         }
-        public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register("BorderBrush", typeof(Thickness), typeof(RoundedImage), new PropertyMetadata(new Thickness(0)));
+        public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register("BorderBrush", typeof(SolidColorBrush), typeof(RoundedImage), new PropertyMetadata(Brushes.DodgerBlue));
     }
 }

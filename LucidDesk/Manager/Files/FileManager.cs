@@ -105,5 +105,26 @@ namespace LucidDesk.Manager.Files
                 return ms.ToArray();
             }
         }
+        public static BitmapImage ConvertBitmapToBitmapImage(System.Drawing.Bitmap bitmap)
+        {
+            BitmapImage bitmapImage = new BitmapImage();
+
+            using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream())
+            {
+                // Save the Bitmap to the MemoryStream
+                bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+
+                // Rewind the stream ready to read from it later
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
+
+                // Tell the BitmapImage to use this stream
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memoryStream;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+            }
+
+            return bitmapImage;
+        }
     }
 }

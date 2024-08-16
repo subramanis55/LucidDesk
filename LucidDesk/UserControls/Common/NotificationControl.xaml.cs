@@ -45,6 +45,7 @@ namespace LucidDesk.UserControls.Common
           }
         }
       
+        
 
 
         public Brush ThemeBrush
@@ -92,9 +93,9 @@ namespace LucidDesk.UserControls.Common
         public NotificationControl(string message, NotificationType notificationType)
         {
             InitializeComponent();
+            
             DataContext = this;
             Message = message;
-          
             NotificationType = notificationType;
             Loaded += NotificationControlLoaded;
         }
@@ -184,6 +185,14 @@ namespace LucidDesk.UserControls.Common
             DeskConnectionInformation.InviteStatus = true;
             OnClickInviteStatusGet?.Invoke(this, DeskConnectionInformation);
             OnEnd?.Invoke(this, EventArgs.Empty);
+        }
+        public void Invoke(){
+
+          
+
+            DoubleAnimation doubleAnimation = new DoubleAnimation() {From= Left + Width, To = Left, Duration = new Duration(TimeSpan.FromSeconds(0.2)) };
+           Show();
+            this.BeginAnimation(Window.LeftProperty, doubleAnimation);
         }
     }
 }

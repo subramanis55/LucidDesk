@@ -24,10 +24,32 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="PasswordBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <Grid Margin="0">
+
+        <PasswordBox x:Name="PasswordTextBox" Visibility="Hidden" PasswordChanged="PasswordBoxTextChanged" IsTabStop="True"   Cursor="IBeam"   Margin="0" Padding="{Binding TextPadding}" BorderBrush="{Binding TextboxBorderBrush}" BorderThickness="{Binding TextboxBorderThickness}"  FontSize="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=FontSize}" Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}},Path=Foreground}"  Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}},Path=Background}"   FontFamily="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}},Path=FontFamily}">
+        </PasswordBox>
         <TextBox Name="Textbox" TextChanged="TextboxTextChanged" IsTabStop="True"   Cursor="IBeam"   Margin="0" Padding="{Binding TextPadding}" BorderBrush="{Binding TextboxBorderBrush}" BorderThickness="{Binding TextboxBorderThickness}"  FontSize="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=FontSize}" Text="{Binding Text,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}},Path=Foreground}"  Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}},Path=Background}"  FontFamily="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}},Path=FontFamily}">
         </TextBox>
         <Label Name="PlaceholderLabel" Cursor="Hand"  Content="{Binding Placeholder}" Background="Transparent"   Padding="20 0 0 0"  VerticalAlignment="Center" FontSize="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=FontSize}"   Foreground="{Binding PlaceholderColor}"></Label>
     </Grid>
+   
 </UserControl>

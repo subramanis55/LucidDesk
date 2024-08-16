@@ -205,7 +205,8 @@ namespace LucidDesk
 
         private void TextboxTextChanged(object sender, TextChangedEventArgs e)
         {
-            SuggestionDeskShowInvoke();
+            if (Textbox.Text != "")
+                SuggestionDeskShowInvoke();
         }
     }
 }

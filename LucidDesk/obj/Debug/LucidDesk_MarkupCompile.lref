@@ -1,9 +1,9 @@
 ﻿
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\App.xaml;;
-FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\ConnectionAcceptWindow.xaml;;
-FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\InviteWindow.xaml;;
-FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\loginWindow.xaml;;
-FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\MainWindow.xaml;;
+FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\Screen\ConnectionAcceptWindow.xaml;;
+FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\Screen\InviteWindow.xaml;;
+FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\Screen\loginWindow.xaml;;
+FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\Screen\MainWindow.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\Styles\DeskCustomStyle.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\Styles\Icons.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\Styles\ScrollBarStyle.xaml;;
@@ -11,9 +11,12 @@ FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\Styles\Theme.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\Styles\UIFrameworkStyles.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\TestWindow.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\Common\CustomTextBox.xaml;;
+FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\Common\CustomTextBoxPlaceHolderMove.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\Common\NotificationControl.xaml;;
+FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\Common\ProfileImageSelect.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\CustomHeaderSwicthControl.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\DeskProfile.xaml;;
+FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\MessageBox.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\PageSelectContextMenu.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\SearchBoxControl.xaml;;
 FC:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\UserControls\SessionHeaderControl.xaml;;

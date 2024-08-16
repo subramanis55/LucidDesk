@@ -48,13 +48,11 @@ namespace LucidDesk.Manager.Database
                 string folderPath = LocalDatabaseManager.DatabaseFolderPath;
                 string fileName = "/"+deskProfile.Id + ".txt";
                 string filePath = folderPath+ fileName;
-
                 // Ensure the directory exists
                 if (!Directory.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
                 }
-
                 // Write to the file
                 File.WriteAllText(filePath, encodedData);
                 return true;
@@ -71,7 +69,6 @@ namespace LucidDesk.Manager.Database
                 string deskProfileData = JsonConvert.SerializeObject(deskProfile);
                 string encodedData = SecurityManager.Encrypt(deskProfileData);
                 string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath +"/"+ deskProfile.Id + ".txt";
-             
                 File.WriteAllText(deskProfilePath, encodedData);
                 return true;
             }
@@ -101,6 +98,18 @@ namespace LucidDesk.Manager.Database
 
             }
             return false;
+        }
+        public static bool  DeleteProfile(int id){
+            try{
+                File.Delete(LocalDatabaseManager.DatabaseFolderPath +"/"+ id+ ".txt");
+                DeskProfilesDictionary.Remove(id + "");
+                DeskProfiles = DeskProfilesDictionary.Values.ToList();
+                return true;
+            }
+            catch{
+
+            }
+          return false;
         }
     }
 }

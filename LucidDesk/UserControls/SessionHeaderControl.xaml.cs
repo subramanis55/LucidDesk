@@ -21,7 +21,7 @@ namespace LucidDesk.UserControls
     public partial class SessionHeaderControl : UserControl
     {
         public event EventHandler OnClickClose;
-       
+         
         private bool isCloseButtonVisible;
 
         public string Header

@@ -21,8 +21,8 @@ namespace LucidDesk
     /// </summary>
     public partial class TestWindow : Window
     {
-        
-            NotificationManager notificationManager = new NotificationManager();
+
+        UserControls.Common.NotificationManager notificationManager = new UserControls.Common.NotificationManager();
         public TestWindow()
         {
             InitializeComponent();
@@ -33,7 +33,7 @@ namespace LucidDesk
 
         private void CreateNotificationClick(object sender, RoutedEventArgs e)
         {
-            notificationManager.CreateNotification(MessageTextBox.Text, NotificationType.Information);
+            notificationManager.CreateNotification(MessageTextBox.Text, UserControls.Common.NotificationType.Information);
         }
 
         private void CreateDeskNotificationClick(object sender, RoutedEventArgs e)
@@ -43,7 +43,7 @@ namespace LucidDesk
 
         private void Create3NotificationClick(object sender, RoutedEventArgs e)
         {
-            notificationManager.CreateNotification(MessageTextBox.Text, NotificationType.Error);
+            notificationManager.CreateNotification(MessageTextBox.Text, UserControls.Common.NotificationType.Error);
         }
     }
 }

@@ -24,6 +24,33 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="ButtonCheckBoxSettingPage" TargetType="CheckBox">
+      
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Margin" Value="2 5"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainColorBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Border x:Name="border" Background="{TemplateBinding Background}"  BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="false">
+                            <Setter Property="BorderThickness" Value="0 0 0 0"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter Property="BorderThickness" Value="3 0 0 0"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter  Property="Background"  TargetName="border"
+                    Value="{Binding  RelativeSource={RelativeSource Self},Path=Background, Converter={StaticResource ColorReduction},Mode=OneTime}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="SuggestionDeskMenuItem" TargetType="MenuItem">
        
         <Setter Property="Height" Value="35"/>

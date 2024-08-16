@@ -124,5 +124,10 @@ namespace LucidDesk.UserControls.Common
         public void Focus(){
             Textbox.Focus();
         }
+
+        private void PasswordBoxTextChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

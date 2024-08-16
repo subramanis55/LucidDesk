@@ -327,27 +327,35 @@ namespace LucidDesk.Manager
             }
         }
 
+
+        private bool isWindow;
         private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
-        {
+        {                      
             if (nCode >= 0 && (wParam == (IntPtr)0x0100 || wParam == (IntPtr)0x0104))
             {
                 int vkCode = Marshal.ReadInt32(lParam);
                 bool isWindowsKey = (vkCode == 0x5B || vkCode == 0x5C);
                 bool isAltTab = (vkCode == 0x09 && (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)));
-                bool isCtrlV = (vkCode == 0x56) && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl));
+                bool isCtrlV = (vkCode == 0x56);
                 bool isClipboardOpen = (vkCode == 0x56) && (Keyboard.IsKeyUp(Key.LWin) || Keyboard.IsKeyUp(Key.RWin));
 
-                if (isWindowsKey && !isClipboardOpen)
+
+                if ((Keyboard.Modifiers & ModifierKeys.Windows) == ModifierKeys.Windows &&
+               vkCode == KeyInterop.VirtualKeyFromKey(Key.V))
+               {
+                    SendKeyEvent((Key)vkCode, "ClipBoardOpen");
+                    return (IntPtr)(1);
+                }
+                    if (isWindowsKey && !isClipboardOpen)
                 {
                     // Send Windows key event to the server
                     //SendKeyEvent((Key)vkCode, "KeyDown");
                     SendKeyEvent((Key)vkCode, "WindowKey");
                     return (IntPtr)1;
                 }
-                else if (isClipboardOpen && !isCtrlV)
+                else if (isWindow && isCtrlV)
                 {
-                    SendKeyEvent((Key)vkCode, "ClipBoardOpen");
-                    return (IntPtr)(1);
+                   
                 }
                 else if (isAltTab)
                 {
@@ -355,6 +363,8 @@ namespace LucidDesk.Manager
                     SendKeyEvent((Key)vkCode, "AltTab");
                     return (IntPtr)1; // Suppress the key press locally
                 }
+                if (isWindowsKey) isWindow = true;
+                else isWindow = false;
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
 

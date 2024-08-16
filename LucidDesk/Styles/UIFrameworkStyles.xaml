@@ -159,7 +159,7 @@
                     <Viewbox>
                         <Border   Height="{TemplateBinding ActualHeight}"  Width="{TemplateBinding ActualWidth}"
                                     BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent},Path=BorderBrush}"
-                                    BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent},Path=BorderThickness}"
+                                    BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent},Path=BorderWidth}"
                                     CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent},Path=CornerRadius}">
                             <Border.Background>
                                 <ImageBrush Stretch="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Stretch}" 

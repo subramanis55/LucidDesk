@@ -492,7 +492,7 @@ namespace LucidDesk.Manager
             try
             {
                 server.Start();
-                MessageBox.Show("Server started");
+                //MessageBox.Show("Server started");
 
                 Task.Run(() => CaptureScreen(cancellationTokenSource.Token));
 

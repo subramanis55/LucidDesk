@@ -68,7 +68,7 @@ namespace LucidDesk.Manager.Database
         {
             try
             {
-                string CreateDeskProfileQuery = $"Insert into  DeskProfile(IPAddress,IsFavorite,HostName,ProfileName,ProfileImage,DesktopImage,Password,MacAddress,OsName,PcName,RecentLoginTime)   values('{deskProfile.IPAddress}',{(deskProfile.IsFavorite == false ? 0 : 1)},'{deskProfile.HostName}','{deskProfile.ProfileName}','{FileManager.ImageToString(deskProfile.ProfileImage)}','{FileManager.ImageToString(deskProfile.DesktopImage)}','{deskProfile.Password}','{deskProfile.MacAddress}','{deskProfile.OsName}','{deskProfile.PcName}','{deskProfile.RecentLoginTime.ToString("yyyy-MM-dd HH:mm:ss")}')";
+                string CreateDeskProfileQuery = $"Insert into  DeskProfile(IPAddress,HostName,ProfileName,ProfileImage,DesktopImage,Password,MacAddress,OsName,PcName,RecentLoginTime)   values('{deskProfile.IPAddress}','{deskProfile.HostName}','{deskProfile.ProfileName}','{FileManager.ImageToString(deskProfile.ProfileImage)}','{FileManager.ImageToString(deskProfile.DesktopImage)}','{deskProfile.Password}','{deskProfile.MacAddress}','{deskProfile.OsName}','{deskProfile.PcName}','{deskProfile.RecentLoginTime.ToString("yyyy-MM-dd HH:mm:ss")}')";
                 mySqlCommand.CommandText = CreateDeskProfileQuery;
                 mySqlCommand.ExecuteNonQuery();
                 return true;
@@ -87,7 +87,6 @@ namespace LucidDesk.Manager.Database
             dataTable.Load(mySqlCommand.ExecuteReader());
 
             Desk desk = new Desk() { IPAddress = Convert.ToString(dataTable.Rows[0]["IPAddress"]), IsFavorite = Convert.ToBoolean(dataTable.Rows[0]["IsFavorite"]), HostName = Convert.ToString(dataTable.Rows[0]["HostName"]), ProfileName = Convert.ToString(dataTable.Rows[0]["ProfileName"]), ProfileImage = FileManager.ConvertBase64ToBitmapImage(Convert.ToString(dataTable.Rows[0]["ProfileImage"])), DesktopImage = FileManager.ConvertBase64ToBitmapImage(Convert.ToString(dataTable.Rows[0]["DesktopImage"])), Password = Convert.ToString(dataTable.Rows[0]["Password"]), MacAddress = Convert.ToString(dataTable.Rows[0]["MacAddress"]), OsName = Convert.ToString(dataTable.Rows[0]["OsName"]), PcName = Convert.ToString(dataTable.Rows[0]["PcName"]), RecentLoginTime = (DateTime)dataTable.Rows[0]["PcName"] };
-
             return desk;
         }
         public static Dictionary<string, Desk> GetDeskProfiles()
@@ -101,7 +100,7 @@ namespace LucidDesk.Manager.Database
             {
                 try
                 {
-                    Profiles.Add("" + dataTable.Rows[i]["Id"], new Desk() { Id= Convert.ToInt32(""+dataTable.Rows[i]["Id"]), IPAddress = Convert.ToString(dataTable.Rows[i]["IPAddress"]), IsFavorite = Convert.ToBoolean(dataTable.Rows[i]["IsFavorite"]), HostName = Convert.ToString(dataTable.Rows[i]["HostName"]), ProfileName = Convert.ToString(dataTable.Rows[i]["ProfileName"]), ProfileImageString = Convert.ToString(dataTable.Rows[i]["ProfileImage"]), DesktopImageString = Convert.ToString(dataTable.Rows[i]["DesktopImage"]), Password = Convert.ToString(dataTable.Rows[i]["Password"]), MacAddress = Convert.ToString(dataTable.Rows[i]["MacAddress"]), OsName = Convert.ToString(dataTable.Rows[i]["OsName"]), PcName = Convert.ToString(dataTable.Rows[i]["PcName"]), RecentLoginTime = (DateTime)dataTable.Rows[i]["RecentLoginTime"] });
+                    Profiles.Add("" + dataTable.Rows[i]["Id"], new Desk() { Id= Convert.ToInt32(""+dataTable.Rows[i]["Id"]), IPAddress = Convert.ToString(dataTable.Rows[i]["IPAddress"]), HostName = Convert.ToString(dataTable.Rows[i]["HostName"]), ProfileName = Convert.ToString(dataTable.Rows[i]["ProfileName"]), ProfileImageString = Convert.ToString(dataTable.Rows[i]["ProfileImage"]), DesktopImageString = Convert.ToString(dataTable.Rows[i]["DesktopImage"]), Password = Convert.ToString(dataTable.Rows[i]["Password"]), MacAddress = Convert.ToString(dataTable.Rows[i]["MacAddress"]), OsName = Convert.ToString(dataTable.Rows[i]["OsName"]), PcName = Convert.ToString(dataTable.Rows[i]["PcName"]), RecentLoginTime = (DateTime)dataTable.Rows[i]["RecentLoginTime"] });
                 }
                 catch (Exception e)
                 {

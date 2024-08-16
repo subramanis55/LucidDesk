@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LucidDesk.UserControls.Common"
-             mc:Ignorable="d"  MouseEnter="ControlMouseEnter" MouseLeave="ControlMouseLeave"  Opacity ="0.9"
-             d:DesignHeight="200" d:DesignWidth="300">
+             mc:Ignorable="d"  MouseEnter="ControlMouseEnter" MouseLeave="ControlMouseLeave"  Opacity ="0.9"  
+            Height="180" Width="280" >
     <UserControl.Resources>
         <Style x:Key="MenuButton" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -41,7 +41,34 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-  
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="190" Storyboard.TargetProperty="Height" Duration="0:0:0.1"></DoubleAnimation>
+                                <DoubleAnimation To="290" Storyboard.TargetProperty="Width" Duration="0:0:0.1"></DoubleAnimation>
+                                <ThicknessAnimation To="5" Storyboard.TargetProperty="Margin" Duration="0:0:0.1"></ThicknessAnimation>
+                              
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation To="180"  Storyboard.TargetProperty="Height" Duration="0:0:0.2"></DoubleAnimation>
+                                <DoubleAnimation To="280"  Storyboard.TargetProperty="Width" Duration="0:0:0.2"></DoubleAnimation>
+                                <ThicknessAnimation To="10" Storyboard.TargetProperty="Margin" Duration="0:0:0.2"></ThicknessAnimation>
+                             
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
     <Border Name="MainContainer"  CornerRadius="8" Background="{Binding BackgroundColor}" >
         <Border.ContextMenu>
             <ContextMenu Style="{StaticResource CustomContextMenu}" Foreground="Black" >
@@ -52,6 +79,16 @@
                                 <Path VerticalAlignment="Stretch"    HorizontalAlignment="Stretch" Fill="Black" StrokeThickness="1.5" Data="M21 13h-8v8h-2v-8H3v-2h8V3h2v8h8v2z"></Path>
                             </Viewbox>
                             <TextBlock>Connect</TextBlock>
+                        </StackPanel>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Style="{StaticResource ContextMenuItem}" Click="ConnectWithPasswordClick" >
+                    <MenuItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Height="14" Width="14" Margin="10 0">
+                                <Path VerticalAlignment="Stretch" Stroke="Black"   HorizontalAlignment="Stretch"  StrokeThickness="1.5" Data="{StaticResource Password }"></Path>
+                            </Viewbox>
+                            <TextBlock>Connect with Password</TextBlock>
                         </StackPanel>
                     </MenuItem.Header>
                 </MenuItem>
@@ -114,7 +151,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0" >
-                    <local:RoundedImage x:Name="DeskUserProfileImage" Margin="4 6 0 0" Stretch="Uniform" ZoomFactor="2" Image="/LucidDesk;component/Resources/Screenshot (36).png"   Style="{StaticResource RoundedImage3}"  ></local:RoundedImage>
+                    <local:RoundedImage x:Name="DeskUserProfileImage" Margin="4 6 0 0" Stretch="Uniform" ZoomFactor="1" Image="/LucidDesk;component/Resources/Screenshot (36).png"   Style="{StaticResource RoundedImage3}"  ></local:RoundedImage>
                 </Grid>
                 <Border Grid.Column="1" Padding="5 0">
                     <Grid>
@@ -127,7 +164,7 @@
                     </Grid>
                 </Border>
                 <Border Grid.Column="2">
-                    <CheckBox Name="IsFavoriteCheckBox" IsChecked="{Binding IsFavorite, Mode=OneTime}">
+                    <CheckBox Name="IsFavoriteCheckBox"  IsChecked="{Binding IsFavorite, Mode=OneTime}">
                         <CheckBox.Style>
                             <Style TargetType="CheckBox">
                                 <Setter Property="Template">

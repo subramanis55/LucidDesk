@@ -47,18 +47,19 @@ namespace LucidDesk.UserControls.Common
 
         public void CreateNotification(string message, NotificationType notificationType)
         {
-            NotificationControl obj = new NotificationControl(message, notificationType);
+            NotificationControl obj = new NotificationControl(message, notificationType) { Left = x - 380 };
             obj.OnEnd += DisposeNotification;
-            obj.Show();
+            obj.Invoke();
+          
             NotifiactionList.Add(obj);
             ArrangeNotification();
         }
         public void CreateInviteRequestNotification(DeskConnectionInformation deskConnectionInformation)
         {
-            NotificationControl obj = new NotificationControl(deskConnectionInformation);
+            NotificationControl obj = new NotificationControl(deskConnectionInformation) { Left= x - 380 };
             obj.OnEnd += DisposeNotification;
             obj.OnClickInviteStatusGet+= OnClickInviteStatusGet;
-            obj.Show();
+            obj.Invoke();
             NotifiactionList.Add(obj);
             ArrangeNotification();
         }
