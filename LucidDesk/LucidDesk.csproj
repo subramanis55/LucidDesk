@@ -65,8 +65,9 @@
     <Reference Include="NAudio.WinMM, Version=2.2.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.WinMM.2.2.1\lib\netstandard2.0\NAudio.WinMM.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>D:\Softwares\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -100,6 +101,11 @@
     <Compile Include="FeaturesFuntionMangerClasses\ColorFeatures.cs" />
     <Compile Include="FeaturesFuntionMangerClasses\ColorReductionConverter.cs" />
     <Compile Include="FeaturesFuntionMangerClasses\NullToVisibilityConverter.cs" />
+    <Compile Include="Manager\Classes\DataSchema\ImageData.cs" />
+    <Compile Include="Manager\Classes\DataSchema\KeyData.cs" />
+    <Compile Include="Manager\Classes\DataSchema\ReponseData.cs" />
+    <Compile Include="Manager\Network\ClientNetworkManagerV1.cs" />
+    <Compile Include="Manager\Network\ServerNetworkManagerV1.cs" />
     <Compile Include="Screen\ConnectionAcceptWindow.xaml.cs">
       <DependentUpon>ConnectionAcceptWindow.xaml</DependentUpon>
     </Compile>
@@ -109,7 +115,7 @@
     <Compile Include="Screen\loginWindow.xaml.cs">
       <DependentUpon>loginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Manager\Classes\DeskConnectionInformation.cs" />
+    <Compile Include="Manager\Classes\DataSchema\DeskConnectionInformation.cs" />
     <Compile Include="Manager\Enum\Enum.cs" />
     <Compile Include="Manager\Files\FileManager.cs" />
     <Compile Include="Manager\Network\ClientNetworkManager.cs" />

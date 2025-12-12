@@ -66,7 +66,6 @@ namespace LucidDesk
                 DeskProfileManager.DeskProfiles = DeskProfileManager.DeskProfilesDictionary.Values.ToList();
                 StartServerConnection();
             }
-          
         }
 
         private void LoginWindowOnClickNext(object sender, Desk desk)

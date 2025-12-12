@@ -6,11 +6,17 @@ using System.Threading.Tasks;
 
 namespace LucidDesk.Manager.Enum
 {
- public enum AccessType{
-    Default,ScreenShareing,FullAccess
- }
+    public enum AccessType
+    {
+        Default, ScreenShareing, FullAccess
+    }
     public enum ConnectionType
     {
-        Invite,Connect,Password
+        Invite, Connect, Password
     }
+    public enum ReponseType
+    {
+        ConnectionReq, DisConnect, ImageData ,KeyData
+    }
+
 }

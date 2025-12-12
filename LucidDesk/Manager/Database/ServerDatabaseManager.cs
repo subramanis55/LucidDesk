@@ -17,7 +17,8 @@ namespace LucidDesk.Manager.Database
     public static class ServerDatabaseManager
     {
         public static string ServerHostname = "SPARE-A1";
-        public static string ServerIpaddress = "192.168.3.50";
+        //public static string ServerIpaddress = "192.168.3.50";
+        public static string ServerIpaddress = "localhost";
         public static string DatabaseName = "deskapplication";
         public static string DefalutDatabaseName = "mysql";
         public static string ServerDatabasePassword = "";
@@ -27,14 +28,16 @@ namespace LucidDesk.Manager.Database
         {
             if (!DatabaseConnection())
             {
-                string connectionstring = $"Server={ServerIpaddress};Port=3306;Uid=root;Pwd={ServerDatabasePassword};Database={DefalutDatabaseName};";
+                string connectionstring = $"Server={"localhost"};Port=3306;Uid=root;Pwd={ServerDatabasePassword};Database={DefalutDatabaseName};";
+                mySqlConnection = new MySqlConnection(connectionstring);
                 mySqlConnection.Open();
                 mySqlCommand.Connection = mySqlConnection;
                 mySqlCommand.CommandText = $"Create Database  {DatabaseName}";
+                DatabaseConnection();
                 mySqlCommand.ExecuteNonQuery();
                 mySqlCommand.CommandText = "Create table DeskProfile ( Id int Primary Key  AUTO_INCREMENT ,IPAddress varchar(100),IsFavorite bit,HostName varchar(100),ProfileName varchar(100),ProfileImage Text,DesktopImage Text,Password varchar(100),MacAddress varchar(100),OsName varchar(100),PcName  varchar(100),RecentLoginTime DateTime)AUTO_INCREMENT=1000000;";
                 mySqlCommand.ExecuteNonQuery();
-                DatabaseConnection();
+             
             }
         }
         private static bool DatabaseConnection()

@@ -2,6 +2,7 @@
 using LucidDesk.Manager.Classes;
 using LucidDesk.Manager.Database;
 using LucidDesk.Manager.Enum;
+using LucidDesk.Manager.Network;
 using LucidDesk.UserControls;
 using LucidDesk.UserControls.Common;
 using System;
@@ -27,7 +28,7 @@ namespace LucidDesk
         private ContextMenu MenuContext;
         public static UserControls.Common.NotificationManager NotificationManager = new UserControls.Common.NotificationManager();
         public static ClientNetworkManager ClientNetworkManager = new ClientNetworkManager();
-        public static ServerNetworkManager ServerNetworkManager = new ServerNetworkManager();
+        public static ServerNetworkManagerV1 ServerNetworkManager = new ServerNetworkManagerV1();
         public static DeskProfile SelectedDeskProfile { get; set; }
         private Thread listenerThread;
         private bool isConnected;

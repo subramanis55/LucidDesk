@@ -26,37 +26,49 @@ namespace LucidDesk.Manager
         {
             return Environment.MachineName;
         }
-        public static string GetPcUserName(){
+        public static string GetPcUserName()
+        {
             return Environment.UserName;
         }
-        public static string GetOsName(){
-          if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows)){
+        public static string GetOsName()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
                 return "Windows";
-          }
-           if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux)){
+            }
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
                 return "Linux";
             }
-            if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX)){
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
                 return "MacOs";
             }
             return "UnknownOs";
         }
         public static string GetMacAddress()
         {
-            var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var networkInterface in networkInterfaces)
+            foreach (var nic in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (networkInterface.OperationalStatus == OperationalStatus.Up)
+                // Skip virtual, tunnel, loopback interfaces
+                if (nic.NetworkInterfaceType == NetworkInterfaceType.Loopback ||
+                    nic.NetworkInterfaceType == NetworkInterfaceType.Tunnel ||
+                    nic.Description.ToLower().Contains("virtual") ||
+                    nic.Description.ToLower().Contains("vmware") ||
+                    nic.Description.ToLower().Contains("hyper-v"))
+                    continue;
+
+                string mac = nic.GetPhysicalAddress().ToString();
+
+                // Physical MAC is always 12+ characters
+                if (!string.IsNullOrEmpty(mac) && mac.Length >= 12)
                 {
-                    var macAddress = networkInterface.GetPhysicalAddress().ToString();
-                    if (!string.IsNullOrEmpty(macAddress))
-                    {
-                        return macAddress;
-                    }
+                    return mac;
                 }
             }
             return null;
         }
+
         public static string GetPcIPAddress(string hostName)
         {
             try
@@ -70,7 +82,7 @@ namespace LucidDesk.Manager
                     }
                 }
             }
-            catch(Exception e) { }
+            catch (Exception e) { }
             return "";
         }
         public static string GetIpAddresss(string macAddress)
