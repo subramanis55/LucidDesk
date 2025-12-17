@@ -4,15 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LucidDesk.UserControls.Common"
-      
+                                  SizeChanged="GridSizeChanged"
              mc:Ignorable="d" 
             d:DesignHeight="241.22" d:DesignWidth="323.902">
-    <Grid>
+    <Grid >
       
             <Grid  SizeChanged="GridSizeChanged" Background="Transparent" >
                 <Border   x:Name="WhiteBackground"  Height="{Binding WhiteBackgroundSize}" Opacity="{Binding  OpacityBackground}" Width="{Binding WhiteBackgroundSize}" Background="{Binding BackgroundColor}"  MouseEnter="ProfileMouseEnter"  MouseLeave="ProfileMouseLeave" MouseDown="BackgroundMouseDown" CornerRadius="{Binding WhiteBackgroundCorner}" >
                 </Border>
-            <local:RoundedImage x:Name="ProfileImage"  ZoomFactor="0.6" BorderBrush="DodgerBlue" BorderWidth="2"   Style="{StaticResource RoundedImage3}"  MouseEnter="ProfileMouseEnter" MouseLeave="ProfileMouseLeave" MouseDown="BackgroundMouseDown"  />
+            <local:RoundedImage x:Name="ProfileImage" MouseWheel="ProfileImage_MouseWheel"  ZoomFactor="0.8" BorderBrush="DodgerBlue" BorderWidth="2"   Style="{StaticResource RoundedImage3}"  MouseEnter="ProfileMouseEnter" MouseLeave="ProfileMouseLeave" MouseDown="BackgroundMouseDown"  />
             <!--<UserControl:RoundedImage x:Name="EditImage" Background="Gray"  Style="{StaticResource RoundedImage}" ZoomFacter="0.3" BorderBrush="#015CB3" BorderWidth="4" MouseEnter="ProfileMouseEnter" MouseLeave="ProfileMouseLeave" Image="Resources/user-20.png"></UserControl:RoundedImage>-->
             </Grid>
 

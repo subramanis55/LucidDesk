@@ -14,14 +14,13 @@
         <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="BorderThickness" Value="0"/>
-
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="BorderBox" 
                         BorderThickness="{TemplateBinding BorderThickness}" 
                         BorderBrush="{TemplateBinding BorderBrush}" 
-                        CornerRadius="3" 
+                        CornerRadius="4" 
                         Background="{TemplateBinding Background}">
                         <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>

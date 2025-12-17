@@ -179,7 +179,7 @@ namespace LucidDesk.UserControls
             //DeskProfile Control Create
             for (int i = 0; i < DeskProfileManager.DeskProfiles.Count; i++)
             {
-                if (("" + DeskProfileManager.DeskProfiles[i].Id).Contains(Textbox.Text) || DeskProfileManager.DeskProfiles[i].ProfileName.Contains(Textbox.Text))
+                if ((("" + DeskProfileManager.DeskProfiles[i].Id).Contains(Textbox.Text) || DeskProfileManager.DeskProfiles[i].ProfileName.Contains(Textbox.Text)))// && (DeskProfileManager.DeskProfiles[i].MacAddress != DeskProfileManager.UserDesk.MacAddress)) 
                 {
                     MenuItem menuItem = new MenuItem { Foreground = Brushes.Black, MinWidth = this.ActualWidth-3, Background = Brushes.White };
                     menuItem.Style = SuggestionsDeskMenuStyle;

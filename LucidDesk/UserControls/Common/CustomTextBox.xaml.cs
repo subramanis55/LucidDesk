@@ -29,10 +29,16 @@ namespace LucidDesk.UserControls.Common
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(CustomTextBox), new PropertyMetadata(""));
         public static readonly DependencyProperty TextPaddingProperty = DependencyProperty.Register("TextPadding", typeof(Thickness), typeof(CustomTextBox), new PropertyMetadata(new Thickness(10, 5, 10, 5)));
         public static readonly DependencyProperty TextboxBorderThicknessProperty =
-         DependencyProperty.Register("TextboxBorderThickness", typeof(Thickness), typeof(CustomTextBox), new PropertyMetadata(new Thickness(0)));
+         DependencyProperty.Register("TextboxBorderThickness", typeof(Thickness), typeof(CustomTextBox), new PropertyMetadata(new Thickness(0,0,0,2.2)));
 
         public static readonly DependencyProperty TextboxBorderBrushProperty =
-         DependencyProperty.Register("TextboxBorderBrush", typeof(Brush), typeof(CustomTextBox), new PropertyMetadata(new SolidColorBrush(Colors.White)));
+         DependencyProperty.Register("TextboxBorderBrush", typeof(Brush), typeof(CustomTextBox), new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
+
+        public static readonly DependencyProperty CornerRadiusProperty =
+          DependencyProperty.Register("CornerRadius", typeof(Thickness), typeof(CustomTextBox), new PropertyMetadata(new Thickness(4, 4, 4, 4)));
+
+        public static readonly DependencyProperty TextboxBackgroundProperty =
+            DependencyProperty.Register("TextboxBackground", typeof(Brush), typeof(CustomTextBox), new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
         public Brush TextboxBorderBrush
         {
@@ -41,13 +47,27 @@ namespace LucidDesk.UserControls.Common
         }
 
 
+
+        public Brush TextboxBackground
+        {
+            get { return (Brush)GetValue(TextboxBackgroundProperty); }
+            set { SetValue(TextboxBackgroundProperty, value); }
+        }
+
+  
+
+
+        public Thickness CornerRadius
+        {
+            get { return (Thickness)GetValue(CornerRadiusProperty); }
+            set { SetValue(CornerRadiusProperty, value); }
+        }
+
         public Thickness TextboxBorderThickness
         {
             get { return (Thickness)GetValue(TextboxBorderThicknessProperty); }
             set { SetValue(TextboxBorderThicknessProperty, value); }
         }
-       
-
 
         public Thickness TextPadding
         {
@@ -92,7 +112,8 @@ namespace LucidDesk.UserControls.Common
 
         private void TextboxLostFocus(object sender, RoutedEventArgs e)
         {
-            TextboxBorderThickness = new Thickness(0, 0, 0, 2);
+            TextboxBorderThickness = new Thickness(0, 0, 0, 2.2);
+            TextboxBorderBrush= Brushes.Gainsboro;
             if (string.IsNullOrEmpty(Textbox.Text)){
                 PlaceholderLabel.Visibility = Visibility.Visible;
             }
@@ -104,8 +125,9 @@ namespace LucidDesk.UserControls.Common
 
         private void TextboxGotFocus(object sender, RoutedEventArgs e)
         {
-            TextboxBorderThickness = new Thickness(0, 0, 0, 3);
-                PlaceholderLabel.Visibility = Visibility.Hidden;
+            TextboxBorderThickness = new Thickness(0, 0, 0, 2.7);
+            TextboxBorderBrush =(Brush)FindResource("MainColorBrush");
+            PlaceholderLabel.Visibility = Visibility.Hidden;
             GotFocus?.Invoke(this, e);
         }
 

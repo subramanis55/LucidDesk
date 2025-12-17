@@ -26,6 +26,7 @@ namespace LucidDesk.UserControls
         public event EventHandler<Desk> OnClickConnect;
         public event EventHandler<Desk> OnInviteConnect;
         public  event EventHandler OnClickIsFavorite;
+        public event EventHandler OnClickUnFavorite;
         private Desk desk;
         private bool isFavorite;
         public Desk Desk
@@ -103,12 +104,12 @@ namespace LucidDesk.UserControls
             InitializeComponent();
             DataContext = this;
             MainContainer.DataContext = Desk;
-            //IsFavoriteCheckBox.Unchecked += IsFavoriteCheckBoxIsChecked;
-            //IsFavoriteCheckBox.Checked += IsFavoriteCheckBoxIsChecked;
-            //Binding binding = new Binding("IsFavorite");
-            //binding.Source = Desk;
-            //binding.Mode = BindingMode.TwoWay;
-            //this.SetBinding(IsFavoriteProperty, binding);
+            IsFavoriteCheckBox.Unchecked += IsFavoriteCheckBoxUnChecked;
+            IsFavoriteCheckBox.Checked += IsFavoriteCheckBoxChecked;
+            Binding binding = new Binding("IsFavorite");
+            binding.Source = Desk;
+            binding.Mode = BindingMode.TwoWay;
+            this.SetBinding(IsFavoriteProperty, binding);
             this.Loaded += DeskProfileLoaded;
           
         }
@@ -120,8 +121,9 @@ namespace LucidDesk.UserControls
 
         private void DeskPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-           if(e.PropertyName== "IsFavorite"){
-                OnClickIsFavorite?.Invoke(this, e);
+           if(e.PropertyName== "IsFavorite"&&Desk.IsFavorite !=((Desk)sender).IsFavorite)
+            {
+                //OnClickIsFavorite?.Invoke(this, e);
             }
         }
 
@@ -131,13 +133,23 @@ namespace LucidDesk.UserControls
             Desk = desk;
             DataContext = this;
             Desk.OnClickDeleted += DeskOnClickDeleted;
-            //IsFavoriteCheckBox.Unchecked += IsFavoriteCheckBoxIsChecked;
-            //IsFavoriteCheckBox.Checked += IsFavoriteCheckBoxIsChecked;
-            //Binding binding = new Binding("IsFavorite");
-            //binding.Source = Desk;
-            //binding.Mode = BindingMode.OneWay;
-            //this.SetBinding(IsFavoriteProperty, binding);
+            IsFavoriteCheckBox.Unchecked += IsFavoriteCheckBoxUnChecked;
+            IsFavoriteCheckBox.Checked += IsFavoriteCheckBoxChecked;
+            Binding binding = new Binding("IsFavorite");
+            binding.Source = Desk;
+            binding.Mode = BindingMode.OneWay;
+            this.SetBinding(IsFavoriteProperty, binding);
 
+        }
+
+        private void IsFavoriteCheckBoxChecked(object sender, RoutedEventArgs e)
+        {
+            OnClickIsFavorite?.Invoke(this,EventArgs.Empty);
+        }
+
+        private void IsFavoriteCheckBoxUnChecked(object sender, RoutedEventArgs e)
+        {
+            OnClickUnFavorite?.Invoke(this, EventArgs.Empty);
         }
 
         private void DeskOnClickDeleted(object sender, EventArgs e)
@@ -157,8 +169,9 @@ namespace LucidDesk.UserControls
 
         private void IsFavoriteIconMouseDown(object sender, MouseButtonEventArgs e)
         {
+        
             Desk.IsFavorite = !Desk.IsFavorite;
-            //OnClickIsFavorite?.Invoke(this, EventArgs.Empty);
+            
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -215,7 +228,7 @@ namespace LucidDesk.UserControls
         }
 
         private void IsFavoriteClick(object sender, RoutedEventArgs e)
-        {
+        {   if(IsFavorite)
             Desk.IsFavorite = !Desk.IsFavorite;
         }
 

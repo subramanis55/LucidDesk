@@ -38,9 +38,9 @@ namespace LucidDesk.FeaturesFuntionMangerClasses
             if (value is SolidColorBrush brush)
             {
                 Color originalColor = brush.Color;
-                byte newR = (byte)Math.Max(0, originalColor.R + 20);
-                byte newG = (byte)Math.Max(0, originalColor.G + 20);
-                byte newB = (byte)Math.Max(0, originalColor.B + 20);
+                byte newR = (byte)Math.Max(0, originalColor.R + 15);
+                byte newG = (byte)Math.Max(0, originalColor.G + 15);
+                byte newB = (byte)Math.Max(0, originalColor.B + 15);
                 return new SolidColorBrush( Color.FromArgb(originalColor.A, newR, newG, newB));
             }
             return value;

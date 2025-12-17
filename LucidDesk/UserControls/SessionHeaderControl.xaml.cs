@@ -66,8 +66,13 @@ namespace LucidDesk.UserControls
 
         private void CancelMouseDown(object sender, RoutedEventArgs e)
         {
-           
-            OnClickClose?.Invoke(this, EventArgs.Empty);
+        try{
+                OnClickClose?.Invoke(this, EventArgs.Empty);
+            }
+            catch{
+
+            }
+            
         }
     }
 }

@@ -43,16 +43,22 @@ namespace LucidDesk.Manager
         }
         public static string GetMacAddress()
         {
-            var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var networkInterface in networkInterfaces)
+            foreach (var nic in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (networkInterface.OperationalStatus == OperationalStatus.Up)
+                // Skip virtual, tunnel, loopback interfaces
+                if (nic.NetworkInterfaceType == NetworkInterfaceType.Loopback ||
+                    nic.NetworkInterfaceType == NetworkInterfaceType.Tunnel ||
+                    nic.Description.ToLower().Contains("virtual") ||
+                    nic.Description.ToLower().Contains("vmware") ||
+                    nic.Description.ToLower().Contains("hyper-v"))
+                    continue;
+
+                string mac = nic.GetPhysicalAddress().ToString();
+
+                // Physical MAC is always 12+ characters
+                if (!string.IsNullOrEmpty(mac) && mac.Length >= 12)
                 {
-                    var macAddress = networkInterface.GetPhysicalAddress().ToString();
-                    if (!string.IsNullOrEmpty(macAddress))
-                    {
-                        return macAddress;
-                    }
+                    return mac;
                 }
             }
             return null;

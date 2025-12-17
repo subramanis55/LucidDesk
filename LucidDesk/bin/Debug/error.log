@@ -1,0 +1,29 @@
+17-12-2025 06:38:50: System.ComponentModel.Win32Exception (0x80004005): Invalid window handle
+   at MS.Win32.SafeNativeMethods.SetTimer(HandleRef hWnd, Int32 nIDEvent, Int32 uElapse)
+   at System.Windows.Threading.Dispatcher.SetWin32Timer(Int32 dueTimeInTicks)
+   at System.Windows.Threading.Dispatcher.UpdateWin32TimerFromDispatcherThread(Object unused)
+   at System.Windows.Threading.Dispatcher.UpdateWin32Timer()
+   at System.Windows.Threading.Dispatcher.AddTimer(DispatcherTimer timer)
+   at System.Windows.Threading.DispatcherTimer.Restart()
+   at System.Windows.Threading.DispatcherTimer.Start()
+   at Microsoft.VisualStudio.DesignTools.WpfTap.WpfVisualTreeService.VisualTree.RootSourceFinder.OnHwndShow(IntPtr hWinEventHook, UInt32 eventType, IntPtr hwnd, Int32 idObject, Int32 idChild, UInt32 dwEventThread, UInt32 dwmsEventTime)
+
+17-12-2025 07:11:55: System.AggregateException: A Task's exception(s) were not observed either by Waiting on the Task or accessing its Exception property. As a result, the unobserved exception was rethrown by the finalizer thread. ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at LucidDesk.Manager.ServerNetworkManager.HandleReceivedData(TcpClient client, Data data) in F:\Lucid\LucidDesk_Latest\LucidDesk\Manager\Network\ServerNetworkManager.cs:line 982
+   at LucidDesk.Manager.ServerNetworkManager.<HandleClientMessages>d__50.MoveNext() in F:\Lucid\LucidDesk_Latest\LucidDesk\Manager\Network\ServerNetworkManager.cs:line 1091
+   --- End of inner exception stack trace ---
+---> (Inner Exception #0) System.NullReferenceException: Object reference not set to an instance of an object.
+   at LucidDesk.Manager.ServerNetworkManager.HandleReceivedData(TcpClient client, Data data) in F:\Lucid\LucidDesk_Latest\LucidDesk\Manager\Network\ServerNetworkManager.cs:line 982
+   at LucidDesk.Manager.ServerNetworkManager.<HandleClientMessages>d__50.MoveNext() in F:\Lucid\LucidDesk_Latest\LucidDesk\Manager\Network\ServerNetworkManager.cs:line 1091<---
+
+
+17-12-2025 07:11:56: System.ComponentModel.Win32Exception (0x80004005): Invalid window handle
+   at MS.Win32.SafeNativeMethods.SetTimer(HandleRef hWnd, Int32 nIDEvent, Int32 uElapse)
+   at System.Windows.Threading.Dispatcher.SetWin32Timer(Int32 dueTimeInTicks)
+   at System.Windows.Threading.Dispatcher.UpdateWin32TimerFromDispatcherThread(Object unused)
+   at System.Windows.Threading.Dispatcher.UpdateWin32Timer()
+   at System.Windows.Threading.Dispatcher.AddTimer(DispatcherTimer timer)
+   at System.Windows.Threading.DispatcherTimer.Restart()
+   at System.Windows.Threading.DispatcherTimer.Start()
+   at Microsoft.VisualStudio.DesignTools.WpfTap.WpfVisualTreeService.VisualTree.RootSourceFinder.OnHwndShow(IntPtr hWinEventHook, UInt32 eventType, IntPtr hwnd, Int32 idObject, Int32 idChild, UInt32 dwEventThread, UInt32 dwmsEventTime)
+

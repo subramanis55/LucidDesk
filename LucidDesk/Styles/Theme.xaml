@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:LucidDesk.Styles">
     <Color x:Key="MainColor">#3475FF</Color>
     <Color x:Key="SubColor">#FAFAFA</Color>
-    <!--#F5F5FA-->
+
     <Color x:Key="IconColor">#808080</Color>
     <Color x:Key="DefaultIconColor">#808080</Color>
     <SolidColorBrush x:Key="MainColorBrush" Color="{StaticResource MainColor}"></SolidColorBrush>

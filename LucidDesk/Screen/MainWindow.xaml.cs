@@ -1,17 +1,21 @@
 ﻿using LucidDesk.Manager;
 using LucidDesk.Manager.Classes;
+using LucidDesk.Manager.Classes.DataSchema;
 using LucidDesk.Manager.Database;
 using LucidDesk.Manager.Enum;
 using LucidDesk.UserControls;
 using LucidDesk.UserControls.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -25,38 +29,56 @@ namespace LucidDesk
     public partial class MainWindow : Window
     {
         private ContextMenu MenuContext;
+
         public static UserControls.Common.NotificationManager NotificationManager = new UserControls.Common.NotificationManager();
+
         public static ClientNetworkManager ClientNetworkManager = new ClientNetworkManager();
+
         public static ServerNetworkManager ServerNetworkManager = new ServerNetworkManager();
+
         public static DeskProfile SelectedDeskProfile { get; set; }
+
         private Thread listenerThread;
+
         private bool isConnected;
+
         public bool IsConnected
         {
             set
             {
                 isConnected = value;
-            
+
             }
             get
             {
                 return isConnected;
 
-              
+
             }
         }
+
+        //Connection window
+        private BitmapImage _gifImage;
+
+        private DispatcherTimer ConnectionGifTimer;
+
+        private int _currentFrame = 0;
+
+        private BitmapFrame[] _frames;
+
+        //SettingPage
+        CheckBox SelectedSettingPageButton = null;
+
         public MainWindow()
         {
 
             InitializeComponent();
-
-
-
         }
 
         public void Load()
         {
             Loaded += MainWindowLoaded;
+            this.Closed += (sender, e) => Environment.Exit(0);
         }
 
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
@@ -76,7 +98,6 @@ namespace LucidDesk
 
         }
 
-
         private void SetUpCheck()
         {
 
@@ -89,87 +110,97 @@ namespace LucidDesk
                 {
                     if (deskProfileList[i].RecentLoginTime.Month == DateTime.Now.Month && deskProfileList[i].RecentLoginTime.Year == DateTime.Now.Year)
                     {
-                        DeskProfile deskProfile = new DeskProfile()
-                        {
-                           
-                            Foreground = Brushes.White,
-                            Margin = new Thickness(10)
-                        };
-                        deskProfile.Desk = deskProfileList[i];
-                        deskProfile.OnClickConnect += DeskProfileOnclickConnect;
-                        deskProfile.OnInviteConnect += DeskProfileOnInviteConnect;
-                        deskProfile.OnClickIsFavorite += DeskProfileOnClickIsFavorite;
+                        DeskProfile deskProfile = DeskProfileCreate(deskProfileList[i]);
                         RecentSessionsDeskControlContainer.Children.Add(deskProfile);
                     }
                     if (deskProfileList[i].IsFavorite)
                     {
-                        DeskProfile deskProfile = new DeskProfile()
-                        {
-
-                            Foreground = Brushes.White,
-                            Margin = new Thickness(10)
-                        };
-                        deskProfile.Desk = deskProfileList[i];
-                        deskProfile.OnClickConnect += DeskProfileOnclickConnect;
-                        deskProfile.OnClickIsFavorite += DeskProfileOnClickIsFavorite;
-                        deskProfile.OnInviteConnect += DeskProfileOnInviteConnect;
-                        FavoritesDeskControlContainer.Children.Add(deskProfile);
-
+                        FavoritesDeskControlContainer.Children.Add(DeskProfileCreate(deskProfileList[i]));
                     }
-                    DeskProfile deskProfileDicoverd = new DeskProfile()
-                    {
-                       
-                        Foreground = Brushes.White,
-                        Margin = new Thickness(10)
-                    };
-                    deskProfileDicoverd.Desk = deskProfileList[i];
-                    deskProfileDicoverd.OnClickConnect += DeskProfileOnclickConnect;
-                    deskProfileDicoverd.OnClickIsFavorite += DeskProfileOnClickIsFavorite;
-                    deskProfileDicoverd.OnInviteConnect += DeskProfileOnInviteConnect;
+                    DeskProfile deskProfileDicoverd = DeskProfileCreate(deskProfileList[i]);
                     DiscoveredDeskControlContainer.Children.Add(deskProfileDicoverd);
                     RecentSessionsDeskControlContainer.MaxHeight = 210;
                     FavoritesDeskControlContainer.MaxHeight = 210;
                     DiscoveredDeskControlContainer.MaxHeight = 210;
+                    deskProfileList[i].PropertyChanged += DeskPropertyChanged;
                 }
                 else
                 {
                     TextblockId.Text = "" + deskProfileList[i].Id;
                 }
+
             }
         }
 
+        private void DeskPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Desk desk = (Desk)(sender);
+            if (e.PropertyName == "IsFavorite")
+            {
+                if (!desk.IsFavorite)
+                {
+                    foreach (var deskProfileObjInFavorites in FavoritesDeskControlContainer.Children)
+                    {
+                        if (((DeskProfile)deskProfileObjInFavorites).Desk.Id == desk.Id)
+                        {
+                            ((DeskProfile)deskProfileObjInFavorites).Dispose();
+                            FavoritesDeskControlContainer.Children.Remove((DeskProfile)deskProfileObjInFavorites);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    if (desk.IsFavorite && !DeskProfileAlreadyExitsInIsFavorite(desk))
+                    {
+                        DeskProfile deskProfileNewObj = DeskProfileCreate(desk);
+                        FavoritesDeskControlContainer.Children.Insert(0, deskProfileNewObj);
+                    }
+                }
+            }
+
+        }
+
+        private DeskProfile DeskProfileCreate(Desk desk)
+        {
+            DeskProfile deskProfile = new DeskProfile()
+            {
+                Foreground = Brushes.White,
+                Margin = new Thickness(10)
+            };
+            deskProfile.Desk = desk;
+            deskProfile.OnClickConnect += DeskProfileOnclickConnect;
+            deskProfile.OnClickIsFavorite += DeskProfileOnClickIsFavorite;
+            deskProfile.OnClickUnFavorite += DeskProfileOnClickUnFavorite;
+            deskProfile.OnInviteConnect += DeskProfileOnInviteConnect;
+
+            return deskProfile;
+        }
+
+        private void DeskProfileOnClickUnFavorite(object sender, EventArgs e)
+        {
+
+        }
+
+        private bool DeskProfileAlreadyExitsInIsFavorite(Desk desk)
+        {
+
+            for (int i = 0; i < FavoritesDeskControlContainer.Children.Count; i++)
+            {
+                if (((DeskProfile)FavoritesDeskControlContainer.Children[i]).Desk.Id == desk.Id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        DeskProfile prevDeskProfile;
         private void DeskProfileOnClickIsFavorite(object sender, EventArgs e)
         {
             DeskProfile deskProfile = (DeskProfile)(sender);
-            if (deskProfile.Desk.IsFavorite)
-            {
 
-                DeskProfile deskProfileNewObj = new DeskProfile(deskProfile.Desk)
-                {
-                   
-                    Foreground = Brushes.White,
-                  
-                };
 
-                deskProfileNewObj.OnClickConnect += DeskProfileOnclickConnect;
-                deskProfileNewObj.OnClickIsFavorite += DeskProfileOnClickIsFavorite;
-                deskProfileNewObj.OnInviteConnect += DeskProfileOnInviteConnect;
-                FavoritesDeskControlContainer.Children.Insert(0, deskProfileNewObj);
-            }
-            else
-            {
-
-                foreach (var deskProfileObjInFavorites in FavoritesDeskControlContainer.Children)
-                {
-                    if (((DeskProfile)deskProfileObjInFavorites).DeskId == deskProfile.DeskId)
-                    {
-                        ((DeskProfile)deskProfileObjInFavorites).Dispose();
-                        FavoritesDeskControlContainer.Children.Remove((DeskProfile)deskProfileObjInFavorites);
-                        break;
-                    }
-                }
-
-            }
         }
 
         //Invite and connect Part
@@ -206,12 +237,10 @@ namespace LucidDesk
                 {
                     DeskProfileManager.DeskProfilesDictionary[deskConnectionInformation.SenderDesk.Id + ""].RecentLoginTime = DateTime.Now;
                     RecentSessionAdd(deskConnectionInformation.SenderDesk);
-                    Task.Run(() => ClientNetworkManager.ConnectToServer());
+                    Task.Run(() => ClientNetworkManager.ConnectToServer(deskConnectionInformation));
                 }
             }
         }
-
-
 
         private void InviteWindowOnClickInviteButton(object sender, DeskConnectionInformation deskConnectionInformation)
         {
@@ -224,13 +253,13 @@ namespace LucidDesk
 
 
         }
+
         private void InviteButtonClick(object sender, RoutedEventArgs e)
         {
             InviteWindow inviteWindow = new InviteWindow();
             inviteWindow.OnClickInviteButton += InviteWindowOnClickInviteButton;
             inviteWindow.ShowDialog();
         }
-
 
         public void MethodSubscribe()
         {
@@ -267,7 +296,7 @@ namespace LucidDesk
 
         private void ClientNetworkManagerConnectionEstabishFailInvoke(object sender, EventArgs e)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.BeginInvoke(new Action(() =>
             {
                 if (MainTabControl.SelectedItem == ConnectionSharePage)
                 {
@@ -275,32 +304,54 @@ namespace LucidDesk
                     ConnectionGifTimer.Stop();
                     NotificationManager.CreateNotification("Connection Establish fail", NotificationType.Information);
                 }
-            });
-           
+            }));
+
         }
 
         private void ServerNetworkManagerConnectRequestStatusInvoke(object sender, DeskConnectionInformation deskConnectionInformation)
         {
+            if (deskConnectionInformation.statusUpdate == false)
+            {
+
+            }
             if (deskConnectionInformation.InviteStatus)
             {
-                
+
                 ClientNetworkManager.DeskConnectionInformation = deskConnectionInformation;
-                
-                Task.Run(() => {
-                    DeskProfileManager.DeskProfilesDictionary[deskConnectionInformation.ReceiverDesk.Id + ""].RecentLoginTime = DateTime.Now;
-                    RecentSessionAdd(deskConnectionInformation.ReceiverDesk);
-                    ClientNetworkManager.ConnectToServer(); });
+
+                Task.Run(() =>
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        DeskProfileManager.DeskProfilesDictionary[deskConnectionInformation.ReceiverDesk.Id + ""].RecentLoginTime = DateTime.Now;
+                        RecentSessionAdd(deskConnectionInformation.ReceiverDesk);
+                        try
+                        {
+                            ClientNetworkManager.ConnectToServer(deskConnectionInformation);
+                        }
+                        catch
+                        {
+
+                        }
+                    });
+                });
             }
             else
             {
-                Dispatcher.Invoke(() => { NotificationManager.CreateNotification("(" + deskConnectionInformation.ReceiverDesk.Id + ") " + deskConnectionInformation.ReceiverDesk.ProfileName + " Rejected Connection \n Request", NotificationType.Information); });
+                Dispatcher.Invoke(() =>
+                {
+                    MainTabControl.SelectedItem = HomePage;
+                    ConnectionGifTimer.Stop();
+                    NotificationManager.CreateNotification("(" + deskConnectionInformation.ReceiverDesk.Id + ") " + deskConnectionInformation.ReceiverDesk.ProfileName + " Rejected Connection \n Request", NotificationType.Information);
+                });
             }
 
         }
-         private void RecentSessionAdd(Desk desk){
+
+        private void RecentSessionAdd(Desk desk)
+        {
             DeskProfile deskProfile = new DeskProfile()
             {
-
                 Foreground = Brushes.White,
                 Margin = new Thickness(10)
             };
@@ -310,10 +361,18 @@ namespace LucidDesk
             deskProfile.OnClickIsFavorite += DeskProfileOnClickIsFavorite;
             RecentSessionsDeskControlContainer.Children.Add(deskProfile);
         }
+
         private void ConnectAcceptWindowOnClickGetStatus(object sender, DeskConnectionInformation deskConnectionInformation)
         {
             ((Window)(sender)).Close();
+            if (!DeskProfileManager.DeskProfilesDictionary.ContainsKey("" + deskConnectionInformation.SenderDesk.Id))
+            {
+                DeskProfileManager.CreateDeskProfiledata(deskConnectionInformation.SenderDesk);
+                DeskProfileManager.DeskProfilesDictionary.Add("" + deskConnectionInformation.SenderDesk.Id, deskConnectionInformation.SenderDesk);
+                DeskProfileManager.DeskProfiles.Add(deskConnectionInformation.SenderDesk);
+            }
             ClientNetworkManager.DeskConnectionInformation = deskConnectionInformation;
+            ClientNetworkManager.DeskConnectionInformation.statusUpdate = true;
             ClientNetworkManager.ClientIpaddress = deskConnectionInformation.SenderDesk.IPAddress;
             ClientNetworkManager.InviteRequestSent(deskConnectionInformation);
 
@@ -322,10 +381,8 @@ namespace LucidDesk
         private void ServerNetworkManagerConnectRequestReceivedInvoke(object sender, DeskConnectionInformation deskConnectionInformation)
         {
             try { deskConnectionInformation.ReceiverDesk.DesktopImage.Freeze(); } catch { }
-
             try { deskConnectionInformation.ReceiverDesk.ProfileImage.Freeze(); } catch { }
             try { deskConnectionInformation.SenderDesk.DesktopImage.Freeze(); } catch { }
-
             try { deskConnectionInformation.SenderDesk.ProfileImage.Freeze(); } catch { }
             Dispatcher.Invoke(() =>
             {
@@ -360,7 +417,12 @@ namespace LucidDesk
         private void SessionTabHeaderOnClickClose(object sender, EventArgs e)
         {
             //ClientNetworkManagerDisConnectedToSeverInvoke(this, EventArgs.Empty);
-            ClientNetworkManager.ConnectionClose();
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ClientNetworkManager.ConnectionClose();
+            }
+            ));
+
         }
 
         private void MainWindowClosed(object sender, EventArgs e)
@@ -376,7 +438,8 @@ namespace LucidDesk
 
         private void ClientNetworkManagerDisConnectedToSeverInvoke(object sender, EventArgs e)
         {
-            Dispatcher.Invoke(() =>
+
+            Dispatcher.BeginInvoke(new Action(() =>
             {
                 MainTabControl.SelectedItem = HomePage;
                 SearchBoxControl.Text = "";
@@ -386,11 +449,12 @@ namespace LucidDesk
                 SessionTabHeader.Header = "New session";
                 ScreenImage.Focus();
                 NewSessionCreateButton.Focus();
-            });
+            }));
         }
 
-        private void ClientNetworkManagerScreenShareUpdateInvoke(object sender, BitmapImage e)
+        private void ClientNetworkManagerScreenShareUpdateInvoke(object sender, DeskImageData e)
         {
+
             Dispatcher.Invoke(() =>
             {
                 if (MainTabControl.SelectedItem == ConnectionSharePage)
@@ -398,13 +462,13 @@ namespace LucidDesk
                     MainTabControl.SelectedItem = ScreenSharePage;
                     ConnectionGifTimer.Stop();
                 }
-                ScreenImage.Source = e;
+                ScreenImage.Source = e.Image;
             });
         }
 
         private void ClientNetworkManagerConnectedToSeverInvoke(object sender, EventArgs e)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.BeginInvoke(new Action(() =>
             {
                 MainTabControl.SelectedItem = ScreenSharePage;
                 SearchBoxControl.Text = "" + ClientNetworkManager.deskConnectionInformation.ReceiverDesk.Id;
@@ -413,7 +477,7 @@ namespace LucidDesk
                 ScreenImage.Focus();
                 SessionTabHeader.IsCloseButtonVisible = true;
                 SessionTabHeader.Header = "" + ClientNetworkManager.deskConnectionInformation.ReceiverDesk.Id;
-            });
+            }));
         }
 
         private void DeskProfileOnclickConnect(object sender, Desk desk)
@@ -424,10 +488,12 @@ namespace LucidDesk
             DeskConnectionInformation deskConnectionInformation = new DeskConnectionInformation() { AccessType = AccessType.FullAccess, ConnectionType = ConnectionType.Connect, AudioAccess = true, ClipboardAccess = true, KeyboardAccess = true, MouseAccess = true, SenderDesk = DeskProfileManager.UserDesk, ReceiverDesk = desk };
 
             ClientNetworkManager.DeskConnectionInformation = deskConnectionInformation;
-            Task.Run(() =>
-            {
-                ClientNetworkManager.InviteRequestSent(deskConnectionInformation);
-            });
+            ClientNetworkManager.ConnectToServer(deskConnectionInformation);
+            //should undo
+            //Task.Run(() =>
+            //{
+            //    ClientNetworkManager.InviteRequestSent(deskConnectionInformation);
+            //});
 
             //ClientNetworkManager.ClientIpaddress = SystemInformationManager.GetPcIPAddress(SelectedDeskProfile.Desk.HostName);
             //if (SelectedDeskProfile.Desk.IPAddress != ClientNetworkManager.ClientIpaddress)
@@ -505,6 +571,7 @@ namespace LucidDesk
             e.Handled = true;
 
         }
+
         private void MenuContextShow()
         {
             MenuContext.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -533,7 +600,7 @@ namespace LucidDesk
         public void ScreenImage_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             Point position = e.GetPosition(this);
-            ClientNetworkManager.SendMouseScrollEvent("MouseScroll", position.X, position.Y, e.Delta);
+            ClientNetworkManager.SendMouseScrollEvent(ControlKeyType.Scroll, position.X, position.Y, e.Delta);
         }
 
         private void ScreenImage_MouseDown(object sender, MouseButtonEventArgs e)
@@ -541,7 +608,7 @@ namespace LucidDesk
             if (ClientNetworkManager.isConnected)
             {
                 Point position = e.GetPosition(ScreenImage);
-                ClientNetworkManager.SendMouseEvent(position, "MouseDown", ScreenImage.ActualWidth, ScreenImage.ActualHeight);
+                ClientNetworkManager.SendMouseEvent(ControlKeyType.MouseDown, position, ScreenImage.ActualWidth, ScreenImage.ActualHeight);
             }
         }
 
@@ -550,7 +617,7 @@ namespace LucidDesk
             if (ClientNetworkManager.isConnected && e.LeftButton == MouseButtonState.Pressed)
             {
                 Point position = e.GetPosition(ScreenImage);
-                ClientNetworkManager.SendMouseEvent(position, "MouseMove", ScreenImage.ActualWidth, ScreenImage.ActualHeight);
+                ClientNetworkManager.SendMouseEvent(ControlKeyType.MouseMove, position, ScreenImage.ActualWidth, ScreenImage.ActualHeight);
             }
         }
 
@@ -559,7 +626,7 @@ namespace LucidDesk
             if (ClientNetworkManager.isConnected)
             {
                 Point position = e.GetPosition(ScreenImage);
-                ClientNetworkManager.SendMouseEvent(position, "MouseUp", ScreenImage.ActualWidth, ScreenImage.ActualHeight);
+                ClientNetworkManager.SendMouseEvent(ControlKeyType.MouseUp, position, ScreenImage.ActualWidth, ScreenImage.ActualHeight);
             }
         }
 
@@ -574,19 +641,20 @@ namespace LucidDesk
             {
 
             }
-            ClientNetworkManager.SendKeyEvent(e.Key, "KeyDown");
+            ClientNetworkManager.SendKeyEvent(ControlKeyType.KeyDown, e.Key);
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            ClientNetworkManager.SendKeyEvent(e.Key, "KeyUp");
+            ClientNetworkManager.SendKeyEvent(ControlKeyType.KeyUp, e.Key);
         }
+
         private void ScreenImage_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (ClientNetworkManager.isConnected)
             {
                 Point position = e.GetPosition(ScreenImage);
-                ClientNetworkManager.SendMouseRightEvent(position, "MouseRightDown", ScreenImage.ActualWidth, ScreenImage.ActualHeight);
+                ClientNetworkManager.SendMouseRightEvent(ControlKeyType.MouseRightDown, position, ScreenImage.ActualWidth, ScreenImage.ActualHeight);
             }
         }
 
@@ -595,7 +663,7 @@ namespace LucidDesk
             if (ClientNetworkManager.isConnected)
             {
                 Point position = e.GetPosition(ScreenImage);
-                ClientNetworkManager.SendMouseRightEvent(position, "MouseRightUp", ScreenImage.ActualWidth, ScreenImage.ActualHeight);
+                ClientNetworkManager.SendMouseRightEvent(ControlKeyType.MouseRightDown, position, ScreenImage.ActualWidth, ScreenImage.ActualHeight);
             }
         }
 
@@ -644,42 +712,32 @@ namespace LucidDesk
 
         private void NewSessionCreateButtonOnClick(object sender, RoutedEventArgs e)
         {
+
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
 
-
-
-
-        //Connection window
-        private BitmapImage _gifImage;
-        private DispatcherTimer ConnectionGifTimer;
-        private int _currentFrame = 0;
-        private BitmapFrame[] _frames;
-
         private void LoadAnimatedGif(string fileName)
         {
-            //var uri = new Uri("C:/Users/Lucid/Downloads/loadingGif.gif", UriKind.RelativeOrAbsolute);
-            //var decoder = new GifBitmapDecoder(uri, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-            //_frames = decoder.Frames.ToArray();
-            //ConnectionGifTimer = new DispatcherTimer();
-            //ConnectionGifTimer.Interval = TimeSpan.FromMilliseconds(50); // Adjust the interval to control the animation speed
-            //ConnectionGifTimer.Tick += (s, e) =>
-            //{
-            //    _currentFrame = (_currentFrame + 1) % _frames.Length;
-            //    AnimatedGifImage.Source = _frames[_currentFrame];
-            //};
-            var uri = new Uri("pack://application:,,,/LucidDesk;component/Resources/loadingGif.gif", UriKind.Absolute);
-            var decoder = new GifBitmapDecoder(uri, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-            _frames = decoder.Frames.ToArray();
-
-            ConnectionGifTimer = new DispatcherTimer();
-            ConnectionGifTimer.Interval = TimeSpan.FromMilliseconds(50); // Adjust the interval to control the animation speed
-            ConnectionGifTimer.Tick += (s, e) =>
+            try
             {
-                _currentFrame = (_currentFrame + 1) % _frames.Length;
-                AnimatedGifImage.Source = _frames[_currentFrame];
-            };
+                var uri = new Uri("pack://application:,,,/LucidDesk;component/Resources/loadingGif.gif", UriKind.Absolute);
+                var decoder = new GifBitmapDecoder(uri, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+                _frames = decoder.Frames.ToArray();
+
+                ConnectionGifTimer = new DispatcherTimer();
+                ConnectionGifTimer.Interval = TimeSpan.FromMilliseconds(50); // Adjust the interval to control the animation speed
+                ConnectionGifTimer.Tick += (s, e) =>
+                {
+                    _currentFrame = (_currentFrame + 1) % _frames.Length;
+                    AnimatedGifImage.Source = _frames[_currentFrame];
+                };
+            }
+            catch (Exception e)
+            {
+
+            }
+
 
         }
 
@@ -697,20 +755,25 @@ namespace LucidDesk
             });
         }
 
-
-        //SettingPage
-        CheckBox SelectedSettingPageButton = null;
         private void SettingPageTabButtonClick(object sender, RoutedEventArgs e)
         {
             ((CheckBox)sender).IsChecked = true;
             if (SelectedSettingPageButton != null)
                 SelectedSettingPageButton.IsChecked = false;
             SelectedSettingPageButton = ((CheckBox)sender);
+            SelectedSettingPageButton.IsChecked = true;
+            if (SelectedSettingPageButton == AccountButton)
+                settingPageTabControl.SelectedItem = ProfilePage;
+            if (SelectedSettingPageButton == HelpButton)
+                settingPageTabControl.SelectedItem = HelpPage;
         }
 
         private void SettingPageClick(object sender, RoutedEventArgs e)
         {
+
             MainTabControl.SelectedItem = SettingPage;
+            settingPageTabControl.SelectedItem = ProfilePage;
+            SelectedSettingPageButton = AccountButton;
         }
 
         private void HeaderSessionSwitchClick(object sender, MouseButtonEventArgs e)
@@ -723,6 +786,41 @@ namespace LucidDesk
             {
                 MainTabControl.SelectedItem = HomePage;
             }
+        }
+
+        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void MainTabControlSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MainTabControl.SelectedItem == SettingPage)
+            {
+                ProfilePicture.Image = DeskProfileManager.UserDesk.ProfileImage;
+                ProfilePageUserNameTextBox.Textbox.Text = DeskProfileManager.UserDesk.ProfileName;
+                ProfilePageUserDeskOsName.Content = DeskProfileManager.UserDesk.OsName;
+                ProfilePageUserDeskId.Content = "" + DeskProfileManager.UserDesk.Id;
+                ProfilePageUserDeskName.Content = "" + DeskProfileManager.UserDesk.PcName;
+            }
+        }
+
+        private void HelpButtonClick(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)(sender);
+            checkBox.IsChecked = true;
+            SelectedSettingPageButton.IsChecked = false;
+
+        }
+
+        private void HelpButton_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void ButtonPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

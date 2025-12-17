@@ -11,21 +11,24 @@ namespace LucidDesk.Manager.Classes
     public class DeskConnectionInformation
     {
         private AccessType accessType;
+
         private ConnectionType connectionType;
         public Desk ReceiverDesk { get; set; }
         public Desk SenderDesk { get; set; }
         public bool AudioAccess { get; set; }
+
         public bool VideoAccess = true;
         public bool ClipboardAccess { get; set; }
-        public bool KeyboardAccess{ get; set;}
+        public bool KeyboardAccess { get; set; }
         public bool MouseAccess { get; set; }
-        public bool InviteStatus { get; set;}
+        public bool InviteStatus { get; set; }
+        public bool statusUpdate { get; set; }
         public AccessType AccessType
         {
             set
             {
                 accessType = value;
-                
+
             }
             get
             {

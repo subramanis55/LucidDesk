@@ -166,8 +166,10 @@ namespace LucidDesk.UserControls.Common
 
         private void GridSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            WhiteBackgroundCorner = Height;
+           
+                WhiteBackgroundCorner = Height;
             WhiteBackgroundSize = Height;
+            ProfileImage.InvalidateVisual();
         }
 
         private void BackgroundMouseDown(object sender, MouseButtonEventArgs e)
@@ -179,6 +181,11 @@ namespace LucidDesk.UserControls.Common
                 dialog.ShowDialog();
                 ProfileFilePath = dialog.FileName;
             }
+        }
+
+        private void ProfileImageMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+      
         }
     }
 }

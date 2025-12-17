@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<Settings>
+  <ServerHostName />
+  <ServerPort>3306</ServerPort>
+  <ServerIpAddress>localhost</ServerIpAddress>
+  <ServerPassword />
+  <ServerUserName>root</ServerUserName>
+  <ServerDatabase>luciddesk</ServerDatabase>
+</Settings>

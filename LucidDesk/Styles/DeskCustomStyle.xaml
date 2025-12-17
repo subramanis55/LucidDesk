@@ -24,7 +24,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="ButtonCheckBoxSettingPage" TargetType="CheckBox">
+    <!--<Style x:Key="ButtonCheckBoxSettingPage" TargetType="CheckBox">
       
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="Margin" Value="2 5"/>
@@ -45,6 +45,52 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter  Property="Background"  TargetName="border"
                     Value="{Binding  RelativeSource={RelativeSource Self},Path=Background, Converter={StaticResource ColorReduction},Mode=OneTime}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+    <Style x:Key="ButtonCheckBoxSettingPage" TargetType="CheckBox">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainColorBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid>
+                        <!-- Rounded Rectangle on the Left -->
+                        <Border x:Name="roundedBorder"
+                            Background="{TemplateBinding BorderBrush}" 
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Stretch"
+                            Width="4" 
+                            CornerRadius="2"
+                            Visibility="Collapsed"/>
+                        <!-- Main Content -->
+                            <Border x:Name="border" 
+                            Background="{TemplateBinding Background}"  
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter VerticalAlignment="Center" />
+                            </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- Trigger to show the rounded rectangle when checked -->
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="roundedBorder" Property="Visibility" Value="Visible"/>
+                         
+                        </Trigger>
+    
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="roundedBorder" Property="Visibility" Value="Collapsed"/>
+                           
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" 
+                                Value="{Binding RelativeSource={RelativeSource Self}, 
+                                                Path=Background, 
+                                                Converter={StaticResource ColorReduction}, 
+                                                Mode=OneTime}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

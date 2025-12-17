@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\obj\Debug\
+F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\
 LucidDesk
 none
 false
 DEBUG;TRACE
-C:\Users\Lucid\OneDrive\Desktop\LucidDesk\LucidDesk\App.xaml
-21-1378635360
+F:\Lucid\LucidDesk_Latest\LucidDesk\App.xaml
+21-608519208
 
-40182769117
-29974609991
+451911766793
+29-1573377797
 Screen\ConnectionAcceptWindow.xaml;Screen\InviteWindow.xaml;Screen\loginWindow.xaml;Screen\MainWindow.xaml;Styles\DeskCustomStyle.xaml;Styles\Icons.xaml;Styles\ScrollBarStyle.xaml;Styles\Theme.xaml;Styles\UIFrameworkStyles.xaml;TestWindow.xaml;UserControls\Common\CustomTextBox.xaml;UserControls\Common\CustomTextBoxPlaceHolderMove.xaml;UserControls\Common\NotificationControl.xaml;UserControls\Common\ProfileImageSelect.xaml;UserControls\CustomHeaderSwicthControl.xaml;UserControls\DeskProfile.xaml;UserControls\MessageBox.xaml;UserControls\PageSelectContextMenu.xaml;UserControls\SearchBoxControl.xaml;UserControls\SessionHeaderControl.xaml;UserControls\WhileSearchDeskProfileShowControl.xaml;
 
 False

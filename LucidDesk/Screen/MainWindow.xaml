@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LucidDesk"
         xmlns:UserControl="clr-namespace:LucidDesk.UserControls"
+        xmlns:Controls="clr-namespace:LucidDesk.UserControls.Common"
         mc:Ignorable="d" WindowStyle="None" Padding="0" Margin="0"  Loaded="MainWindowLoaded"
-        Title="MainWindow" Height="500" Width="800" Icon="/LucidDesk;Component/Resources/DeskIcon.png">
+        Title="MainWindow" MinHeight="500" MinWidth="900" Height="500" Width="800" Icon="/LucidDesk;Component/Resources/DeskIcon.png">
     <Window.Resources>
         <ContextMenu x:Key="MenuContext" Style="{StaticResource CustomContextMenu}">
             <MenuItem Style="{StaticResource ContextMenuItem}" Click="SettingPageClick"  >
@@ -88,6 +89,10 @@
 
                     </WrapPanel>
                 </Grid>
+
+
+
+
                 <Grid Grid.Column="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -144,7 +149,7 @@
                 </Button>
             </Grid>
 
-            <TabControl Name="MainTabControl" BorderThickness="0" BorderBrush="{StaticResource SubColorBrush}" Grid.Row="2" Style="{StaticResource Tabcontrol}">
+            <TabControl Name="MainTabControl" BorderThickness="0" BorderBrush="{StaticResource SubColorBrush}" SelectionChanged="MainTabControlSelectionChanged" Grid.Row="2" Style="{StaticResource Tabcontrol}">
 
                 <TabItem x:Name="HomePage" BorderThickness="0" >
                     <Grid>
@@ -234,7 +239,7 @@
                                     </Border >
 
                                     <StackPanel Name="DeskMainContainer" Grid.Row="2"  >
-                                        <StackPanel Name="RecentSessionsDeskContainer"  Margin="10 20" MinHeight="200">
+                                        <StackPanel Name="RecentSessionsDeskContainer"  Margin="10 20" MinHeight="198">
                                             <Border Height="30" BorderThickness="0 0 0 0" BorderBrush="Gray">
                                                 <DockPanel  >
                                                     <TextBlock Padding="15 0" Foreground="Gray" FontSize="14" FontWeight="DemiBold">Recent Sessions</TextBlock>
@@ -250,7 +255,7 @@
 
                                             </WrapPanel>
                                         </StackPanel>
-                                        <StackPanel  Name="FavoritesDeskContainer"  Margin="10 20" MinHeight="200" >
+                                        <StackPanel  Name="FavoritesDeskContainer"  Margin="10 20" MinHeight="198" >
                                             <Border Height="30" BorderThickness="0 0 0 0" BorderBrush="{StaticResource MainColorBrush}">
                                                 <DockPanel  >
                                                     <TextBlock Padding="15 0" Foreground="Gray" FontSize="14" FontWeight="DemiBold">Favorites</TextBlock>
@@ -266,7 +271,7 @@
 
                                             </WrapPanel>
                                         </StackPanel>
-                                        <StackPanel Name="DiscoveredDeskContainer" Margin="10 20" MinHeight="200" >
+                                        <StackPanel Name="DiscoveredDeskContainer" Margin="10 20" MinHeight="198" >
                                             <Border Height="30" BorderThickness="0 0 0 0" BorderBrush="{StaticResource MainColorBrush}">
                                                 <DockPanel  >
                                                     <TextBlock Padding="15 0" Foreground="Gray" FontSize="14" FontWeight="DemiBold">Discovered</TextBlock>
@@ -302,7 +307,7 @@
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="2"   ShadowDepth="2" Opacity="0.5"  ></DropShadowEffect>
                             </Border.Effect>
-                            <Grid  >
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="50"/>
                                     <RowDefinition Height="*"/>
@@ -331,12 +336,12 @@
                 <TabItem Name="SettingPage">
                     <Grid >
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" MinWidth="200" MaxWidth="340"/>
+                            <ColumnDefinition Width="5*"/>
                         </Grid.ColumnDefinitions>
-                        <Border Padding="2" BorderBrush="Gainsboro" >
+                        <Border Padding="6 4" BorderBrush="Gainsboro"  >
                             <StackPanel Background="#F4F4F4" >
-                                <CheckBox Name="AccountButton" IsChecked="True" Background="{Binding RelativeSource={RelativeSource TemplatedParent}}" Click="SettingPageTabButtonClick" Height="30" FontWeight="Normal"  Style="{StaticResource ButtonCheckBoxSettingPage}">
+                                <CheckBox Name="AccountButton" Margin="1" BorderThickness="0" Background="{Binding RelativeSource={RelativeSource TemplatedParent}}" PreviewKeyDown="ButtonPreviewKeyDown"  IsChecked="True"  Click="SettingPageTabButtonClick" Height="35" FontWeight="Normal"  Style="{StaticResource ButtonCheckBoxSettingPage}">
                                     <Grid  Margin="20 0 0 0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="30"/>
@@ -352,7 +357,7 @@
                                         </Border>
                                     </Grid>
                                 </CheckBox>
-                                <CheckBox Name="HelpButton" Click="SettingPageTabButtonClick" Background="{Binding RelativeSource={RelativeSource TemplatedParent}}"   Height="30" FontWeight="Normal"  Style="{StaticResource ButtonCheckBoxSettingPage}">
+                                <CheckBox Name="HelpButton" Margin="1" Background="{Binding RelativeSource={RelativeSource TemplatedParent}}" PreviewKeyDown="ButtonPreviewKeyDown" BorderThickness="0" Click="SettingPageTabButtonClick"   Height="35" FontWeight="Normal"  Style="{StaticResource ButtonCheckBoxSettingPage}">
                                     <Grid Margin="20 0 0 0" >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="30"/>
@@ -368,13 +373,93 @@
                                         </Border>
                                     </Grid>
                                 </CheckBox>
-                              
+
                             </StackPanel>
                         </Border>
                         <Border Grid.Column="1">
-                            <TabControl Name="settingPage" Style="{StaticResource Tabcontrol}">
+                            <TabControl Name="settingPageTabControl" Style="{StaticResource Tabcontrol}">
                                 <TabItem Name="ProfilePage">
-                                    
+                                    <Grid  Background="Gainsboro" >
+                                        <Border Padding="5" Margin="20"  Background="White" CornerRadius="7">
+
+                                            <Grid MaxWidth="1400">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="5*" MinWidth="440"/>
+                                                    <ColumnDefinition Width="3*" MinWidth="180"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Grid.Column="0"  >
+                                                    <Border Padding="5">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" MinWidth="150" MaxWidth="250"/>
+                                                                <ColumnDefinition Width="*" MinWidth="350"/>
+
+                                                            </Grid.ColumnDefinitions>
+                                                            <Label Grid.Column="0"  FontSize="16"    FontWeight="Medium" Foreground="{StaticResource MainColorBrush}">Name</Label>
+                                                            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                                                <Controls:CustomTextBox x:Name="ProfilePageUserNameTextBox"  TextboxBackground="{StaticResource SubColorBrush}" Height="35" FontWeight="Medium" HorizontalAlignment="Left"  FontSize="16"  CornerRadius="8" Width="240"  ></Controls:CustomTextBox>
+                                                                <Button Width="35" Margin="7 0" Background="White" Style="{StaticResource NormalButton}">
+                                                                    <Button.ToolTip>
+                                                                        <ToolTip Content="Edit Name"></ToolTip>
+                                                                    </Button.ToolTip>
+                                                                    <Path  Stretch="Uniform" VerticalAlignment="Center" Stroke="Black"  Width="20" Height="20" HorizontalAlignment="Center" StrokeThickness="1.4" Data="{StaticResource Edit}"/>
+                                                                </Button>
+
+                                                            </StackPanel>
+                                                           
+                                                        </Grid>
+                                                    </Border>
+                                                    <Border Padding="5">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" MinWidth="150" MaxWidth="250"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Label Grid.Column="0"  FontSize="16"    FontWeight="Medium" Foreground="{StaticResource MainColorBrush}">Desk ID</Label>
+                                                            <Label x:Name="ProfilePageUserDeskId"  Grid.Column="1" FontSize="16" Foreground="DarkGray"  Margin="30 0" FontWeight="Medium" >1243434425</Label>
+                                                        </Grid>
+                                                    </Border>
+                                                    <Border Padding="5">
+                                                        <Grid >
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" MinWidth="150" MaxWidth="250"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Label Grid.Column="0"  FontSize="16"    FontWeight="Medium" Foreground="{StaticResource MainColorBrush}">Desk Name</Label>
+                                                            <Label x:Name="ProfilePageUserDeskName" Grid.Column="1" TextBlock.TextAlignment="Left" Foreground="DarkGray" FontSize="16"   Margin="30 0" FontWeight="Medium" >Aer-1</Label>
+                                                        </Grid>
+                                                    </Border>
+                                                    <Border Padding="5">
+                                                        <Grid >
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" MinWidth="150" MaxWidth="250"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Label Grid.Column="0"  FontSize="16"    FontWeight="Medium" Foreground="{StaticResource MainColorBrush}">Os</Label>
+                                                            <Label x:Name="ProfilePageUserDeskOsName" Grid.Column="1" TextBlock.TextAlignment="Left" Foreground="DarkGray" FontSize="16"   Margin="30 0" FontWeight="Medium" >Windows</Label>
+                                                        </Grid>
+                                                    </Border>
+                                                </StackPanel>
+                                                <Border Grid.Column="1" CornerRadius="15"  Background="{StaticResource SubColorBrush}">
+                                                    <StackPanel>
+                                                        <Grid Height="180" >
+                                                            <Controls:RoundedImage x:Name="ProfilePicture"   MinHeight="120" MinWidth="120" MaxHeight="140" MaxWidth="140"   ZoomFactor="1" Stretch="UniformToFill"   CornerRadius="140 " Panel.ZIndex="-1"  Image="/LucidDesk;component/Resources/Screenshot (36).png" Style="{StaticResource RoundedImage}"  ></Controls:RoundedImage>
+                                                        </Grid>
+                                                        <StackPanel Orientation="Horizontal" Margin="7 0" HorizontalAlignment="Center">
+                                                            <Label HorizontalAlignment="Center" TextBlock.TextAlignment="Center"  FontSize="17"    FontWeight="Medium" Foreground="{StaticResource MainColorBrush}">Profile</Label>
+                                                            <Button Width="20" Height="20" Margin="4 0" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Style="{StaticResource NormalButton}">
+                                                                <Button.ToolTip>
+                                                                    <ToolTip Content="Edit profile"></ToolTip>
+                                                                </Button.ToolTip>
+                                                                <Path  Stretch="Fill" VerticalAlignment="Center" Stroke="Black"  Width="15" Height="15" HorizontalAlignment="Center" StrokeThickness="1.4" Data="{StaticResource Edit}"/>
+                                                            </Button>
+                                                        </StackPanel>
+                                                       
+                                                    </StackPanel>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
                                 </TabItem>
                                 <TabItem Name="HelpPage">
 

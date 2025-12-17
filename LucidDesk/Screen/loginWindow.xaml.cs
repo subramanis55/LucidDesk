@@ -49,7 +49,7 @@ namespace LucidDesk
                 NameError.Visibility = Visibility.Hidden;
             }
             if(PasswordError.Visibility==Visibility.Hidden&& NameError.Visibility == Visibility.Hidden) {
-                Desk desk = new Desk() { IPAddress = SystemInformationManager.GetIpAddresss(SystemInformationManager.GetMacAddress()), IsFavorite = false, HostName = SystemInformationManager.GetHostName(), ProfileName = ProfileNameTextBox.mainTextBox.Text, ProfileImage = this.ProfileImage.Profile, DesktopImage = SystemInformationManager.GetDesktopWallpaper(), Password = passwordTextBox.mainTextBox.Text, MacAddress = SystemInformationManager.GetMacAddress(), OsName = SystemInformationManager.GetOsName(), PcName = SystemInformationManager.GetPcUserName(), RecentLoginTime = DateTime.MinValue };
+                Desk desk = new Desk() { IPAddress = SystemInformationManager.GetIpAddresss(SystemInformationManager.GetMacAddress()), IsFavorite = false, HostName = SystemInformationManager.GetHostName(), ProfileName = ProfileNameTextBox.mainTextBox.Text, ProfileImage =null, DesktopImage = SystemInformationManager.GetDesktopWallpaper(), Password = passwordTextBox.mainTextBox.Text, MacAddress = SystemInformationManager.GetMacAddress(), OsName = SystemInformationManager.GetOsName(), PcName = SystemInformationManager.GetPcUserName(), RecentLoginTime = DateTime.MinValue };
                 OnClickNext?.Invoke(this, desk);
             }
            

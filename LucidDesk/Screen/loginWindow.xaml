@@ -18,7 +18,7 @@
                     <DockPanel  Margin="20 0 0 0" Height="50" VerticalAlignment="Center"  >
 
                         <Image Grid.Column="0" Height="20"  Width="20" Margin="0 7 0 0" Source="/LucidDesk;component\Resources\DeskIcon.png"></Image>
-                        <TextBlock TextAlignment="Center" Margin="10 0 0 0" VerticalAlignment="Center" Grid.Column="1" Text="Desk" FontSize="20" Foreground="{StaticResource MainColorBrush}" ></TextBlock>
+                        <TextBlock TextAlignment="Center" Margin="10 0 0 0" VerticalAlignment="Center" Grid.Column="1" Text="Desk" FontWeight="Medium" FontSize="20" Foreground="{StaticResource MainColorBrush}" ></TextBlock>
                         <Button Height="30" Width="30" Margin="0 0 10 0" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="CloseButtonClick" Style="{StaticResource CloseButton}"  >
                             <Button.ToolTip>
                                 <ToolTip Content="Close"></ToolTip>
@@ -29,7 +29,6 @@
                     <!--<Border CornerRadius="4" BorderBrush="Gainsboro" Width="350"  Height="45" BorderThickness="1" Background="White">-->
                     <!--<UserControl:CustomTextBox  Placeholder="Name" FontSize="16"   ></UserControl:CustomTextBox>-->
                     <!--</Border>-->
-                    <UserControl:ProfileImageSelect x:Name="ProfileImage" Height="100" Width="100"  HorizontalAlignment="Center" VerticalAlignment="Center" ></UserControl:ProfileImageSelect>
                     <UserControl:AnimatedTextBox x:Name="ProfileNameTextBox"  Height="45" Width="350" Margin="25 25 25 3" AnimatedTextBoxBorderRadius="4" AnimatedTextBoxFontSize="17" AnimatedTextBoxBackground="White" AnimatedTextBoxForeground="Black"  AnimatedTextBoxPlaceHolder="Name"  />
                     <Label  Name="NameError" Visibility="Hidden" Content="Enter the name" Padding="20 3 0 0" Foreground="#FF5739" Height="25" Width="350"  HorizontalAlignment="Center"></Label>
                     <UserControl:AnimatedTextBox x:Name="passwordTextBox"   IsPasswordType="True" Height="45" Width="350" Margin="25 2 25 3" AnimatedTextBoxBorderRadius="4" AnimatedTextBoxFontSize="17" AnimatedTextBoxBackground="White" AnimatedTextBoxForeground="Black"  AnimatedTextBoxPlaceHolder="Password"  />
