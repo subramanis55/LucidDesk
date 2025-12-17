@@ -20,7 +20,7 @@ namespace LucidDesk.Manager.Database
         public static string ServerIpaddress = "192.168.3.50";
         public static string DatabaseName = "deskapplication";
         public static string DefalutDatabaseName = "mysql";
-        public static string ServerDatabasePassword = "";
+        public static string ServerDatabasePassword = "LucidDesk*";
         public static MySqlCommand mySqlCommand = new MySqlCommand();
         public static MySqlConnection mySqlConnection;
         public static void Setup()
