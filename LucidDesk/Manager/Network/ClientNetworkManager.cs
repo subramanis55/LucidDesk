@@ -399,24 +399,24 @@ namespace LucidDesk.Manager
 
         private void ReceiveAudio()
         {
-            using (var networkStream = AudioTcpClient.GetStream())
-            {
-                var buffer = new byte[1024];
-                int bytesRead;
+            //using (var networkStream = AudioTcpClient.GetStream())
+            //{
+            //    var buffer = new byte[1024];
+            //    int bytesRead;
 
-                try
-                {
-                    while (!_cancellationTokenSource.IsCancellationRequested &&
-                           (bytesRead = networkStream.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        _bufferedWaveProvider.AddSamples(buffer, 0, bytesRead);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
+            //    try
+            //    {
+            //        while (!_cancellationTokenSource.IsCancellationRequested &&
+            //               (bytesRead = networkStream.Read(buffer, 0, buffer.Length)) > 0)
+            //        {
+            //            _bufferedWaveProvider.AddSamples(buffer, 0, bytesRead);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show($"Error: {ex.Message}");
+            //    }
+            //}
         }
 
         public void InviteRequestSent(DeskConnectionInformation deskConnectionInformation)
@@ -447,14 +447,14 @@ namespace LucidDesk.Manager
                 client = new TcpClient(ClientIpaddress, PORT);
                 stream = client.GetStream();
                 isConnected = true;
-                MessageBox.Show("Connected to server");
+                System.Windows.MessageBox.Show("Connected to server");
                 ConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
                 sendConnectRequest(deskConnectionInformation);
                 HandleServerReponseDatas();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error connecting to server: " + ex.Message);
+                System.Windows.MessageBox.Show("Error connecting to server: " + ex.Message);
                 DisConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
                 isConnected = false;
             }
@@ -531,9 +531,7 @@ namespace LucidDesk.Manager
             {
                 NetworkStream stream = client.GetStream();
                 // Get the client's screen resolution
-                double screenWidth = SystemParameters.PrimaryScreenWidth;
-                double screenHeight = SystemParameters.PrimaryScreenHeight;
-                string scrollData = $"{x},{y}:{screenWidth},{screenHeight}:{delta}";
+                string scrollData = $"{x},{y}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}:{delta}";
                 Data data = new Data();
                 data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
                 data.DataObject = new DeskControlData()
@@ -552,9 +550,8 @@ namespace LucidDesk.Manager
             {
                 NetworkStream stream = client.GetStream();
                 // Get the client's screen resolution
-                double screenWidth = SystemParameters.PrimaryScreenWidth;
-                double screenHeight = SystemParameters.PrimaryScreenHeight;
-                string mouseData = $"{(position.X / ScreenImageActualWidth) * screenWidth},{(position.Y / ScreenImageActualHeight) * screenHeight}:{screenWidth},{screenHeight}";
+
+                string mouseData = $"{(position.X / ScreenImageActualWidth) * SystemInformationManager.ScreenWidth},{(position.Y / ScreenImageActualHeight) * SystemInformationManager.ScreenHeight}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
                 Data data = new Data();
                 data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
                 data.DataObject = new DeskControlData()
@@ -596,7 +593,7 @@ namespace LucidDesk.Manager
                 if (byteRead > 0)
                 {
                     string receiveText = Encoding.UTF8.GetString(buffer, 0, byteRead);
-                    Clipboard.SetText(receiveText);
+                    System.Windows.Clipboard.SetText(receiveText);
                 }
             }
         }
@@ -628,15 +625,13 @@ namespace LucidDesk.Manager
 
         public void SendKeyEvent(ControlKeyType controlKeyType,Key key)
         {
-            if (client != null && client.Connected && deskConnectionInformation.KeyboardAccess)
+            if (client != null && client.Connected )
             {
                 NetworkStream stream = client.GetStream();
                 // Convert Key to virtual key code
                 byte virtualKeyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
                 // Get the client's screen resolution
-                double screenWidth = SystemParameters.PrimaryScreenWidth;
-                double screenHeight = SystemParameters.PrimaryScreenHeight;
-                string keydata = $"{0},{0}:{screenWidth}:{screenHeight}:{virtualKeyCode}";
+                string keydata = $"{0},{0}:{SystemInformationManager.ScreenWidth}:{SystemInformationManager.ScreenHeight}:{virtualKeyCode}";
                 Data data = new Data();
                 data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
                 data.DataObject = new DeskControlData()
@@ -652,13 +647,11 @@ namespace LucidDesk.Manager
 
         public void SendMouseRightEvent(ControlKeyType controlKeyType, Point position, double ScreenImageActualWidth, double ScreenImageActualHeight)
         {
-            if (client != null && client.Connected && deskConnectionInformation.MouseAccess)
+            if (client != null && client.Connected )
             {
                 NetworkStream stream = client.GetStream();
                 // Get the client's screen resolution
-                double screenWidth = SystemParameters.PrimaryScreenWidth;
-                double screenHeight = SystemParameters.PrimaryScreenHeight;
-                string keydata = $"{(position.X / ScreenImageActualWidth) * screenWidth},{(position.Y / ScreenImageActualHeight) * screenHeight}:{screenWidth},{screenHeight}";
+                string keydata = $"{(position.X / ScreenImageActualWidth) * SystemInformationManager.ScreenWidth},{(position.Y / ScreenImageActualHeight) * SystemInformationManager.ScreenHeight}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
                 Data data = new Data();
                 data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
                 data.DataObject = new DeskControlData()

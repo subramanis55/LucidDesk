@@ -147,9 +147,12 @@
                 <RowDefinition Height="2.5*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <local:RoundedImage x:Name="DesktopWallPaper"  ZoomFactor="1" Stretch="UniformToFill" Grid.RowSpan="3"  CornerRadius="10
-                                
-                                " Panel.ZIndex="-1"  Image="/LucidDesk;component/Resources/Screenshot (36).png" Style="{StaticResource RoundedImage}" Grid.ColumnSpan="2" ></local:RoundedImage>
+            <Border Panel.ZIndex="-1" CornerRadius="10" Grid.RowSpan="3" BorderBrush="Gainsboro" BorderThickness="1" Grid.ColumnSpan="2">
+                <local:RoundedImage x:Name="DesktopWallPaper"   ZoomFactor="1" BorderThickness="1" Stretch="UniformToFill"  CornerRadius="10
+                       
+                       "   Image="/LucidDesk;component/Resources/Screenshot (36).png" Style="{StaticResource RoundedImage}" Grid.ColumnSpan="2" ></local:RoundedImage>
+            </Border>
+         
             <Grid Grid.Row="0" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.3*"/>

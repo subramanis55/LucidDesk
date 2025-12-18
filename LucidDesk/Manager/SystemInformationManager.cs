@@ -22,21 +22,29 @@ namespace LucidDesk.Manager
         public static string MacAddress;
         public static string IpAddresss;
         public static BitmapImage DesktopWallpaper;
+
+        public static double ScreenWidth = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width;
+        public static double ScreenHeight = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height;
         public static string GetHostName()
         {
             return Environment.MachineName;
         }
-        public static string GetPcUserName(){
+        public static string GetPcUserName()
+        {
             return Environment.UserName;
         }
-        public static string GetOsName(){
-          if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows)){
+        public static string GetOsName()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
                 return "Windows";
-          }
-           if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux)){
+            }
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
                 return "Linux";
             }
-            if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX)){
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
                 return "MacOs";
             }
             return "UnknownOs";
@@ -76,7 +84,7 @@ namespace LucidDesk.Manager
                     }
                 }
             }
-            catch(Exception e) { }
+            catch (Exception e) { }
             return "";
         }
         public static string GetIpAddresss(string macAddress)

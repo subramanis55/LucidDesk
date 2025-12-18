@@ -838,6 +838,9 @@ using LucidDesk.Manager.Database;
 using LucidDesk.Manager.Enum;
 using LucidDesk.Manager.Classes.DataSchema;
 using System.Runtime.InteropServices.ComTypes;
+using System.Drawing.Imaging;
+using System.Windows.Forms;
+using Timer = System.Threading.Timer;
 
 namespace LucidDesk.Manager
 {
@@ -884,18 +887,18 @@ namespace LucidDesk.Manager
         {
             DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate
         };
-
+        System.Windows.Forms.Timer ScreenShareTimer = new System.Windows.Forms.Timer();
         public void StartServer()
         {
             if (isStarted) return;
-
+           
             _cancellationTokenSource = new CancellationTokenSource();
             _tcpListener = new TcpListener(IPAddress.Any, PORT);
             _tcpListener.Start();
             Task.Run(() => AcceptClients(_cancellationTokenSource.Token));
 
             // Start a timer to check for idle/expired connections
-            _remainTimer = new Timer(RemainingClientsCheck, null, TimeSpan.Zero, TimeSpan.FromSeconds(30));  // Check every 30 seconds
+            _remainTimer = new System.Threading.Timer(RemainingClientsCheck, null, TimeSpan.Zero, TimeSpan.FromSeconds(30));  // Check every 30 seconds
 
             isStarted = true;
         }
@@ -912,7 +915,7 @@ namespace LucidDesk.Manager
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error accepting client: " + ex.Message);
+                System.Windows.MessageBox.Show("Error accepting client: " + ex.Message);
                 StopServer();
             }
         }
@@ -976,9 +979,11 @@ namespace LucidDesk.Manager
             Data data = JsonConvert.DeserializeObject<Data>(json);
             HandleReceivedData(client, data);
         }
-
+     
         private void HandleReceivedData(TcpClient client, Data data)
         {
+            if (data == null)
+                return;
             if (data.ReponseAndReqType == ReponseAndReqType.ConnectReq)
             {
                 clients.Add(client);
@@ -1000,7 +1005,7 @@ namespace LucidDesk.Manager
                 capture = true;
                 while (clients.Count > 0)
                 {
-                    Thread.Sleep(50);
+                    Thread.Sleep(30);
                     lock (clients)
                     {
                         foreach (TcpClient client in clients.ToList())
@@ -1021,7 +1026,7 @@ namespace LucidDesk.Manager
             catch (Exception ex)
             {
                 capture = false;
-                MessageBox.Show("Error capturing screen: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Error capturing screen: " + ex.Message);
             }
         }
 
@@ -1055,17 +1060,19 @@ namespace LucidDesk.Manager
 
         private byte[] GetScreenShareImage()
         {
-            using (Bitmap bitmap = new Bitmap((int)SystemParameters.VirtualScreenWidth, (int)SystemParameters.VirtualScreenHeight))
+            System.Drawing.Rectangle bounds = SystemInformation.VirtualScreen;
+
+            using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
             {
                 using (Graphics g = Graphics.FromImage(bitmap))
                 {
-                    g.CopyFromScreen(0, 0, 0, 0, bitmap.Size);
+                    g.CopyFromScreen(bounds.Left, bounds.Top, 0, 0, bounds.Size, CopyPixelOperation.SourceCopy);
                 }
+
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
-                    bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
-                    byte[] imageData = memoryStream.ToArray();
-                    return imageData;
+                    bitmap.Save(memoryStream, ImageFormat.Png);
+                    return memoryStream.ToArray();
                 }
             }
         }
@@ -1104,7 +1111,7 @@ namespace LucidDesk.Manager
             double delta = 0;
             byte keyCode = 0;
             double clientScreenWidth = 0, clientScreenHeight = 0, x = 0, y = 0;
-            if ((int)data.ControlDataType<=10)
+            if ((int)data.ControlDataType <= 10)
             {
                 string[] coords = parts[0].Split(',');
                 x = double.Parse(coords[0]);
@@ -1112,9 +1119,9 @@ namespace LucidDesk.Manager
                 string[] screenSize = parts[1].Split(',');
                 clientScreenWidth = double.Parse(screenSize[0]);
                 clientScreenHeight = double.Parse(screenSize[1]);
-                double scaleX = SystemParameters.PrimaryScreenWidth / clientScreenWidth;
-                double scaleY = SystemParameters.PrimaryScreenHeight / clientScreenHeight;
-                if (data.ControlDataType==ControlKeyType.Scroll)
+                double scaleX = SystemInformationManager.ScreenWidth / clientScreenWidth;
+                double scaleY = SystemInformationManager.ScreenHeight / clientScreenHeight;
+                if (data.ControlDataType == ControlKeyType.Scroll)
                 {
                     delta = double.Parse(parts[2]);
                 }
@@ -1129,7 +1136,8 @@ namespace LucidDesk.Manager
                         mouse_event(MOUSEEVENTF_LEFTDOWN, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
                         break;
                     case ControlKeyType.MouseMove:
-                        //    System.Windows.Forms.Cursor.Position = screenPos;
+                        System.Windows.Forms.Cursor.Position = screenPos;
+                        mouse_event(MOUSEEVENTF_HWHEEL, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
                         break;
                     case ControlKeyType.MouseUp:
                         System.Windows.Forms.Cursor.Position = screenPos;
