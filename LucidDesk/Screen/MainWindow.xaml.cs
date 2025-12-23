@@ -281,12 +281,12 @@ namespace LucidDesk
             ClientNetworkManager.DisConnectedToSeverInvoke += ClientNetworkManagerDisConnectedToSeverInvoke;
             ClientNetworkManager.ConnectionEstabishFailInvoke += ClientNetworkManagerConnectionEstabishFailInvoke;
 
-            ScreenImage.MouseRightButtonUp += ScreenImage_MouseRightButtonUp;
-            ScreenImage.MouseRightButtonDown += ScreenImage_MouseRightButtonDown;
-            ScreenImage.MouseWheel += ScreenImage_MouseWheel;
-            ScreenImage.MouseUp += ScreenImage_MouseUp;
-            ScreenImage.MouseMove += ScreenImage_MouseMove;
-            ScreenImage.MouseDown += ScreenImage_MouseDown;
+            ScreenImage.MouseRightButtonUp += ScreenImageMouseRightButtonUp;
+            ScreenImage.MouseRightButtonDown += ScreenImageMouseRightButtonDown;
+            ScreenImage.MouseWheel += ScreenImageMouseWheel;
+            ScreenImage.MouseUp += ScreenImageMouseUp;
+            ScreenImage.MouseMove += ScreenImageMouseMove;
+            ScreenImage.MouseDown += ScreenImageMouseDown;
 
             this.KeyDown += Window_KeyDown;
             this.KeyUp += Window_KeyUp;
@@ -597,13 +597,13 @@ namespace LucidDesk
 
 
         //Screen Share Client Details
-        public void ScreenImage_MouseWheel(object sender, MouseWheelEventArgs e)
+        public void ScreenImageMouseWheel(object sender, MouseWheelEventArgs e)
         {
             Point position = e.GetPosition(this);
             ClientNetworkManager.SendMouseScrollEvent(ControlKeyType.Scroll, position.X, position.Y, e.Delta);
         }
 
-        private void ScreenImage_MouseDown(object sender, MouseButtonEventArgs e)
+        private void ScreenImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (ClientNetworkManager.isConnected)
             {
@@ -611,17 +611,22 @@ namespace LucidDesk
                 ClientNetworkManager.SendMouseEvent(ControlKeyType.MouseDown, position, ScreenImage.ActualWidth, ScreenImage.ActualHeight);
             }
         }
-
-        private void ScreenImage_MouseMove(object sender, MouseEventArgs e)
+        private DateTime _lastSend = DateTime.MinValue;
+        private readonly TimeSpan _interval = TimeSpan.FromMilliseconds(20);
+        private void ScreenImageMouseMove(object sender, MouseEventArgs e)
         {
-            if (ClientNetworkManager.isConnected && e.LeftButton == MouseButtonState.Pressed)
+            if (DateTime.UtcNow - _lastSend < _interval)
+                return;
+            _lastSend = DateTime.UtcNow;
+
+            if (ClientNetworkManager.isConnected )
             {
                 Point position = e.GetPosition(ScreenImage);
                 ClientNetworkManager.SendMouseEvent(ControlKeyType.MouseMove, position, ScreenImage.ActualWidth, ScreenImage.ActualHeight);
             }
         }
 
-        private void ScreenImage_MouseUp(object sender, MouseButtonEventArgs e)
+        private void ScreenImageMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (ClientNetworkManager.isConnected)
             {
@@ -649,7 +654,7 @@ namespace LucidDesk
             ClientNetworkManager.SendKeyEvent(ControlKeyType.KeyUp, e.Key);
         }
 
-        private void ScreenImage_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void ScreenImageMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (ClientNetworkManager.isConnected)
             {
@@ -658,7 +663,7 @@ namespace LucidDesk
             }
         }
 
-        private void ScreenImage_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void ScreenImageMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (ClientNetworkManager.isConnected)
             {

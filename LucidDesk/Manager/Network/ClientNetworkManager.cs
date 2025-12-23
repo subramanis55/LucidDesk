@@ -462,7 +462,6 @@ namespace LucidDesk.Manager
 
         private async Task sendConnectRequest(DeskConnectionInformation deskConnectionInformation)
         {
-
             string json = JsonConvert.SerializeObject(new Data() { DataObject = deskConnectionInformation, ReponseAndReqType = ReponseAndReqType.ConnectReq });
             WriteObject(stream, json);
         }

@@ -841,9 +841,30 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Timer = System.Threading.Timer;
+using Newtonsoft.Json.Linq;
 
 namespace LucidDesk.Manager
 {
+
+
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct INPUT
+    {
+        public uint type;
+        public MOUSEINPUT mi;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct MOUSEINPUT
+    {
+        public uint dx;
+        public uint dy;
+        public uint mouseData;
+        public uint dwFlags;
+        public uint time;
+        public IntPtr dwExtraInfo;
+    }
     public partial class ServerNetworkManager
     {
         private TcpListener _tcpListener;
@@ -863,6 +884,7 @@ namespace LucidDesk.Manager
         private TcpListener server;
         private Thread listenerThread;
         Dictionary<string, DeskConnectionInformation> DeskConnectionInformationList = new Dictionary<string, DeskConnectionInformation>();
+        const uint INPUT_MOUSE = 0;
         private const uint MOUSEEVENTF_LEFTDOWN = 0x02;
         private const uint MOUSEEVENTF_LEFTUP = 0x04;
         private const uint KEYEVENTF_KEYDOWN = 0x0000;
@@ -871,6 +893,8 @@ namespace LucidDesk.Manager
         private const uint MOUSEEVENTF_RIGHTUP = 0x10;
         private const uint MOUSEEVENTF_WHEEL = 0x0800;
         private const uint MOUSEEVENTF_HWHEEL = 0x01000;
+        private const uint MOUSEEVENTF_MOVE = 0x0001;
+        private const uint MOUSEEVENTF_ABSOLUTE = 0x8000;
         public bool isMouseAcess, isKeyboardAcess, isAudioAcess, isClipboardAcess;
         private byte VK_TAB = 0x09, VK_MENU = 0x12;
 
@@ -883,15 +907,15 @@ namespace LucidDesk.Manager
         [DllImport("user32.dll", SetLastError = true)]
         private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);
 
-        JsonSerializerSettings JsonSettings = new JsonSerializerSettings
-        {
-            DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate
-        };
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
+
+
         System.Windows.Forms.Timer ScreenShareTimer = new System.Windows.Forms.Timer();
         public void StartServer()
         {
             if (isStarted) return;
-           
+
             _cancellationTokenSource = new CancellationTokenSource();
             _tcpListener = new TcpListener(IPAddress.Any, PORT);
             _tcpListener.Start();
@@ -979,7 +1003,7 @@ namespace LucidDesk.Manager
             Data data = JsonConvert.DeserializeObject<Data>(json);
             HandleReceivedData(client, data);
         }
-     
+
         private void HandleReceivedData(TcpClient client, Data data)
         {
             if (data == null)
@@ -988,7 +1012,7 @@ namespace LucidDesk.Manager
             {
                 clients.Add(client);
                 if (!capture)
-                    Task.Run(() => CaptureScreen());
+                    Task.Run(() => CaptureScreen(_cancellationTokenSource.Token));
                 Task.Run(() => HandleClientMessages(client, ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString()));
             }
             else if (data.ReponseAndReqType == ReponseAndReqType.ScreenShareKeyData)
@@ -998,26 +1022,24 @@ namespace LucidDesk.Manager
         }
 
         bool capture = false;
-        private void CaptureScreen()
+        private async void CaptureScreen(CancellationToken token)
         {
             try
             {
                 capture = true;
                 while (clients.Count > 0)
                 {
-                    Thread.Sleep(30);
-                    lock (clients)
+                    await Task.Delay(50);
+                    var screenImage = GetScreenShareImage();
+                    Data data = new Data();
+                    data.ReponseAndReqType = ReponseAndReqType.ScreenShareImageData;
+                    data.DataObject = new DeskImageData() { ImageData = screenImage };
+                    foreach (TcpClient client in clients.ToList())
                     {
-                        foreach (TcpClient client in clients.ToList())
+                        if (client.Connected)
                         {
-                            if (client.Connected)
-                            {
-                                NetworkStream stream = client.GetStream();
-                                Data data = new Data();
-                                data.ReponseAndReqType = ReponseAndReqType.ScreenShareImageData;
-                                data.DataObject = new DeskImageData() { ImageData = GetScreenShareImage() };
-                                WriteObject(stream, data);
-                            }
+                            NetworkStream stream = client.GetStream();
+                            WriteObject(stream, data);
                         }
                     }
                 }
@@ -1052,7 +1074,6 @@ namespace LucidDesk.Manager
         {
             byte[] data = Encoding.UTF8.GetBytes(json);
             byte[] lengthPrefix = BitConverter.GetBytes(data.Length); // 4 bytes
-
             stream.Write(lengthPrefix, 0, lengthPrefix.Length);
             stream.Write(data, 0, data.Length);
             stream.Flush();
@@ -1068,10 +1089,12 @@ namespace LucidDesk.Manager
                 {
                     g.CopyFromScreen(bounds.Left, bounds.Top, 0, 0, bounds.Size, CopyPixelOperation.SourceCopy);
                 }
-
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
-                    bitmap.Save(memoryStream, ImageFormat.Png);
+                    var encoder = ImageCodecInfo.GetImageEncoders().First(e => e.FormatID == ImageFormat.Jpeg.Guid);
+                    var parameters = new EncoderParameters(1);
+                    parameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 60L);
+                    bitmap.Save(memoryStream, encoder, parameters);
                     return memoryStream.ToArray();
                 }
             }
@@ -1131,28 +1154,25 @@ namespace LucidDesk.Manager
 
                 switch (data.ControlDataType)
                 {
-                    case ControlKeyType.MouseDown:
-                        System.Windows.Forms.Cursor.Position = screenPos;
-                        mouse_event(MOUSEEVENTF_LEFTDOWN, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
-                        break;
                     case ControlKeyType.MouseMove:
-                        System.Windows.Forms.Cursor.Position = screenPos;
-                        mouse_event(MOUSEEVENTF_HWHEEL, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+                        ExecuteMouseMove(screenX, screenY);
+                        break;
+                    case ControlKeyType.MouseDown:
+                        ExecuteMouseMove(screenX, screenY);
+                        ExecuteMouseButton(MOUSEEVENTF_LEFTDOWN);
                         break;
                     case ControlKeyType.MouseUp:
-                        System.Windows.Forms.Cursor.Position = screenPos;
-                        mouse_event(MOUSEEVENTF_LEFTUP, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+                        ExecuteMouseButton(MOUSEEVENTF_LEFTUP);
                         break;
                     case ControlKeyType.MouseRightDown:
-                        System.Windows.Forms.Cursor.Position = screenPos;
-                        mouse_event(MOUSEEVENTF_RIGHTDOWN, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+                        ExecuteMouseMove(screenX, screenY);
+                        ExecuteMouseButton(MOUSEEVENTF_RIGHTDOWN);
                         break;
                     case ControlKeyType.MouseRightUp:
-                        System.Windows.Forms.Cursor.Position = screenPos;
-                        mouse_event(MOUSEEVENTF_RIGHTUP, (uint)screenX, (uint)screenY, 0, UIntPtr.Zero);
+                        ExecuteMouseButton(MOUSEEVENTF_RIGHTUP);
                         break;
                     case ControlKeyType.Scroll:
-                        mouse_event(MOUSEEVENTF_WHEEL, (uint)screenX, (uint)screenY, (uint)delta, UIntPtr.Zero);
+                        ExecuteMouseWheel((int)delta);
                         break;
                 }
             }
@@ -1192,6 +1212,57 @@ namespace LucidDesk.Manager
             //        keybd_event(0x5B, 0, KEYEVENTF_KEYUP, IntPtr.Zero);
             //        break;
             //}
+        }
+        void ExecuteMouseMove(int x, int y)
+        {
+            INPUT input = new INPUT
+            {
+                type = 0, // INPUT_MOUSE
+                mi = new MOUSEINPUT
+                {
+                    dx = ToAbsoluteX(x),
+                    dy = ToAbsoluteY(y),
+                    dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE
+                }
+            };
+            SendInput(1, new[] { input }, Marshal.SizeOf(typeof(INPUT)));
+        }
+
+        static void ExecuteMouseWheel(int delta)
+        {
+            INPUT input = new INPUT
+            {
+                type = INPUT_MOUSE,
+                mi = new MOUSEINPUT
+                {
+                    dwFlags = MOUSEEVENTF_WHEEL,
+                    mouseData = (uint)delta
+                }
+            };
+
+            SendInput(1, new INPUT[] { input }, Marshal.SizeOf(typeof(INPUT)));
+        }
+        static void ExecuteMouseButton(uint flag)
+        {
+            INPUT input = new INPUT
+            {
+                type = 0,
+                mi = new MOUSEINPUT
+                {
+                    dwFlags = flag
+                }
+            };
+            SendInput(1, new[] { input }, Marshal.SizeOf(typeof(INPUT)));
+        }
+
+        static uint ToAbsoluteX(int x)
+        {
+            return (uint)(x * 65535 / (SystemInformation.VirtualScreen.Width - 1));
+        }
+
+        static uint ToAbsoluteY(int y)
+        {
+            return (uint)(y * 65535 / (SystemInformation.VirtualScreen.Height - 1));
         }
 
         private void DisconnectClient(string macAddress)
