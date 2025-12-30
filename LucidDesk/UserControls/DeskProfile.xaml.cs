@@ -24,8 +24,9 @@ namespace LucidDesk.UserControls
     public partial class DeskProfile : UserControl, IDisposable
     {
         public event EventHandler<Desk> OnClickConnect;
+        public event EventHandler<Desk> OnClickConnectWithPassword;
         public event EventHandler<Desk> OnInviteConnect;
-        public  event EventHandler OnClickIsFavorite;
+        public event EventHandler OnClickIsFavorite;
         public event EventHandler OnClickUnFavorite;
         private Desk desk;
         private bool isFavorite;
@@ -43,7 +44,7 @@ namespace LucidDesk.UserControls
                     }
                     else
                         DeskUserProfileImage.Image = desk.ProfileImage;
-                    DeskId = "" + desk.Id;
+                    DeskId = "" + desk.DisplayID;
                     DesktopWallPaper.Image = desk.DesktopImage;
                     desk.PropertyChanged += DeskPropertyChanged;
                     Desk.OnClickDeleted += DeskOnClickDeleted;
@@ -67,8 +68,10 @@ namespace LucidDesk.UserControls
         public bool IsFavorite
         {
             get { return (bool)GetValue(IsFavoriteProperty); }
-            set { SetValue(IsFavoriteProperty, value);
-               
+            set
+            {
+                SetValue(IsFavoriteProperty, value);
+
             }
         }
 
@@ -95,8 +98,8 @@ namespace LucidDesk.UserControls
 
         private static void IsFavoriteChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-           
-           
+
+
         }
 
         public DeskProfile()
@@ -111,17 +114,17 @@ namespace LucidDesk.UserControls
             binding.Mode = BindingMode.TwoWay;
             this.SetBinding(IsFavoriteProperty, binding);
             this.Loaded += DeskProfileLoaded;
-          
+
         }
 
         private void DeskProfileLoaded(object sender, RoutedEventArgs e)
         {
-          
+
         }
 
         private void DeskPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-           if(e.PropertyName== "IsFavorite"&&Desk.IsFavorite !=((Desk)sender).IsFavorite)
+            if (e.PropertyName == "IsFavorite" && Desk.IsFavorite != ((Desk)sender).IsFavorite)
             {
                 //OnClickIsFavorite?.Invoke(this, e);
             }
@@ -144,7 +147,7 @@ namespace LucidDesk.UserControls
 
         private void IsFavoriteCheckBoxChecked(object sender, RoutedEventArgs e)
         {
-            OnClickIsFavorite?.Invoke(this,EventArgs.Empty);
+            OnClickIsFavorite?.Invoke(this, EventArgs.Empty);
         }
 
         private void IsFavoriteCheckBoxUnChecked(object sender, RoutedEventArgs e)
@@ -161,32 +164,16 @@ namespace LucidDesk.UserControls
         {
             MainContainer.ContextMenu.IsOpen = true;
         }
-
-        private void IsFavoriteIcon_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
         private void IsFavoriteIconMouseDown(object sender, MouseButtonEventArgs e)
         {
-        
-            Desk.IsFavorite = !Desk.IsFavorite;
-            
-        }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
+            Desk.IsFavorite = !Desk.IsFavorite;
 
         }
 
         private void ConnectClick(object sender, RoutedEventArgs e)
         {
             OnClickConnect?.Invoke(this, Desk);
-        }
-
-        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
-        {
-
         }
 
         private void ControlMouseEnter(object sender, MouseEventArgs e)
@@ -209,32 +196,32 @@ namespace LucidDesk.UserControls
             desk.PropertyChanged -= DeskPropertyChanged;
 
             WrapPanel wrapPanel = this.Parent as WrapPanel;
-            if(wrapPanel!=null)
-            wrapPanel.Children.Remove(this);
+            if (wrapPanel != null)
+                wrapPanel.Children.Remove(this);
         }
-
-       
 
         private void RemoveButtonClick(object sender, RoutedEventArgs e)
         {
-           MessageBox removeConfirmDialog=new MessageBox();
-            removeConfirmDialog.ShowMessageBox("Do want to remove this desk?", "Conformation", MessageBoxType.YesOrNo);
-            if(removeConfirmDialog.DialogResult==System.Windows.Forms.DialogResult.Yes) {
-               if(DeskProfileManager.DeleteProfile(desk.Id)){
+
+            var result = MessageBox2.ShowMessageBox("Do want to remove this desk?", "Conformation", MessageBoxType.YesOrNo);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+            {
+                if (DeskProfileManager.DeleteProfile(desk.DeskId))
+                {
                     desk.Dispose();
-               }
-             
+                }
             }
         }
 
         private void IsFavoriteClick(object sender, RoutedEventArgs e)
-        {   if(IsFavorite)
-            Desk.IsFavorite = !Desk.IsFavorite;
+        {
+            if (IsFavorite)
+                Desk.IsFavorite = !Desk.IsFavorite;
         }
 
         private void ConnectWithPasswordClick(object sender, RoutedEventArgs e)
         {
-
+            OnClickConnectWithPassword?.Invoke(this, Desk);
         }
     }
 }

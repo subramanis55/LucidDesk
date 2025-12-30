@@ -190,7 +190,7 @@
 
                         <Viewbox Height="25">
                             <Path Name="IsFavoriteIcon" MouseDown="IsFavoriteIconMouseDown" VerticalAlignment="Center"
-              Stroke="White" HorizontalAlignment="Center" Data="{StaticResource Star}">
+              Stroke="{StaticResource DefaultIconColorBrush}" HorizontalAlignment="Center" Data="{StaticResource Star}">
                                 <Path.Style>
                                     <Style TargetType="Path">
                                         <Style.Triggers>
@@ -234,7 +234,7 @@
                 </Border>
                 <Border Grid.Column="2">
 
-                    <Button Name="MenuButton" Click="MenuButtonClick" Foreground="White" FontSize="16"  FontFamily="Segoe MDL2 Assets" Content="&#xE712;"    VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0"   MaxHeight="35" MaxWidth="35"     >
+                    <Button Name="MenuButton" Click="MenuButtonClick" Foreground="{StaticResource DefaultIconColorBrush}" FontSize="16"  FontFamily="Segoe MDL2 Assets" Content="&#xE712;"    VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="1"   MaxHeight="35" MaxWidth="35"     >
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Padding" Value="5"/>

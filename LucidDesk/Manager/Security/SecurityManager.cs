@@ -7,13 +7,14 @@ using System.Security.Cryptography;
 
 namespace LucidDesk.Manager.Security
 {
-   public static  class SecurityManager
+    public static class SecurityManager
     {
         private readonly static string Key = "Desk123456789012"; // 16-byte secret key
         private readonly static string InitializationVector = "Desk123456789012";  // 16-byte initialization vector (IV)
 
         public static string Encrypt(string plainText)
         {
+            return plainText;
             using (Aes aes = Aes.Create())
             {
                 aes.Key = Encoding.UTF8.GetBytes(Key);
@@ -27,6 +28,7 @@ namespace LucidDesk.Manager.Security
 
         public static string Decrypt(string encryptedText)
         {
+            return encryptedText;
             using (Aes aes = Aes.Create())
             {
                 aes.Key = Encoding.UTF8.GetBytes(Key);
@@ -39,4 +41,4 @@ namespace LucidDesk.Manager.Security
             }
         }
     }
-}                                              
+}

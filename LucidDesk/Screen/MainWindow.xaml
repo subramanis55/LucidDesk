@@ -90,9 +90,6 @@
                     </WrapPanel>
                 </Grid>
 
-
-
-
                 <Grid Grid.Column="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -297,7 +294,7 @@
                 <TabItem Name="ScreenSharePage">
 
                     <Grid Name="ScreenShowMainContainer"  >
-                        <Image Name="ScreenImage" Margin="10" Source="/LucidDesk;component/Resources/Screenshot (36).png"></Image>
+                        <Image Name="ScreenImage" Margin="10" ></Image>
                     </Grid>
                 </TabItem>
                 <TabItem></TabItem>

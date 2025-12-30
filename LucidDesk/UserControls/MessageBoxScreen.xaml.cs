@@ -19,19 +19,22 @@ namespace LucidDesk.UserControls
     {
         Ok, YesOrNo
     }
-    public partial class MessageBox : Window
+    public partial class MessageBoxScreen : Window
     {
         public MessageBoxType messageBoxType;
         public DialogResult DialogResult;
+        public bool IsHideOnly { set; get; }
         public MessageBoxType MessageBoxType
         {
             set
             {
                 messageBoxType = value;
-                if(messageBoxType==MessageBoxType.Ok){
+                if (messageBoxType == MessageBoxType.Ok)
+                {
                     MainContainer.RowDefinitions[2].Height = new GridLength(0);
                 }
-                else if(messageBoxType == MessageBoxType.YesOrNo) {
+                else if (messageBoxType == MessageBoxType.YesOrNo)
+                {
                     MainContainer.RowDefinitions[3].Height = new GridLength(0);
                 }
             }
@@ -40,17 +43,17 @@ namespace LucidDesk.UserControls
                 return messageBoxType;
             }
         }
-        public MessageBox()
+        public MessageBoxScreen()
         {
 
             InitializeComponent();
-        
+
         }
 
         private void YesButtonClick(object sender, RoutedEventArgs e)
         {
             DialogResult = DialogResult.Yes;
-           Close();
+            Close();
         }
 
         private void NoButtonClick(object sender, RoutedEventArgs e)
@@ -71,7 +74,13 @@ namespace LucidDesk.UserControls
             Close();
         }
 
-    
+        protected override void OnClosed(EventArgs e)
+        {
+            if (IsHideOnly)
+                Hide();
+            else
+                base.OnClosed(e);
+        }
 
         private void TopPanelMouseDown(object sender, MouseButtonEventArgs e)
         {

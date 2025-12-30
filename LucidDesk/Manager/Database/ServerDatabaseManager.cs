@@ -104,21 +104,21 @@ namespace LucidDesk.Manager.Database
         public static Dictionary<string, Desk> GetDeskProfiles()
         {
             Dictionary<string, Desk> Profiles = new Dictionary<string, Desk>();
-            DataTable dataTable = new DataTable();
-            string GetDataQuery = "Select * from DeskProfile";
-            mySqlCommand.CommandText = GetDataQuery;
-            dataTable.Load(mySqlCommand.ExecuteReader());
-            for (int i = 0; i < dataTable.Rows.Count; i++)
-            {
-                try
-                {
-                    Profiles.Add("" + dataTable.Rows[i]["Id"], new Desk() { Id = Convert.ToInt32("" + dataTable.Rows[i]["Id"]), IPAddress = Convert.ToString(dataTable.Rows[i]["IPAddress"]), HostName = Convert.ToString(dataTable.Rows[i]["HostName"]), ProfileName = Convert.ToString(dataTable.Rows[i]["ProfileName"]), ProfileImageString = Convert.ToString(dataTable.Rows[i]["ProfileImage"]), DesktopImageString = Convert.ToString(dataTable.Rows[i]["DesktopImage"]), Password = Convert.ToString(dataTable.Rows[i]["Password"]), MacAddress = Convert.ToString(dataTable.Rows[i]["MacAddress"]), OsName = Convert.ToString(dataTable.Rows[i]["OsName"]), PcName = Convert.ToString(dataTable.Rows[i]["PcName"]), RecentLoginTime = (DateTime)dataTable.Rows[i]["RecentLoginTime"] });
-                }
-                catch (Exception e)
-                {
+            //DataTable dataTable = new DataTable();
+            //string GetDataQuery = "Select * from DeskProfile";
+            //mySqlCommand.CommandText = GetDataQuery;
+            //dataTable.Load(mySqlCommand.ExecuteReader());
+            //for (int i = 0; i < dataTable.Rows.Count; i++)
+            //{
+            //    try
+            //    {
+            //        Profiles.Add("" + dataTable.Rows[i]["Id"], new Desk() { Id = Convert.ToInt32("" + dataTable.Rows[i]["Id"]), IPAddress = Convert.ToString(dataTable.Rows[i]["IPAddress"]), HostName = Convert.ToString(dataTable.Rows[i]["HostName"]), ProfileName = Convert.ToString(dataTable.Rows[i]["ProfileName"]), ProfileImageString = Convert.ToString(dataTable.Rows[i]["ProfileImage"]), DesktopImageString = Convert.ToString(dataTable.Rows[i]["DesktopImage"]), Password = Convert.ToString(dataTable.Rows[i]["Password"]), MacAddress = Convert.ToString(dataTable.Rows[i]["MacAddress"]), OsName = Convert.ToString(dataTable.Rows[i]["OsName"]), PcName = Convert.ToString(dataTable.Rows[i]["PcName"]), RecentLoginTime = (DateTime)dataTable.Rows[i]["RecentLoginTime"] });
+            //    }
+            //    catch (Exception e)
+            //    {
 
-                }
-            }
+            //    }
+            //}
             return Profiles;
         }
 

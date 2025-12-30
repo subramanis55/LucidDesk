@@ -125,6 +125,9 @@
     <Compile Include="Manager\Network\ServerNetworkManager.cs" />
     <Compile Include="Manager\Security\SecurityManager.cs" />
     <Compile Include="Manager\SystemInformationManager.cs" />
+    <Compile Include="Screen\ConnectWithPassword.xaml.cs">
+      <DependentUpon>ConnectWithPassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\SettingsManager.cs" />
     <Compile Include="TestWindow.xaml.cs">
@@ -150,9 +153,10 @@
       <DependentUpon>DeskProfile.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Common\RoundedImage.cs" />
-    <Compile Include="UserControls\MessageBox.xaml.cs">
-      <DependentUpon>MessageBox.xaml</DependentUpon>
+    <Compile Include="UserControls\MessageBoxScreen.xaml.cs">
+      <DependentUpon>MessageBoxScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\MessageBox2.cs" />
     <Compile Include="UserControls\PageSelectContextMenu.xaml.cs">
       <DependentUpon>PageSelectContextMenu.xaml</DependentUpon>
     </Compile>
@@ -189,6 +193,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Screen\ConnectWithPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\DeskCustomStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -237,7 +245,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\MessageBox.xaml">
+    <Page Include="UserControls\MessageBoxScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

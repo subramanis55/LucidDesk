@@ -21,8 +21,11 @@ namespace LucidDesk.Manager.Classes
         public bool ClipboardAccess { get; set; }
         public bool KeyboardAccess { get; set; }
         public bool MouseAccess { get; set; }
-        public bool InviteStatus { get; set; }
+        public bool Status { get; set; }
         public bool statusUpdate { get; set; }
+
+        [NonSerialized]
+        public TcpClient TcpClient;
         public AccessType AccessType
         {
             set
@@ -36,7 +39,6 @@ namespace LucidDesk.Manager.Classes
 
             }
         }
-        public TcpClient TcpClient { get; set; }
 
         public ConnectionType ConnectionType
         {

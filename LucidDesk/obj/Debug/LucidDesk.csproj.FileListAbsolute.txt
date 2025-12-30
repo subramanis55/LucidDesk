@@ -264,12 +264,6 @@ F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\NAudio.WinMM.dll
 F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\Newtonsoft.Json.dll
 F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\System.Security.AccessControl.dll
 F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\System.Security.Principal.Windows.dll
-F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\ZstdNet.dll
-F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\K4os.Compression.LZ4.Streams.dll
-F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\Ubiety.Dns.Core.dll
-F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\System.Buffers.dll
-F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\K4os.Compression.LZ4.dll
-F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\K4os.Hash.xxHash.dll
 F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\Microsoft.Win32.Registry.xml
 F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\NAudio.xml
 F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\NAudio.Asio.xml
@@ -285,6 +279,7 @@ F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\ConnectionAcceptWindow.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\InviteWindow.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\loginWindow.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\MainWindow.g.cs
+F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\ConnectWithPassword.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\TestWindow.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\CustomTextBox.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\CustomTextBoxPlaceHolderMove.g.cs
@@ -292,7 +287,7 @@ F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\NotificationCo
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\ProfileImageSelect.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\CustomHeaderSwicthControl.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\DeskProfile.g.cs
-F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\MessageBox.g.cs
+F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\MessageBoxScreen.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\PageSelectContextMenu.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\SearchBoxControl.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\SessionHeaderControl.g.cs
@@ -306,6 +301,7 @@ F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\ConnectionAcceptWindow.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\InviteWindow.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\loginWindow.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\MainWindow.baml
+F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\ConnectWithPassword.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Styles\DeskCustomStyle.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Styles\Icons.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Styles\ScrollBarStyle.baml
@@ -318,7 +314,7 @@ F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\NotificationCo
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\ProfileImageSelect.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\CustomHeaderSwicthControl.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\DeskProfile.baml
-F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\MessageBox.baml
+F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\MessageBoxScreen.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\PageSelectContextMenu.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\SearchBoxControl.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\SessionHeaderControl.baml

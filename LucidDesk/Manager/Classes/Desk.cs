@@ -1,4 +1,6 @@
-﻿using LucidDesk.Manager.Files;
+﻿using LucidDesk.Manager.Enum;
+using LucidDesk.Manager.Files;
+using LucidDesk.Settings;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,14 +17,17 @@ namespace LucidDesk.Manager
         public event EventHandler OnClickDeleted;
         public event PropertyChangedEventHandler PropertyChanged;
         private int id;
+
         private string iPAddress;
         private bool isFavorite;
         private string hostName;
         private string profileName;
+
         [JsonIgnore]
         private BitmapImage profileImage;
         [JsonIgnore]
         private BitmapImage desktopImage;
+
         private string profileImageString;
         private string desktopImageString;
         private string password;
@@ -30,7 +35,23 @@ namespace LucidDesk.Manager
         private string osName;
         private string pcName;
         private DateTime recentLoginTime;
-        public int Id
+        public string GUID { set; get; }
+
+        public string DisplayID
+        {
+            get
+            {
+                return SettingsManager.Settings.ApplicationMode == ApplicationMode.Online ? Id.ToString() : IPAddress;
+            }
+        }
+        public string DeskId
+        {
+            get
+            {
+                return SettingsManager.Settings.ApplicationMode == ApplicationMode.Online ? Id.ToString() : GUID;
+            }
+        }
+        private int Id
         {
             get
             {
@@ -42,14 +63,17 @@ namespace LucidDesk.Manager
                 OnPropertyChanged(nameof(Id));
             }
         }
-        public string IPAddress{
-        get{
+        public string IPAddress
+        {
+            get
+            {
                 return iPAddress;
-        }
-        set{
+            }
+            set
+            {
                 iPAddress = value;
                 OnPropertyChanged(nameof(IPAddress));
-        }
+            }
         }
         public string HostName
         {
@@ -75,6 +99,7 @@ namespace LucidDesk.Manager
                 OnPropertyChanged(nameof(ProfileName));
             }
         }
+
         [JsonIgnore]
         public BitmapImage ProfileImage
         {
@@ -125,7 +150,8 @@ namespace LucidDesk.Manager
                 OnPropertyChanged(nameof(DesktopImage));
             }
         }
-        public string OsName{
+        public string OsName
+        {
             get
             {
                 return osName;
@@ -147,7 +173,7 @@ namespace LucidDesk.Manager
             set
             {
                 isFavorite = value;
-      
+
                 OnPropertyChanged(nameof(IsFavorite));
             }
         }
@@ -211,8 +237,9 @@ namespace LucidDesk.Manager
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-        public void Dispose(){
-            OnClickDeleted?.Invoke(this,EventArgs.Empty);
+        public void Dispose()
+        {
+            OnClickDeleted?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -7,8 +7,8 @@
          xmlns:UserControl="clr-namespace:LucidDesk.UserControls.Common"
         Background="Transparent"     Icon="/LucidDesk;Component/Resources/DeskIcon.png" ResizeMode="NoResize"
         mc:Ignorable="d"  WindowStyle="None"  WindowStartupLocation="CenterScreen"   
-        Title="loginWindow" Height="450" Width="700">
-    <Grid Background="Transparent">
+        Title="loginWindow" Height="374" Width="700">
+    <Grid Background="Transparent" Margin="0,0,0,25">
         <Border CornerRadius="10" BorderBrush="{StaticResource MainColorBrush}" BorderThickness="1" Background="{StaticResource SubColorBrush}">
 
 
@@ -18,7 +18,7 @@
                     <DockPanel  Margin="20 0 0 0" Height="50" VerticalAlignment="Center"  >
 
                         <Image Grid.Column="0" Height="20"  Width="20" Margin="0 7 0 0" Source="/LucidDesk;component\Resources\DeskIcon.png"></Image>
-                        <TextBlock TextAlignment="Center" Margin="10 0 0 0" VerticalAlignment="Center" Grid.Column="1" Text="Desk" FontWeight="Medium" FontSize="20" Foreground="{StaticResource MainColorBrush}" ></TextBlock>
+                        <TextBlock Name="applicationNameLBL" TextAlignment="Center" Margin="10 0 0 0" VerticalAlignment="Center" Grid.Column="1" Text="Desk" FontWeight="Medium" FontSize="20" Foreground="{StaticResource MainColorBrush}" ></TextBlock>
                         <Button Height="30" Width="30" Margin="0 0 10 0" DockPanel.Dock="Right" HorizontalAlignment="Right" Click="CloseButtonClick" Style="{StaticResource CloseButton}"  >
                             <Button.ToolTip>
                                 <ToolTip Content="Close"></ToolTip>

@@ -13,9 +13,38 @@ namespace LucidDesk.Manager.Database
 {
     public static class DeskProfileManager
     {
-        public static Desk UserDesk;
+        public static event EventHandler DeskProfilesUpdated;
+        private static Dictionary<string, Desk> deskProfilesDictionary;
+        public static Desk UserDesk { set; get; }
         public static List<Desk> DeskProfiles;
-        public static Dictionary<string, Desk> DeskProfilesDictionary;
+        public static Dictionary<string, Desk> DeskProfilesDictionary
+        {
+            get => deskProfilesDictionary;
+            set
+            {
+                deskProfilesDictionary = value;
+                DeskProfiles = deskProfilesDictionary.Values.ToList();
+                DeskProfilesUpdated?.Invoke(null, EventArgs.Empty);
+            }
+        }
+
+        public static void Intialize()
+        {
+            deskProfilesDictionary = GetDeskProfilesData();
+            DeskProfiles = deskProfilesDictionary.Values.ToList();
+
+        }
+
+        public static bool DeskExits(string macAddress)
+        {
+            if (DeskProfiles == null)
+                return false;
+            foreach (var desk in DeskProfiles)
+            {
+                if (desk.MacAddress == macAddress) return true;
+            }
+            return false;
+        }
 
         public static Dictionary<string, Desk> GetDeskProfilesData()
         {
@@ -27,8 +56,9 @@ namespace LucidDesk.Manager.Database
                 {
                     string deskProfiledata = File.ReadAllText(DeskProfilesDataPath[i]);
                     Desk desk = JsonConvert.DeserializeObject<Desk>(SecurityManager.Decrypt(deskProfiledata));
-                    deskProfilesDictionary.Add("" + desk.Id, desk);
-                    if(desk.MacAddress==SystemInformationManager.GetMacAddress()){
+                    deskProfilesDictionary.Add("" + desk.DeskId, desk);
+                    if (desk.MacAddress == SystemInformationManager.MacAddress)
+                    {
                         UserDesk = desk;
                     }
                 }
@@ -37,18 +67,19 @@ namespace LucidDesk.Manager.Database
 
                 }
             }
-     
+
             return deskProfilesDictionary;
         }
         public static bool CreateDeskProfiledata(Desk deskProfile)
         {
+
             try
             {
                 string deskProfileData = JsonConvert.SerializeObject(deskProfile);
                 string encodedData = SecurityManager.Encrypt(deskProfileData);
                 string folderPath = LocalDatabaseManager.DatabaseFolderPath;
-                string fileName = "/"+deskProfile.Id + ".txt";
-                string filePath = folderPath+ fileName;
+                string fileName = "/" + deskProfile.DeskId + ".txt";
+                string filePath = folderPath + fileName;
                 // Ensure the directory exists
                 if (!Directory.Exists(folderPath))
                 {
@@ -56,6 +87,7 @@ namespace LucidDesk.Manager.Database
                 }
                 // Write to the file
                 File.WriteAllText(filePath, encodedData);
+                DeskProfilesDictionary = GetDeskProfilesData();
                 return true;
             }
             catch (Exception e)
@@ -65,52 +97,63 @@ namespace LucidDesk.Manager.Database
         }
         public static bool UpdateDeskProfiledata(Desk deskProfile)
         {
+
             try
             {
+                if (!DeskProfilesDictionary.ContainsKey(deskProfile.DeskId))
+                    return CreateDeskProfiledata(deskProfile);
                 string deskProfileData = JsonConvert.SerializeObject(deskProfile);
                 string encodedData = SecurityManager.Encrypt(deskProfileData);
-                string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath +"/"+ deskProfile.Id + ".txt";
+                string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath + "/" + deskProfile.DeskId + ".txt";
                 File.WriteAllText(deskProfilePath, encodedData);
-                return true;
-            }
-            catch(Exception e)
-            {
-               
-            }
-            return false;
-        }
-        public static bool UpdateDeskProfilesdata(List<Desk> deskProfiles)
-        {
-            try
-            {
-            for(int i=0;i< deskProfiles.Count;i++){
-                    string deskProfileData = JsonConvert.SerializeObject(deskProfiles[i]);
-                    string encodedData = SecurityManager.Encrypt(deskProfileData);
-                    string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath + deskProfiles[i].Id + ".txt";
-                    //if (Directory.Exists(deskProfilePath))
-                    //    Directory.CreateDirectory(deskProfilePath);
-                    File.WriteAllText(deskProfilePath, encodedData);
-                }
-               
+                DeskProfilesDictionary = GetDeskProfilesData();
                 return true;
             }
             catch (Exception e)
             {
 
             }
+
             return false;
         }
-        public static bool  DeleteProfile(int id){
-            try{
-                File.Delete(LocalDatabaseManager.DatabaseFolderPath +"/"+ id+ ".txt");
-                DeskProfilesDictionary.Remove(id + "");
-                DeskProfiles = DeskProfilesDictionary.Values.ToList();
+        public static bool UpdateDeskProfilesdata(List<Desk> deskProfiles)
+        {
+            try
+            {
+                for (int i = 0; i < deskProfiles.Count; i++)
+                {
+                    string deskProfileData = JsonConvert.SerializeObject(deskProfiles[i]);
+                    string encodedData = SecurityManager.Encrypt(deskProfileData);
+                    string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath + deskProfiles[i].DeskId + ".txt";
+                    if (Directory.Exists(deskProfilePath))
+                        Directory.CreateDirectory(deskProfilePath);
+                    File.WriteAllText(deskProfilePath, encodedData);
+                }
+                DeskProfilesDictionary = GetDeskProfilesData();
                 return true;
             }
-            catch{
+            catch (Exception e)
+            {
 
             }
-          return false;
+
+            return false;
+        }
+        public static bool DeleteProfile(string id)
+        {
+            try
+            {
+                File.Delete(LocalDatabaseManager.DatabaseFolderPath + "/" + id + ".txt");
+                DeskProfilesDictionary.Remove(id + "");
+                DeskProfiles = DeskProfilesDictionary.Values.ToList();
+                DeskProfilesDictionary = GetDeskProfilesData();
+                return true;
+            }
+            catch
+            {
+
+            }
+            return false;
         }
     }
 }

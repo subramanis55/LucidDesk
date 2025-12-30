@@ -1,243 +1,7 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Diagnostics;
-//using System.IO;
-//using System.Linq;
-//using System.Net.Sockets;
-//using System.Runtime.InteropServices;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Windows;
-//using System.Windows.Controls;
-//using System.Windows.Data;
-//using System.Windows.Documents;
-//using System.Windows.Input;
-//using System.Windows.Media;
-//using System.Windows.Media.Imaging;
-//using System.Windows.Navigation;
-//using System.Windows.Shapes;
-//using System.Windows.Threading;
-
-//namespace LucidDesk.Manager
-//{
-//    public class ClientNetworkManager
-//    {
-//        public event EventHandler<BitmapImage> ScreenShareUpdateInvoke;
-//        public event EventHandler ConnectedToSeverInvoke;
-//        public event EventHandler DisConnectedToSeverInvoke;
-//        public string ClientIpaddress;
-//        private TcpClient client;
-//        private NetworkStream stream;
-//        public bool isConnected = false;
-//        private LowLevelKeyboardProc _proc;
-//        private IntPtr _hookID = IntPtr.Zero;
-
-//        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
-
-//        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-//        private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
-
-//        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-//        [return: MarshalAs(UnmanagedType.Bool)]
-//        private static extern bool UnhookWindowsHookEx(IntPtr hhk);
-
-//        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-//        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
-
-//        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-//        private static extern IntPtr GetModuleHandle(string lpModuleName);
-
-
-//        public ClientNetworkManager()
-//        {
-//            _proc = HookCallback;
-//            _hookID = SetHook(_proc);
-//        }
-
-//        private IntPtr SetHook(LowLevelKeyboardProc proc)
-//        {
-//            using (var curProcess = Process.GetCurrentProcess())
-//            using (var curModule = curProcess.MainModule)
-//            {
-//                return SetWindowsHookEx(13, proc, GetModuleHandle(curModule.ModuleName), 0);
-//            }
-//        }
-
-//        private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
-//        {
-//            if (nCode >= 0 && (wParam == (IntPtr)0x0100 || wParam == (IntPtr)0x0104))
-//            {
-//                int vkCode = Marshal.ReadInt32(lParam);
-//                bool isWindowsKey = (vkCode == 0x5B || vkCode == 0x5C);
-//                bool isAltTab = (vkCode == 0x09 && (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)));
-
-//                if (isWindowsKey)
-//                {
-//                    // Send Windows key event to the server
-//                    //SendKeyEvent((Key)vkCode, "KeyDown");
-//                    SendKeyEvent((Key)vkCode, "WindowKey");
-//                    return (IntPtr)1; // Suppress the key press locally
-//                }
-//                else if (isAltTab)
-//                {
-//                    // Handle Alt+Tab locally (don't send to server)
-//                    SendKeyEvent((Key)vkCode, "AltTab");
-//                    return (IntPtr)1; // Suppress the key press locally
-//                }
-
-//            }
-//            return CallNextHookEx(_hookID, nCode, wParam, lParam);
-
-//        }
-
-
-
-//        public async Task ConnectToServer()
-//        {
-//            try
-//            {
-//                client = new TcpClient(ClientIpaddress, 9000);
-//                stream = client.GetStream();
-//                isConnected = true;
-//                MessageBox.Show("Connected to server");
-//                ConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
-//                while (isConnected)
-//                {
-//                    try
-//                    {
-//                        // Read the image data length from the stream (assuming length is sent as an int before image data)
-//                        byte[] lengthBuffer = new byte[4];
-//                        await stream.ReadAsync(lengthBuffer, 0, 4);
-//                        int imageLength = BitConverter.ToInt32(lengthBuffer, 0);
-
-//                        // Read the actual image data
-//                        byte[] imageData = new byte[imageLength];
-//                        int bytesRead = 0;
-//                        while (bytesRead < imageLength)
-//                        {
-//                            bytesRead += await stream.ReadAsync(imageData, bytesRead, imageLength - bytesRead);
-//                        }
-
-//                        // Create the BitmapImage from the received image data
-//                        using (MemoryStream memoryStream = new MemoryStream(imageData))
-//                        {
-//                            BitmapImage bitmap = new BitmapImage();
-//                            bitmap.BeginInit();
-//                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-//                            bitmap.StreamSource = memoryStream;
-//                            bitmap.EndInit();
-//                            bitmap.Freeze(); // Freeze the BitmapImage to make it cross-thread accessible
-
-//                            ScreenShareUpdateInvoke?.Invoke(this, bitmap);
-
-//                        }
-//                    }
-//                    catch (IOException ex) when (ex.InnerException is SocketException socketEx &&
-//                                                    (socketEx.SocketErrorCode == SocketError.ConnectionReset ||
-//                                                     socketEx.SocketErrorCode == SocketError.ConnectionAborted))
-//                    {
-
-//                        MessageBox.Show("Connection to the server was lost: " + ex.Message);
-//                        isConnected = false;
-//                        DisConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
-//                    }
-//                    catch (Exception ex)
-//                    {
-//                        MessageBox.Show("Error receiving image data: " + ex.Message);
-//                        isConnected = false;
-//                        DisConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
-//                    }
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                MessageBox.Show("Error connecting to server: " + ex.Message);
-//                isConnected = false;
-//                DisConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
-//            }
-//        }
-//        //MouseLeft
-
-
-
-//        public void SendMouseEvent(Point position, string eventType, double ScreenImageActualWidth, double ScreenImageActualHeight)
-//        {
-//            if (client != null && client.Connected)
-//            {
-//                NetworkStream stream = client.GetStream();
-//                StreamWriter writer = new StreamWriter(stream);
-
-//                // Get the client's screen resolution
-//                double screenWidth = SystemParameters.PrimaryScreenWidth;
-//                double screenHeight = SystemParameters.PrimaryScreenHeight;
-
-//                writer.WriteLine($"{eventType}:{(position.X / ScreenImageActualWidth) * screenWidth},{(position.Y / ScreenImageActualHeight) * screenHeight}:{screenWidth},{screenHeight}");
-//                writer.Flush();
-//            }
-//        }
-
-
-
-//        public void SendClipboardContentToServer()
-//        {
-//            if (client != null && client.Connected)
-//            {
-//                NetworkStream stream = client.GetStream();
-//                StreamWriter writer = new StreamWriter(stream);
-
-//                if (Clipboard.ContainsText())
-//                {
-//                    string clipboardText = Clipboard.GetText();
-//                    writer.WriteLine($"ClipboardText:{clipboardText}");
-//                    writer.Flush();
-//                }
-//                // You can handle other clipboard content types (e.g., images) similarly
-//            }
-//        }
-//        //KeyPress
-
-//        public void SendKeyEvent(Key key, string eventType)
-//        {
-//            if (client != null && client.Connected)
-//            {
-//                NetworkStream stream = client.GetStream();
-//                StreamWriter writer = new StreamWriter(stream);
-
-//                // Convert Key to virtual key code
-//                byte virtualKeyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
-//                // Get the client's screen resolution
-//                double screenWidth = SystemParameters.PrimaryScreenWidth;
-//                double screenHeight = SystemParameters.PrimaryScreenHeight;
-
-//                // Send the event to the server
-//                writer.WriteLine($"{eventType}:{0},{0}:{screenWidth}:{screenHeight}:{virtualKeyCode}");
-//                writer.Flush();
-//            }
-//        }
-//        //Mouse Rightclick
-
-//        public void SendMouseRightEvent(Point position, string eventType, double ScreenImageActualWidth, double ScreenImageActualHeight)
-//        {
-//            if (client != null && client.Connected)
-//            {
-//                NetworkStream stream = client.GetStream();
-//                StreamWriter writer = new StreamWriter(stream);
-
-//                // Get the client's screen resolution
-//                double screenWidth = SystemParameters.PrimaryScreenWidth;
-//                double screenHeight = SystemParameters.PrimaryScreenHeight;
-
-//                writer.WriteLine($"{eventType}:{(position.X / ScreenImageActualWidth) * screenWidth},{(position.Y / ScreenImageActualHeight) * screenHeight}:{screenWidth},{screenHeight}");
-//                writer.Flush();
-//            }
-//        }
-
-//    }
-//}
-
-using LucidDesk.Manager.Classes;
+﻿using LucidDesk.Manager.Classes;
 using LucidDesk.Manager.Classes.DataSchema;
 using LucidDesk.Manager.Enum;
+using LucidDesk.Settings;
 using NAudio.Wave;
 using Newtonsoft.Json;
 using System;
@@ -268,7 +32,6 @@ using Point = System.Windows.Point;
 namespace LucidDesk.Manager
 {
 
-
     public partial class ClientNetworkManager
     {
         public DeskConnectionInformation deskConnectionInformation;
@@ -277,7 +40,11 @@ namespace LucidDesk.Manager
             set
             {
                 deskConnectionInformation = value;
-                ClientIpaddress = SystemInformationManager.GetPcIPAddress(deskConnectionInformation.ReceiverDesk.HostName);
+                if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Local)
+                {
+                    ClientIpaddress = deskConnectionInformation.ReceiverDesk.HostName != null ? SystemInformationManager.GetPcIPAddress(deskConnectionInformation.ReceiverDesk.HostName) : deskConnectionInformation.ReceiverDesk.IPAddress;
+                }
+
             }
             get
             {
@@ -287,7 +54,7 @@ namespace LucidDesk.Manager
         public const int PORT = 12345;
         public event EventHandler<DeskImageData> ScreenShareUpdateInvoke;
         public event EventHandler ConnectedToSeverInvoke;
-        public event EventHandler DisConnectedToSeverInvoke;
+        public event EventHandler<string> DisConnectedToSeverInvoke;
         public event EventHandler ConnectionEstabishFailInvoke;
 
         public ClientNetworkManager()
@@ -330,7 +97,6 @@ namespace LucidDesk.Manager
                 return SetWindowsHookEx(13, proc, GetModuleHandle(curModule.ModuleName), 0);
             }
         }
-
 
         private bool WindowsKey;
         private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
@@ -447,15 +213,12 @@ namespace LucidDesk.Manager
                 client = new TcpClient(ClientIpaddress, PORT);
                 stream = client.GetStream();
                 isConnected = true;
-                System.Windows.MessageBox.Show("Connected to server");
-                ConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
                 sendConnectRequest(deskConnectionInformation);
                 HandleServerReponseDatas();
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("Error connecting to server: " + ex.Message);
-                DisConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
+                DisConnectedToSeverInvoke?.Invoke(this, ex.Message);
                 isConnected = false;
             }
         }
@@ -510,15 +273,12 @@ namespace LucidDesk.Manager
                 }
                 catch (IOException ex) when (ex.InnerException is SocketException socketEx && (socketEx.SocketErrorCode == SocketError.ConnectionReset || socketEx.SocketErrorCode == SocketError.ConnectionAborted))
                 {
-                    MessageBox.Show("Connection to the server was lost: " + ex.Message);
                     isConnected = false;
-                    DisConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
+                    DisConnectedToSeverInvoke?.Invoke(this, "Error receiving image data: " + ex.Message);
                 }
                 catch (Exception ex)
                 {
-
-                    MessageBox.Show("Error receiving image data: " + ex.Message);
-                    DisConnectedToSeverInvoke?.Invoke(this, EventArgs.Empty);
+                    DisConnectedToSeverInvoke?.Invoke(this, "Error receiving image data: " + ex.Message);
                     isConnected = false;
                 }
             }
@@ -622,9 +382,9 @@ namespace LucidDesk.Manager
         //    }
         //}
 
-        public void SendKeyEvent(ControlKeyType controlKeyType,Key key)
+        public void SendKeyEvent(ControlKeyType controlKeyType, Key key)
         {
-            if (client != null && client.Connected )
+            if (client != null && client.Connected)
             {
                 NetworkStream stream = client.GetStream();
                 // Convert Key to virtual key code
@@ -646,7 +406,7 @@ namespace LucidDesk.Manager
 
         public void SendMouseRightEvent(ControlKeyType controlKeyType, Point position, double ScreenImageActualWidth, double ScreenImageActualHeight)
         {
-            if (client != null && client.Connected )
+            if (client != null && client.Connected)
             {
                 NetworkStream stream = client.GetStream();
                 // Get the client's screen resolution
@@ -662,15 +422,14 @@ namespace LucidDesk.Manager
                 WriteObject(stream, json);
             }
         }
+
         public void ConnectionClose()
         {
-
             if (client != null)
                 client.Close();
             if (AudioTcpClient != null)
                 AudioTcpClient.Close();
         }
-
 
     }
 }

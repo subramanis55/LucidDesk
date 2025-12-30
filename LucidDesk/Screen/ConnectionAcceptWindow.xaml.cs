@@ -33,7 +33,7 @@ namespace LucidDesk
                 desk = value;
                
                 DeskUserNameTextBlock.Text = desk.ProfileName;
-                DeskIdTextBlock.Text = "(" + desk.Id+ ")";
+                DeskIdTextBlock.Text = "(" + desk.DisplayID+ ")";
                 DeskUserProfileImageComponent.Image = desk.DesktopImage;
              
             }
@@ -74,7 +74,7 @@ namespace LucidDesk
 
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
-            DeskConnectionInformation.InviteStatus = false;
+            DeskConnectionInformation.Status = false;
             OnClickGetStatus?.Invoke(this, DeskConnectionInformation);
             this.Close();
 
@@ -94,7 +94,7 @@ namespace LucidDesk
 
         private void AcceptClick(object sender, RoutedEventArgs e)
         {
-            DeskConnectionInformation.InviteStatus = true;
+            DeskConnectionInformation.Status = true;
             OnClickGetStatus?.Invoke(this, DeskConnectionInformation);
         }
 
@@ -145,7 +145,7 @@ namespace LucidDesk
 
         private void RejectButtonClick(object sender, RoutedEventArgs e)
         {
-            DeskConnectionInformation.InviteStatus = false;
+            DeskConnectionInformation.Status = false;
             OnClickGetStatus?.Invoke(this, DeskConnectionInformation);
         }
     }

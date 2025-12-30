@@ -1,6 +1,9 @@
 ﻿using LucidDesk.Log;
 using LucidDesk.Manager;
 using LucidDesk.Manager.Database;
+using LucidDesk.Manager.Enum;
+using LucidDesk.Settings;
+using LucidDesk.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -26,76 +29,59 @@ namespace LucidDesk
             SetUpCheck();
             MainWindow window = new MainWindow();
             window.Show();
-            window.Load();
+           // ShutdownApp();
         }
 
         private void SetUpCheck()
         {
-
             LocalDatabaseManager.SetUp();
-            ServerDatabaseManager.Setup();
+            DeskProfileManager.Intialize();
             string deskMacAddress = SystemInformationManager.GetMacAddress();
             if (deskMacAddress == null)
             {
-                LucidDesk.UserControls.MessageBox messagebox = new UserControls.MessageBox();
-                messagebox.ShowMessageBox("Somthing Wrong in server connection ", "Error", UserControls.MessageBoxType.Ok);
-                Thread.Sleep(5000);
-                LogManager.LogException("Somthing Wrong in server connection ");
+                MessageBox2.ShowMessageBox("Something Wrong SetUp ", "Error", UserControls.MessageBoxType.Ok);
+                LogManager.LogException("Something Wrong SetUp ");
                 ShutdownApp();
             }
             else
             {
-                if (!ServerDatabaseManager.IsDeskExits(deskMacAddress))
+
+                if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Online)
                 {
-                    loginWindow loginWindow = new loginWindow();
-                    loginWindow.OnClickNext += LoginWindowOnClickNext;
-                    loginWindow.ShowDialog();
-
-                    Dictionary<string, Desk> DeskProfilesServerDictionary = ServerDatabaseManager.GetDeskProfiles();
-                    DeskProfileManager.DeskProfilesDictionary = DeskProfileManager.GetDeskProfilesData();
-                    List<Desk> deskProfiles = DeskProfilesServerDictionary.Values.ToList();
-                    for (int i = 0; i < deskProfiles.Count; i++)
-                    {
-                        if (DeskProfileManager.DeskProfilesDictionary.ContainsKey("" + deskProfiles[i].Id))
-                        {
-                            deskProfiles[i].IsFavorite = DeskProfileManager.DeskProfilesDictionary["" + deskProfiles[i].Id].IsFavorite;
-
-                        }
-                        DeskProfileManager.CreateDeskProfiledata(deskProfiles[i]);
-                    }
+                    MessageBox2.ShowMessageBox("Something Wrong Online SetUp ", "Error", UserControls.MessageBoxType.Ok);
+                    LogManager.LogException("Something Wrong  Online SetUp ");
+                    ShutdownApp();
                 }
                 else
                 {
-                    DeskProfileManager.DeskProfilesDictionary = ServerDatabaseManager.GetDeskProfiles();
-                    List<Desk> deskProfiles = DeskProfileManager.DeskProfilesDictionary.Values.ToList();
-                    for (int i = 0; i < deskProfiles.Count; i++)
+                    if (!DeskProfileManager.DeskExits(SystemInformationManager.MacAddress))
                     {
-                        DeskProfileManager.UpdateDeskProfiledata(deskProfiles[i]);
+                        loginWindow loginWindow = new loginWindow();
+                        loginWindow.OnClickNext += LoginWindowOnClickNext;
+                        loginWindow.ShowDialog();
                     }
                 }
-                DeskProfileManager.DeskProfilesDictionary = DeskProfileManager.GetDeskProfilesData();
-                DeskProfileManager.DeskProfiles = DeskProfileManager.DeskProfilesDictionary.Values.ToList();
-                StartServerConnection();
+                StartNetWorkServerConnection();
             }
-
         }
-
         private void LoginWindowOnClickNext(object sender, Desk desk)
         {
-            ServerDatabaseManager.CreateDeskProfile(desk);
-            ((Window)sender).Close();
+            if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Online)
+            {
+
+            }
+            else
+            {
+                DeskProfileManager.CreateDeskProfiledata(desk);
+                ((Window)sender).Close();
+            }
         }
 
-        private void StartServerConnection()
+        private void StartNetWorkServerConnection()
         {
 
             if (LucidDesk.MainWindow.ServerNetworkManager.isStarted) return;
-            //Visibility = Visibility.Hidden;
-            //ShowInTaskbar = false;
-            //ServerNetworkManager.StartServer;
             LucidDesk.MainWindow.ServerNetworkManager.StartServer();
-            // ServerNetworkManager.isStarted = true;
-
 
         }
         private void AppDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

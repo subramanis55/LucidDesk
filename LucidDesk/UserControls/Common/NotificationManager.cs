@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
+
 
 namespace LucidDesk.UserControls.Common
 {
@@ -20,8 +20,8 @@ namespace LucidDesk.UserControls.Common
         public event EventHandler<DeskConnectionInformation> OnClickInviteStatusGet;
 
         System.Timers.Timer arrangeTimer = new System.Timers.Timer();
-        private int x = Screen.PrimaryScreen.Bounds.Width - 50;
-        private int y = Screen.PrimaryScreen.Bounds.Height - 80;
+        private int x = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 50;
+        private int y = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 80;
 
         public int BorderRadius
         {

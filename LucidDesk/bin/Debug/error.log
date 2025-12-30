@@ -136,3 +136,20 @@
    at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
    at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
 
+30-12-2025 06:00:34: System.AggregateException: A Task's exception(s) were not observed either by Waiting on the Task or accessing its Exception property. As a result, the unobserved exception was rethrown by the finalizer thread. ---> System.InvalidOperationException: Cannot set Visibility or call Show, ShowDialog, or WindowInteropHelper.EnsureHandle after a Window has closed.
+   at System.Windows.Window.VerifyCanShow()
+   at System.Windows.Window.ShowDialog()
+   at LucidDesk.UserControls.MessageBoxScreen.ShowMessageBox(String message, String title, MessageBoxType messageBoxType) in F:\Lucid\LucidDesk_Latest\LucidDesk\UserControls\MessageBoxScreen.xaml.cs:line 94
+   at LucidDesk.UserControls.MessageBox2.ShowMessageBox(String message, String heading, MessageBoxType messageBoxType, Window parent) in F:\Lucid\LucidDesk_Latest\LucidDesk\UserControls\MessageBox2.cs:line 17
+   at LucidDesk.MainWindow.ClientNetworkManagerDisConnectedToSeverInvoke(Object sender, String message) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 658
+   at LucidDesk.Manager.ClientNetworkManager.<HandleServerReponseDatas>d__44.MoveNext() in F:\Lucid\LucidDesk_Latest\LucidDesk\Manager\Network\ClientNetworkManager.cs:line 281
+   --- End of inner exception stack trace ---
+---> (Inner Exception #0) System.InvalidOperationException: Cannot set Visibility or call Show, ShowDialog, or WindowInteropHelper.EnsureHandle after a Window has closed.
+   at System.Windows.Window.VerifyCanShow()
+   at System.Windows.Window.ShowDialog()
+   at LucidDesk.UserControls.MessageBoxScreen.ShowMessageBox(String message, String title, MessageBoxType messageBoxType) in F:\Lucid\LucidDesk_Latest\LucidDesk\UserControls\MessageBoxScreen.xaml.cs:line 94
+   at LucidDesk.UserControls.MessageBox2.ShowMessageBox(String message, String heading, MessageBoxType messageBoxType, Window parent) in F:\Lucid\LucidDesk_Latest\LucidDesk\UserControls\MessageBox2.cs:line 17
+   at LucidDesk.MainWindow.ClientNetworkManagerDisConnectedToSeverInvoke(Object sender, String message) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 658
+   at LucidDesk.Manager.ClientNetworkManager.<HandleServerReponseDatas>d__44.MoveNext() in F:\Lucid\LucidDesk_Latest\LucidDesk\Manager\Network\ClientNetworkManager.cs:line 281<---
+
+

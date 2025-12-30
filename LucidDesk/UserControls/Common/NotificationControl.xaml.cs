@@ -106,7 +106,7 @@ namespace LucidDesk.UserControls.Common
             DeskConnectionInformation = deskConnectionInformation;
             MessageText.FontSize = 15;
             Duration = new Duration(TimeSpan.FromSeconds(40));
-           Message = "would  you like to Connect " + DeskConnectionInformation.SenderDesk.ProfileName + "\n (" + DeskConnectionInformation.SenderDesk.Id + ")";
+            Message = "would  you like to Connect " + DeskConnectionInformation.SenderDesk.ProfileName + "\n (" + DeskConnectionInformation.SenderDesk.DisplayID + ")";
             NotificationType = NotificationType.Invite;
             Loaded += NotificationControlLoaded;
         }
@@ -175,14 +175,14 @@ namespace LucidDesk.UserControls.Common
 
         private void RejectButtonClick(object sender, RoutedEventArgs e)
         {
-            DeskConnectionInformation.InviteStatus = false;
+            DeskConnectionInformation.Status = false;
             OnClickInviteStatusGet?.Invoke(this, DeskConnectionInformation);
             OnEnd?.Invoke(this, EventArgs.Empty);
         }
 
         private void AcceptButtonClick(object sender, RoutedEventArgs e)
         {
-            DeskConnectionInformation.InviteStatus = true;
+            DeskConnectionInformation.Status = true;
             OnClickInviteStatusGet?.Invoke(this, DeskConnectionInformation);
             OnEnd?.Invoke(this, EventArgs.Empty);
         }

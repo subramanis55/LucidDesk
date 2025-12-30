@@ -24,7 +24,7 @@ namespace LucidDesk
         public loginWindow()
         {
             InitializeComponent();
-            
+            applicationNameLBL.Text = SystemInformationManager.ApplicationName;
         }
 
         private void CloseButtonClick(object sender, RoutedEventArgs e)
@@ -34,10 +34,12 @@ namespace LucidDesk
 
         private void NextButtonClick(object sender, RoutedEventArgs e)
         {
-        if(passwordTextBox.mainTextBox.Text==""){
+            if (passwordTextBox.mainTextBox.Text == "")
+            {
                 PasswordError.Visibility = Visibility.Visible;
-        }
-        else{
+            }
+            else
+            {
                 PasswordError.Visibility = Visibility.Hidden;
             }
             if (ProfileNameTextBox.mainTextBox.Text == "")
@@ -48,11 +50,12 @@ namespace LucidDesk
             {
                 NameError.Visibility = Visibility.Hidden;
             }
-            if(PasswordError.Visibility==Visibility.Hidden&& NameError.Visibility == Visibility.Hidden) {
-                Desk desk = new Desk() { IPAddress = SystemInformationManager.GetIpAddresss(SystemInformationManager.GetMacAddress()), IsFavorite = false, HostName = SystemInformationManager.GetHostName(), ProfileName = ProfileNameTextBox.mainTextBox.Text, ProfileImage =null, DesktopImage = SystemInformationManager.GetDesktopWallpaper(), Password = passwordTextBox.mainTextBox.Text, MacAddress = SystemInformationManager.GetMacAddress(), OsName = SystemInformationManager.GetOsName(), PcName = SystemInformationManager.GetPcUserName(), RecentLoginTime = DateTime.MinValue };
+            if (PasswordError.Visibility == Visibility.Hidden && NameError.Visibility == Visibility.Hidden)
+            {
+                Desk desk = new Desk() { GUID= SystemInformationManager.GetFromRegistry(), IPAddress = SystemInformationManager.GetIpAddresss(SystemInformationManager.GetMacAddress()), IsFavorite = false, HostName = SystemInformationManager.GetHostName(), ProfileName = ProfileNameTextBox.mainTextBox.Text, ProfileImage = null, DesktopImage = SystemInformationManager.GetDesktopWallpaper(), Password = passwordTextBox.mainTextBox.Text, MacAddress = SystemInformationManager.GetMacAddress(), OsName = SystemInformationManager.GetOsName(), PcName = SystemInformationManager.GetPcUserName(), RecentLoginTime = DateTime.MinValue };
                 OnClickNext?.Invoke(this, desk);
             }
-           
+
         }
     }
 }

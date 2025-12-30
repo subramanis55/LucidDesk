@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LucidDesk.Manager.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace LucidDesk.Settings
     [Serializable]
     public class Settings
     {
+        public ApplicationMode ApplicationMode { get; set; } = ApplicationMode.Local;
         public string ServerHostName { set; get; } = "";
         public string ServerPort { set; get; } = "3306";
         public string ServerIpAddress { set; get; } = "localhost";

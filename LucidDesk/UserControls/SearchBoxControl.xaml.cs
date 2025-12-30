@@ -2,6 +2,7 @@
 using LucidDesk.Manager.Classes;
 using LucidDesk.Manager.Database;
 using LucidDesk.Manager.Enum;
+using LucidDesk.Settings;
 using LucidDesk.UserControls.Common;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace LucidDesk.UserControls
     /// </summary>
     public partial class SearchBoxControl : UserControl
     {
-      
+
 
         public event EventHandler OnClickFullScreen;
         public event EventHandler OnClickScreenStrech;
@@ -169,7 +170,7 @@ namespace LucidDesk.UserControls
             Textbox.LostFocus += TextboxLostFocus;
             DataContext = this;
             ScreenButtonMenu = Resources["ScreenButtonContext"] as ContextMenu;
-          
+
         }
 
         private void SuggestionDeskShowInvoke()
@@ -179,9 +180,9 @@ namespace LucidDesk.UserControls
             //DeskProfile Control Create
             for (int i = 0; i < DeskProfileManager.DeskProfiles.Count; i++)
             {
-                if ((("" + DeskProfileManager.DeskProfiles[i].Id).Contains(Textbox.Text) || DeskProfileManager.DeskProfiles[i].ProfileName.Contains(Textbox.Text)))// && (DeskProfileManager.DeskProfiles[i].MacAddress != DeskProfileManager.UserDesk.MacAddress)) 
+                if ((("" + DeskProfileManager.DeskProfiles[i].DisplayID).Contains(Textbox.Text) || DeskProfileManager.DeskProfiles[i].ProfileName.Contains(Textbox.Text)))// && (DeskProfileManager.DeskProfiles[i].MacAddress != DeskProfileManager.UserDesk.MacAddress)) 
                 {
-                    MenuItem menuItem = new MenuItem { Foreground = Brushes.Black, MinWidth = this.ActualWidth-3, Background = Brushes.White };
+                    MenuItem menuItem = new MenuItem { Foreground = Brushes.Black, MinWidth = this.ActualWidth - 3, Background = Brushes.White };
                     menuItem.Style = SuggestionsDeskMenuStyle;
                     menuItem.DataContext = DeskProfileManager.DeskProfiles[i];
                     menuItem.Click += SuggestionDeskClick;
@@ -207,10 +208,12 @@ namespace LucidDesk.UserControls
             SuggestionsDeskMenu.VerticalOffset = y;
             SuggestionsDeskMenu.IsOpen = true;
         }
+        private Desk SelectedDesk;
         private void SuggestionDeskClick(object sender, RoutedEventArgs e)
         {
-            Textbox.Text = ""+((Desk)((MenuItem)(sender)).DataContext).Id;
+            Textbox.Text = "" + ((Desk)((MenuItem)(sender)).DataContext).DisplayID;
             SuggestionsDeskMenu.IsOpen = false;
+            SelectedDesk = ((Desk)((MenuItem)(sender)).DataContext);
         }
 
         private void SearchBoxControlLoaded(object sender, RoutedEventArgs e)
@@ -306,18 +309,25 @@ namespace LucidDesk.UserControls
         }
         private void TextboxTextChanged(object sender, TextChangedEventArgs e)
         {
-           if(Textbox.Text!="")
-            SuggestionDeskShowInvoke();
+            SelectedDesk = null;
+            if (Textbox.Text != "")
+                SuggestionDeskShowInvoke();
         }
 
         private void ConnectClick(object sender, RoutedEventArgs e)
         {
-          
-           
-            if (DeskProfileManager.DeskProfilesDictionary.ContainsKey("" + Textbox.Text))
-                OnClickConnect?.Invoke(this,  DeskProfileManager.DeskProfilesDictionary[Textbox.Text] );
+            if (Textbox.Text == "")
+                return;
+            if (SelectedDesk!=null&&DeskProfileManager.DeskProfilesDictionary.ContainsKey(SelectedDesk.DeskId))
+                OnClickConnect?.Invoke(this, SelectedDesk);
             else
-                MainWindow.NotificationManager.CreateNotification("Id Doesn't exits", NotificationType.Information);
+            {
+                Desk newDesk = new Desk();
+                if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Local)
+                    newDesk.IPAddress = Textbox.Text;
+                OnClickConnect?.Invoke(this, newDesk);
+            }
         }
+
     }
 }

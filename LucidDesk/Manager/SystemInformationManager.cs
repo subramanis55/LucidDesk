@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LucidDesk.Manager.Enum;
+using LucidDesk.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,22 +11,53 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
-
+using Microsoft.Win32;
 namespace LucidDesk.Manager
 {
     public static class SystemInformationManager
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern int SystemParametersInfo(int uAction, int uParam, StringBuilder lpvParam, int fuWinIni);
+        private static string macAddress, ipAddress, hostname;
         private const int SPI_GETDESKWALLPAPER = 0x0073;
         private const int MAX_PATH = 260;
-        public static string HostName;
-        public static string MacAddress;
-        public static string IpAddresss;
+
+
         public static BitmapImage DesktopWallpaper;
 
         public static double ScreenWidth = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width;
+
         public static double ScreenHeight = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height;
+
+        public static string ApplicationName => SettingsManager.Settings.ApplicationMode == ApplicationMode.Online ? "Desk" : "Local Desk";
+        public static string HostName
+        {
+            get
+            {
+                if (hostname == null)
+                    hostname = GetHostName();
+                return hostname;
+            }
+        }
+        public static string MacAddress
+        {
+            get
+            {
+                if (macAddress == null)
+                    macAddress = GetMacAddress();
+                return macAddress;
+            }
+        }
+        public static string IpAddresss
+        {
+            get
+            {
+                if (ipAddress == null)
+                    ipAddress = GetIpAddresss(MacAddress);
+                return ipAddress;
+            }
+        }
+
         public static string GetHostName()
         {
             return Environment.MachineName;
@@ -124,15 +157,27 @@ namespace LucidDesk.Manager
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Failed to load wallpaper image: " + ex.Message);
-                    return null;
+
                 }
             }
-            else
-            {
-                MessageBox.Show("Failed to retrieve wallpaper path.");
-                return null;
-            }
+            return null;
         }
+
+        public static string GetFromRegistry()
+        {
+            var value = Registry.CurrentUser
+                .OpenSubKey($"Software\\{SystemInformationManager.ApplicationName}\\")
+                ?.GetValue("DeviceGuid");
+
+            if (value != null && Guid.TryParse(value.ToString(), out Guid guid))
+                return guid.ToString();
+
+            Guid newGuid = Guid.NewGuid();
+            Registry.CurrentUser
+                .CreateSubKey($"Software\\{SystemInformationManager.ApplicationName}\\")
+                .SetValue("DeviceGuid", newGuid.ToString());
+            return newGuid.ToString();
+        }
+
     }
 }
