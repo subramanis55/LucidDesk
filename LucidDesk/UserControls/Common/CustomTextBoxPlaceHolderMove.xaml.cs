@@ -102,6 +102,8 @@ namespace LucidDesk.UserControls.Common
             }
         }
 
+        public string Password { get => password; set => password = value; }
+
         private char animatedPassChar = '●';
         private string password;
         private bool isPasswordViewOn = false;
@@ -172,14 +174,14 @@ namespace LucidDesk.UserControls.Common
             {
                 if (!isPasswordViewOn)
                 {
-                    password += e.Text;
+                    Password += e.Text;
                     mainTextBox.Text += animatedPassChar;
                     e.Handled = true;
                 }
                 else
                 {
-                    password += e.Text;
-                    mainTextBox.Text = password;
+                    Password += e.Text;
+                    mainTextBox.Text = Password;
                     // mainTextBox.CaretIndex = mainTextBox.Text.Length;
                     e.Handled = true;
                 }
@@ -191,7 +193,7 @@ namespace LucidDesk.UserControls.Common
             }
 
 
-            if (IsPasswordType && password.Length > 0)
+            if (IsPasswordType && Password.Length > 0)
                 viewPassLabel.Visibility = Visibility.Visible;
             else
                 viewPassLabel.Visibility = Visibility.Hidden;
@@ -201,7 +203,7 @@ namespace LucidDesk.UserControls.Common
         {
             if (IsPasswordType && !isPasswordViewOn && e.Key == Key.Back && mainTextBox.Text.Length > 0)
             {
-                password = password.Substring(0, password.Length - 1);
+                Password = Password.Substring(0, Password.Length - 1);
                 mainTextBox.Text = mainTextBox.Text.Substring(0, mainTextBox.Text.Length - 1);
                 mainTextBox.CaretIndex = mainTextBox.Text.Length;
                 e.Handled = true;
@@ -226,7 +228,7 @@ namespace LucidDesk.UserControls.Common
             if (isPasswordViewOn)
             {
                 viewPassLabelLine.Visibility = Visibility.Visible;
-                mainTextBox.Text = password;
+                mainTextBox.Text = Password;
             }
             else
             {
@@ -239,7 +241,7 @@ namespace LucidDesk.UserControls.Common
         private void mainTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (mainTextBox.Text.Length == 0)
-                password = "";
+                Password = "";
         }
     }
 }

@@ -32,6 +32,7 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Timer = System.Threading.Timer;
 using Newtonsoft.Json.Linq;
+using LucidDesk.Manager.Security;
 #endregion
 namespace LucidDesk.Manager
 {
@@ -204,7 +205,7 @@ namespace LucidDesk.Manager
                 var connectionInformation = data.GetDeserializeDeskConnectionInformation();
                 connectionInformation.TcpClient = client;
                 connections.Add(client, connectionInformation);
-                if (connectionInformation.ConnectionType == ConnectionType.Password && connectionInformation.ReceiverDesk.Password == DeskProfileManager.UserDesk.Password)
+                if (connectionInformation.ConnectionType == ConnectionType.Password && connectionInformation.ReceiverDesk.Password == SecurityManager.Decrypt(DeskProfileManager.UserDesk.Password))
                 {
                     if (!IsScreenShareON)
                         Task.Run(() => ScreenShareForClients(_cancellationTokenSource.Token));

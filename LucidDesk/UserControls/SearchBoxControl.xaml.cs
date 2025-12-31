@@ -31,10 +31,11 @@ namespace LucidDesk.UserControls
 
 
         public event EventHandler OnClickFullScreen;
-        public event EventHandler OnClickScreenStrech;
+        public event EventHandler OnClickScreenStretch;
         public event EventHandler OnClickScreenZoom;
         public event EventHandler OnClickScreenNormal;
         public event EventHandler<Desk> OnClickConnect;
+        public event EventHandler<Desk> OnClickConnectWithPassword;
         private ContextMenu SuggestionsDeskMenu = new ContextMenu() { Focusable = false };
         private Style SuggestionsDeskMenuStyle = Application.Current.Resources["SuggestionDeskMenuItem"] as Style;
         private bool isConnected = true;
@@ -290,7 +291,7 @@ namespace LucidDesk.UserControls
 
         private void ScreenStrechClick(object sender, RoutedEventArgs e)
         {
-            OnClickScreenStrech?.Invoke(this, EventArgs.Empty);
+            OnClickScreenStretch?.Invoke(this, EventArgs.Empty);
         }
 
         private void ScreenZoomClick(object sender, RoutedEventArgs e)
@@ -318,14 +319,23 @@ namespace LucidDesk.UserControls
         {
             if (Textbox.Text == "")
                 return;
-            if (SelectedDesk!=null&&DeskProfileManager.DeskProfilesDictionary.ContainsKey(SelectedDesk.DeskId))
-                OnClickConnect?.Invoke(this, SelectedDesk);
+            if (SelectedDesk != null && DeskProfileManager.DeskProfilesDictionary.ContainsKey(SelectedDesk.DeskId))
+            {
+                if (MessageBox2.ShowMessageBox("Do you want Connect with password", "Confirm", MessageBoxType.YesOrNo) == System.Windows.Forms.DialogResult.Yes)
+                    OnClickConnectWithPassword?.Invoke(this, SelectedDesk);
+                else
+                    OnClickConnect?.Invoke(this, SelectedDesk);
+            }
+
             else
             {
                 Desk newDesk = new Desk();
                 if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Local)
                     newDesk.IPAddress = Textbox.Text;
-                OnClickConnect?.Invoke(this, newDesk);
+                if (MessageBox2.ShowMessageBox("Do you want Connect with password", "Confirm", MessageBoxType.YesOrNo) == System.Windows.Forms.DialogResult.Yes)
+                    OnClickConnectWithPassword?.Invoke(this, newDesk);
+                else
+                    OnClickConnect?.Invoke(this, newDesk);
             }
         }
 

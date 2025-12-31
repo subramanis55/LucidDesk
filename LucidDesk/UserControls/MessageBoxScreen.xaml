@@ -14,10 +14,13 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="1">
-            <StackPanel VerticalAlignment="Center"  Margin="15">
-                <TextBlock Margin="0 0 0 5"   TextWrapping="Wrap" Name="MessageText" Foreground="Gray" FontSize="17" FontWeight="SemiBold"  VerticalAlignment="Center" HorizontalAlignment="Center">
-                       
-                </TextBlock>
+            <StackPanel VerticalAlignment="Center"  Margin="5">
+                <ScrollViewer  HorizontalScrollBarVisibility="Disabled">
+                    <TextBlock Margin="0 0 0 2"  TextAlignment="Center"  TextWrapping="Wrap" Name="MessageText" Foreground="Gray" FontSize="14" FontWeight="SemiBold"  VerticalAlignment="Center" >
+    
+                    </TextBlock>
+                </ScrollViewer>
+               
             </StackPanel>
         </Grid>
         <DockPanel MouseDown="TopPanelMouseDown" Background="{StaticResource MainColorBrush}" Grid.Row="0" >

@@ -1,7 +1,9 @@
 ﻿using LucidDesk.Manager;
+using LucidDesk.Manager.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SecurityManager = LucidDesk.Manager.Security.SecurityManager;
 
 namespace LucidDesk
 {
@@ -52,7 +55,7 @@ namespace LucidDesk
             }
             if (PasswordError.Visibility == Visibility.Hidden && NameError.Visibility == Visibility.Hidden)
             {
-                Desk desk = new Desk() { GUID= SystemInformationManager.GetFromRegistry(), IPAddress = SystemInformationManager.GetIpAddresss(SystemInformationManager.GetMacAddress()), IsFavorite = false, HostName = SystemInformationManager.GetHostName(), ProfileName = ProfileNameTextBox.mainTextBox.Text, ProfileImage = null, DesktopImage = SystemInformationManager.GetDesktopWallpaper(), Password = passwordTextBox.mainTextBox.Text, MacAddress = SystemInformationManager.GetMacAddress(), OsName = SystemInformationManager.GetOsName(), PcName = SystemInformationManager.GetPcUserName(), RecentLoginTime = DateTime.MinValue };
+                Desk desk = new Desk() { GUID= SystemInformationManager.GetFromRegistry(), IPAddress = SystemInformationManager.GetIpAddresss(SystemInformationManager.GetMacAddress()), IsFavorite = false, HostName = SystemInformationManager.GetHostName(), ProfileName = ProfileNameTextBox.mainTextBox.Text, ProfileImage = null, DesktopImage = SystemInformationManager.GetDesktopWallpaper(), Password = SecurityManager.Encrypt( passwordTextBox.Password), MacAddress = SystemInformationManager.GetMacAddress(), OsName = SystemInformationManager.GetOsName(), PcName = SystemInformationManager.GetPcUserName(), RecentLoginTime = DateTime.MinValue };
                 OnClickNext?.Invoke(this, desk);
             }
 

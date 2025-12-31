@@ -101,10 +101,10 @@ namespace LucidDesk
 
             SearchBoxControl.OnClickFullScreen += SearchBoxControlOnClickFullScreen;
             SearchBoxControl.OnClickScreenNormal += SearchBoxControlOnClickScreenNormal;
-            SearchBoxControl.OnClickScreenStrech += SearchBoxControlOnClickScreenStrech;
+            SearchBoxControl.OnClickScreenStretch += SearchBoxControlOnClickScreenStrech;
             SearchBoxControl.OnClickScreenZoom += SearchBoxControlOnClickScreenZoom;
             SearchBoxControl.OnClickConnect += DeskProfileOnclickConnect;
-
+            SearchBoxControl.OnClickConnectWithPassword += DeskProfileOnClickConnectWithPassword;
             DeskProfileManager.DeskProfilesUpdated += DeskProfileManagerDeskProfilesUpdated;
 
             ServerNetworkManager.InviteRequestReceivedInvoke += ServerNetworkManagerInviteRequestReceivedInvoke;
@@ -129,8 +129,6 @@ namespace LucidDesk
             Closed += MainWindowClosed;
             SessionTabHeader.OnClickClose += SessionTabHeaderOnClickClose;
         }
-
-
 
         private void SetUpCheck()
         {
@@ -501,8 +499,6 @@ namespace LucidDesk
 
 
         }
-
-
 
         private void SettingPageTabButtonClick(object sender, RoutedEventArgs e)
         {

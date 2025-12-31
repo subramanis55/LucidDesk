@@ -55,8 +55,13 @@ namespace LucidDesk.Screen
 
         private void ConnectButtonClick(object sender, RoutedEventArgs e)
         {
-            Desk.Password = passwordLabelTextblock.Text;
+            Desk.Password = passwordTextbox.Text;
             OnClickConnectButton?.Invoke(this, Desk);
+        }
+
+        private void TextboxTextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

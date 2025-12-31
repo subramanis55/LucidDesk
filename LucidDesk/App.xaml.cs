@@ -73,7 +73,7 @@ namespace LucidDesk
             else
             {
                 DeskProfileManager.CreateDeskProfiledata(desk);
-                ((Window)sender).Close();
+                ((Window)sender).Hide();
             }
         }
 

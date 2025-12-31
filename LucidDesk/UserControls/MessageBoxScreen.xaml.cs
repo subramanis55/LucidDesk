@@ -53,33 +53,37 @@ namespace LucidDesk.UserControls
         private void YesButtonClick(object sender, RoutedEventArgs e)
         {
             DialogResult = DialogResult.Yes;
-            Close();
+            if (IsHideOnly)
+                Hide();
+            else
+                Close();
         }
 
         private void NoButtonClick(object sender, RoutedEventArgs e)
         {
             DialogResult = DialogResult.No;
-            Close();
+            if (IsHideOnly)
+                Hide();
+            else
+                Close();
         }
 
         private void OkButtonClick(object sender, RoutedEventArgs e)
         {
             DialogResult = DialogResult.OK;
-            Close();
+            if (IsHideOnly)
+                Hide();
+            else
+                Close();
         }
 
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
             DialogResult = DialogResult.Cancel;
-            Close();
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
             if (IsHideOnly)
                 Hide();
             else
-                base.OnClosed(e);
+                Close();
         }
 
         private void TopPanelMouseDown(object sender, MouseButtonEventArgs e)
