@@ -15,9 +15,8 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="1">
             <StackPanel VerticalAlignment="Center"  Margin="5">
-                <ScrollViewer  HorizontalScrollBarVisibility="Disabled">
-                    <TextBlock Margin="0 0 0 2"  TextAlignment="Center"  TextWrapping="Wrap" Name="MessageText" Foreground="Gray" FontSize="14" FontWeight="SemiBold"  VerticalAlignment="Center" >
-    
+                <ScrollViewer  HorizontalScrollBarVisibility="Disabled" MaxHeight="100" >
+                    <TextBlock Margin="0 0 0 2"  TextAlignment="Center"   TextWrapping="Wrap" Name="MessageText" Foreground="Gray" FontSize="14" FontWeight="SemiBold"   >
                     </TextBlock>
                 </ScrollViewer>
                

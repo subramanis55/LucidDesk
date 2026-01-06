@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,12 +25,13 @@ namespace LucidDesk.UserControls.Common
         public event RoutedEventHandler LostFocus;
         public event RoutedEventHandler GotFocus;
         public event TextChangedEventHandler TextChanged;
-        public static readonly DependencyProperty PlaceholderProperty = DependencyProperty.Register("Placeholder",typeof(string),typeof(CustomTextBox),new PropertyMetadata(""));
-        public static readonly DependencyProperty PlaceholderColorProperty=DependencyProperty.Register("PlaceholderColor", typeof(Brush), typeof(CustomTextBox), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DDDDDD"))));
+        public event RoutedEventHandler PasswordChanged;
+        public static readonly DependencyProperty PlaceholderProperty = DependencyProperty.Register("Placeholder", typeof(string), typeof(CustomTextBox), new PropertyMetadata(""));
+        public static readonly DependencyProperty PlaceholderColorProperty = DependencyProperty.Register("PlaceholderColor", typeof(Brush), typeof(CustomTextBox), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DDDDDD"))));
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(CustomTextBox), new PropertyMetadata(""));
         public static readonly DependencyProperty TextPaddingProperty = DependencyProperty.Register("TextPadding", typeof(Thickness), typeof(CustomTextBox), new PropertyMetadata(new Thickness(10, 5, 10, 5)));
         public static readonly DependencyProperty TextboxBorderThicknessProperty =
-         DependencyProperty.Register("TextboxBorderThickness", typeof(Thickness), typeof(CustomTextBox), new PropertyMetadata(new Thickness(0,0,0,2.2)));
+         DependencyProperty.Register("TextboxBorderThickness", typeof(Thickness), typeof(CustomTextBox), new PropertyMetadata(new Thickness(0, 0, 0, 2.2)));
 
         public static readonly DependencyProperty TextboxBorderBrushProperty =
          DependencyProperty.Register("TextboxBorderBrush", typeof(Brush), typeof(CustomTextBox), new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
@@ -40,22 +42,49 @@ namespace LucidDesk.UserControls.Common
         public static readonly DependencyProperty TextboxBackgroundProperty =
             DependencyProperty.Register("TextboxBackground", typeof(Brush), typeof(CustomTextBox), new PropertyMetadata(new SolidColorBrush(Colors.Gainsboro)));
 
+        public static readonly DependencyProperty IsPasswordTypeProperty = DependencyProperty.Register("IsPasswordType", typeof(bool), typeof(CustomTextBox), new PropertyMetadata(false, IsPasswordTypePropertyChanged));
+
+        private static void IsPasswordTypePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is CustomTextBox control)
+            {
+                bool isPassword = (bool)e.NewValue;
+
+                control.PasswordTextBox.Visibility =
+                    isPassword ? Visibility.Visible : Visibility.Hidden;
+
+                control.Textbox.Visibility =
+                    isPassword ? Visibility.Hidden : Visibility.Visible;
+            }
+        }
+
+        public string Password { get => PasswordTextBox.Password; private set => PasswordTextBox.Password = value; }
+
+        public bool IsPasswordType
+        {
+            get
+            {
+                return (bool)GetValue(IsPasswordTypeProperty);
+            }
+            set
+            {
+                SetValue(IsPasswordTypeProperty, value);
+
+
+            }
+        }
+
         public Brush TextboxBorderBrush
         {
             get { return (Brush)GetValue(TextboxBorderBrushProperty); }
             set { SetValue(TextboxBorderBrushProperty, value); }
         }
 
-
-
         public Brush TextboxBackground
         {
             get { return (Brush)GetValue(TextboxBackgroundProperty); }
             set { SetValue(TextboxBackgroundProperty, value); }
         }
-
-  
-
 
         public Thickness CornerRadius
         {
@@ -74,20 +103,23 @@ namespace LucidDesk.UserControls.Common
             get { return (Thickness)GetValue(TextPaddingProperty); }
             set { SetValue(TextPaddingProperty, value); }
         }
-      
+
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
         }
 
-        public string Placeholder{
-             set{
-                SetValue( PlaceholderProperty, value);
-             }
-             get{
+        public string Placeholder
+        {
+            set
+            {
+                SetValue(PlaceholderProperty, value);
+            }
+            get
+            {
                 return (string)GetValue(PlaceholderProperty);
-             }
+            }
         }
         public Brush PlaceholderColor
         {
@@ -107,49 +139,57 @@ namespace LucidDesk.UserControls.Common
             PlaceholderLabel.MouseDown += CustomTextBoxMouseDown;
             Textbox.GotFocus += TextboxGotFocus;
             Textbox.LostFocus += TextboxLostFocus;
+            PasswordTextBox.GotFocus += TextboxGotFocus;
+            PasswordTextBox.LostFocus += TextboxLostFocus;
             DataContext = this;
         }
 
         private void TextboxLostFocus(object sender, RoutedEventArgs e)
         {
             TextboxBorderThickness = new Thickness(0, 0, 0, 2.2);
-            TextboxBorderBrush= Brushes.Gainsboro;
-            if (string.IsNullOrEmpty(Textbox.Text)){
+            TextboxBorderBrush = Brushes.Gainsboro;
+            if (string.IsNullOrEmpty(Textbox.Text))
+            {
                 PlaceholderLabel.Visibility = Visibility.Visible;
             }
-           else{
+            else
+            {
                 PlaceholderLabel.Visibility = Visibility.Hidden;
             }
-            LostFocus?.Invoke(this,e);
+            LostFocus?.Invoke(this, e);
         }
 
         private void TextboxGotFocus(object sender, RoutedEventArgs e)
         {
             TextboxBorderThickness = new Thickness(0, 0, 0, 2.7);
-            TextboxBorderBrush =(Brush)FindResource("MainColorBrush");
+            TextboxBorderBrush = (Brush)FindResource("MainColorBrush");
             PlaceholderLabel.Visibility = Visibility.Hidden;
             GotFocus?.Invoke(this, e);
         }
 
         private void CustomTextBoxMouseDown(object sender, MouseButtonEventArgs e)
         {
-            Textbox.Focus();
+            if (Textbox.Visibility == Visibility.Visible)
+                Textbox.Focus();
+            if (PasswordTextBox.Visibility == Visibility.Visible)
+                PasswordTextBox.Focus();
             e.Handled = true;
         }
 
-     
+
 
         private void TextboxTextChanged(object sender, TextChangedEventArgs e)
         {
             TextChanged?.Invoke(this, e);
         }
-        public void Focus(){
+        public void Focus()
+        {
             Textbox.Focus();
         }
 
         private void PasswordBoxTextChanged(object sender, RoutedEventArgs e)
         {
-
+            PasswordChanged?.Invoke(this, e);
         }
     }
 }

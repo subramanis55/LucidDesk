@@ -33,6 +33,8 @@ using System.Windows.Forms;
 using Timer = System.Threading.Timer;
 using Newtonsoft.Json.Linq;
 using LucidDesk.Manager.Security;
+using System.Windows.Markup;
+using LucidDesk.UserControls;
 #endregion
 namespace LucidDesk.Manager
 {
@@ -131,7 +133,6 @@ namespace LucidDesk.Manager
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("Error accepting client: " + ex.Message);
                 StopServer();
             }
         }
@@ -140,43 +141,7 @@ namespace LucidDesk.Manager
         {
             var networkStream = client.GetStream();
             HandleClientMessages(client);
-            // var reader = new StreamReader(networkStream);
 
-            // Check if client already connected (using MAC Address)
-            //var json = reader.ReadLine();
-            //if (json != null)
-            //{
-            //    var deskConnectionInformation = JsonConvert.DeserializeObject<DeskConnectionInformation>(json);
-            //    // Check if the client has already connected
-            //    if (connectedClients.ContainsKey(deskConnectionInformation.SenderDesk.MacAddress))
-            //    {
-            //        // Client is already connected, ignore this connection attempt
-            //        client.Close();
-            //        return;
-            //    }
-            //    if (!capture)
-            //        CaptureScreen();
-            //    // Add client to the list
-            //    connectedClients[deskConnectionInformation.SenderDesk.MacAddress] = client;
-
-            //    // Handle connection request
-            //    if (deskConnectionInformation.ConnectionType == ConnectionType.Invite)
-            //    {
-            //        InviteRequestReceivedInvoke?.Invoke(this, deskConnectionInformation);
-            //    }
-            //    else if (deskConnectionInformation.ConnectionType == ConnectionType.Connect)
-            //    {
-            //        ConnectRequestReceivedInvoke?.Invoke(this, deskConnectionInformation);
-            //    }
-
-            //    // Start a new thread to listen for messages from this client
-            //    Task.Run(() => HandleClientMessages(client, "");
-            //    //Task.Run(() => HandleClientMessages(client, deskConnectionInformation.SenderDesk.MacAddress));
-            //}
-            //else
-            //{
-            //    client.Close();
-            //}
         }
 
         //private async Task HandleClientRequest(TcpClient client)
@@ -207,9 +172,11 @@ namespace LucidDesk.Manager
                 connections.Add(client, connectionInformation);
                 if (connectionInformation.ConnectionType == ConnectionType.Password && connectionInformation.ReceiverDesk.Password == SecurityManager.Decrypt(DeskProfileManager.UserDesk.Password))
                 {
-                    if (!IsScreenShareON)
-                        Task.Run(() => ScreenShareForClients(_cancellationTokenSource.Token));
-                    CurrentClients.Add(client);
+                    connectionInformation.Status = true;
+                    connectionInformation.IsRequestStatusUpdate = true;
+                    connectionInformation.Message = "Connection Success";
+                    connectionInformation.AddDeskScreensInformations();
+                    RequestUpdate(connectionInformation);
                 }
                 else if (connectionInformation.ConnectionType == ConnectionType.Connect)
                 {
@@ -253,7 +220,6 @@ namespace LucidDesk.Manager
             catch (Exception ex)
             {
                 IsScreenShareON = false;
-                System.Windows.Forms.MessageBox.Show("Error capturing screen: " + ex.Message);
             }
         }
 
@@ -286,8 +252,13 @@ namespace LucidDesk.Manager
 
         private byte[] GetScreenShareImage()
         {
-            System.Drawing.Rectangle bounds = SystemInformation.VirtualScreen;
-
+            System.Drawing.Rectangle bounds;
+            lock (selectedScreenLock)
+            {
+                if (selectedScreen == null)
+                    bounds = SystemInformation.VirtualScreen;
+                else bounds = selectedScreen.Bounds;
+            }
             using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb))
             {
                 using (Graphics g = Graphics.FromImage(bitmap))
@@ -378,20 +349,29 @@ namespace LucidDesk.Manager
                     case ControlKeyType.Scroll:
                         ExecuteMouseWheel((int)delta);
                         break;
+
                 }
             }
-            else if (data.ControlDataType.ToString().Contains("Key"))
+            else
             {
-                keyCode = byte.Parse(parts[3]);
-                string[] coords = parts[0].Split(',');
-                x = double.Parse(coords[0]);
-                y = double.Parse(coords[1]);
                 switch (data.ControlDataType)
                 {
-                    case ControlKeyType.KeyDown: keybd_event(keyCode, 0, KEYEVENTF_KEYDOWN, UIntPtr.Zero); break;
-                    case ControlKeyType.KeyUp: keybd_event(keyCode, 0, KEYEVENTF_KEYUP, UIntPtr.Zero); break;
+                    case ControlKeyType.KeyDown:
+                    case ControlKeyType.KeyUp:
+                        keyCode = byte.Parse(parts[3]);
+                        string[] coords = parts[0].Split(',');
+                        x = double.Parse(coords[0]);
+                        y = double.Parse(coords[1]);
+                        keybd_event(keyCode, 0, data.ControlDataType == ControlKeyType.Clipboard ? KEYEVENTF_KEYDOWN : KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        break;
+                    case ControlKeyType.ScreenSwitch:
+                        string[] screeninfo = parts[0].Split(',');
+                        if (int.TryParse(screeninfo[0], out int screenIndex))
+                            MoniterScreenSwitch(screenIndex);
+                        break;
                 }
             }
+
             //else if (eventType == "ClipboardText")
             //{
             //    string clipboardText = parts[0];
@@ -417,6 +397,22 @@ namespace LucidDesk.Manager
             //        break;
             //}
         }
+        private System.Windows.Forms.Screen selectedScreen = null;
+        private readonly object selectedScreenLock = new object();
+        private void MoniterScreenSwitch(int screenIndex)
+        {
+            lock (selectedScreenLock)
+            {
+                if (screenIndex < 0)
+                {
+                    selectedScreen = null;
+                    return;
+                }
+                if (screenIndex < System.Windows.Forms.Screen.AllScreens.Length)
+                    selectedScreen = System.Windows.Forms.Screen.AllScreens[screenIndex];
+            }
+        }
+
         void ExecuteMouseMove(int x, int y)
         {
             INPUT input = new INPUT
@@ -533,7 +529,8 @@ namespace LucidDesk.Manager
         {
             StopServer();
         }
-        internal void RequestUpdate(DeskConnectionInformation deskConnectionInformation)
+
+        public void RequestUpdate(DeskConnectionInformation deskConnectionInformation)
         {
             if (deskConnectionInformation.Status == true)
             {
@@ -541,9 +538,10 @@ namespace LucidDesk.Manager
                 if (!IsScreenShareON)
                     Task.Run(() => ScreenShareForClients(_cancellationTokenSource.Token));
                 deskConnectionInformation.SenderDesk.RecentLoginTime = DateTime.Now;
-                DeskProfileManager.CreateDeskProfiledata(deskConnectionInformation.SenderDesk);
             }
-
+            Data data = new Data() { DataObject = deskConnectionInformation, ReponseAndReqType = ReponseAndReqType.ReqResponse };
+            NetworkStream stream = deskConnectionInformation.TcpClient.GetStream();
+            WriteObject(stream, data);
         }
     }
 }

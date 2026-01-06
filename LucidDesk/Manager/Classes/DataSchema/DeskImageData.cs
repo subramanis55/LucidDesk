@@ -11,7 +11,7 @@ namespace LucidDesk.Manager.Classes.DataSchema
 {
     public class DeskImageData
     {
-        private BitmapImage profileImage;
+        private BitmapImage deskImage;
 
         public byte[] ImageData { set; get; }
 
@@ -20,10 +20,10 @@ namespace LucidDesk.Manager.Classes.DataSchema
         {
             get
             {
-                return profileImage == null ? getBitImage() : profileImage;
+                return deskImage == null ? getBitMapImage() : deskImage;
             }
         }
-        private BitmapImage getBitImage()
+        private BitmapImage getBitMapImage()
         {
             if (ImageData == null)
                 return null;
@@ -36,6 +36,16 @@ namespace LucidDesk.Manager.Classes.DataSchema
                 bitmap.EndInit();
                 bitmap.Freeze();
                 return bitmap;
+            }
+        }
+      public System.Drawing.Bitmap GetBitMap()
+        {
+            if (ImageData == null)
+                return null;
+            using (MemoryStream memoryStream = new MemoryStream(ImageData))
+            {
+              
+                return new System.Drawing.Bitmap(memoryStream);
             }
         }
     }

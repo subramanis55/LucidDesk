@@ -106,6 +106,8 @@
     <Compile Include="Manager\Classes\DataSchema\DeskControlData.cs" />
     <Compile Include="Manager\Classes\DataSchema\DeskImageData.cs" />
     <Compile Include="Manager\Classes\DataSchema\Data.cs" />
+    <Compile Include="Manager\Classes\DataSchema\Screens\Screen.cs" />
+    <Compile Include="Manager\Classes\DataSchema\Screens\ScreenInformation.cs" />
     <Compile Include="Screen\ConnectionAcceptWindow.xaml.cs">
       <DependentUpon>ConnectionAcceptWindow.xaml</DependentUpon>
     </Compile>
@@ -159,6 +161,9 @@
     <Compile Include="UserControls\MessageBox2.cs" />
     <Compile Include="UserControls\PageSelectContextMenu.xaml.cs">
       <DependentUpon>PageSelectContextMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ScreenSwitchControl.xaml.cs">
+      <DependentUpon>ScreenSwitchControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\SearchBoxControl.xaml.cs">
       <DependentUpon>SearchBoxControl.xaml</DependentUpon>
@@ -250,6 +255,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\PageSelectContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ScreenSwitchControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

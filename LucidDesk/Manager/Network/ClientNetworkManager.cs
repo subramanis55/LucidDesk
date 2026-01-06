@@ -1,5 +1,6 @@
 ﻿using LucidDesk.Manager.Classes;
 using LucidDesk.Manager.Classes.DataSchema;
+using LucidDesk.Manager.Classes.DataSchema.Screens;
 using LucidDesk.Manager.Enum;
 using LucidDesk.Settings;
 using NAudio.Wave;
@@ -51,12 +52,12 @@ namespace LucidDesk.Manager
                 return deskConnectionInformation;
             }
         }
+
         public const int PORT = 12345;
         public event EventHandler<DeskImageData> ScreenShareUpdateInvoke;
-        public event EventHandler ConnectedToSeverInvoke;
         public event EventHandler<string> DisConnectedToSeverInvoke;
         public event EventHandler ConnectionEstabishFailInvoke;
-
+        public event EventHandler<DeskConnectionInformation> ConnectionResponseReceived;
         public ClientNetworkManager()
         {
             _proc = HookCallback;
@@ -270,15 +271,26 @@ namespace LucidDesk.Manager
 
                     if (data.ReponseAndReqType == ReponseAndReqType.ScreenShareImageData)
                         ScreenShareUpdateInvoke?.Invoke(this, data.GetDeserializeDeskImageData());
+                    else if (data.ReponseAndReqType == ReponseAndReqType.ReqResponse)
+                    {
+                        DeskConnectionInformation deskConnectionInformation = data.GetDeserializeDeskConnectionInformation();
+                        if (deskConnectionInformation.Status == true && deskConnectionInformation.IsRequestStatusUpdate == true)
+                        {
+                            DeskConnectionInformation.Status = true;
+                            DeskConnectionInformation.ScreenInformation = deskConnectionInformation.ScreenInformation;
+                        }
+                        ConnectionResponseReceived?.Invoke(this, deskConnectionInformation);
+                    }
+
                 }
                 catch (IOException ex) when (ex.InnerException is SocketException socketEx && (socketEx.SocketErrorCode == SocketError.ConnectionReset || socketEx.SocketErrorCode == SocketError.ConnectionAborted))
                 {
                     isConnected = false;
-                    DisConnectedToSeverInvoke?.Invoke(this, "Error receiving image data: " + ex.Message);
+                    DisConnectedToSeverInvoke?.Invoke(this, "Error at receiving reponse data: " + ex.Message);
                 }
                 catch (Exception ex)
                 {
-                    DisConnectedToSeverInvoke?.Invoke(this, "Error receiving image data: " + ex.Message);
+                    DisConnectedToSeverInvoke?.Invoke(this, "Error at receiving reponse data: " + ex.Message);
                     isConnected = false;
                 }
             }
@@ -321,6 +333,21 @@ namespace LucidDesk.Manager
                 string json = JsonConvert.SerializeObject(data);
                 WriteObject(stream, json);
             }
+        }
+
+        public void SendScreenSwitchEvent(Classes.DataSchema.Screens.Screen e)
+        {
+            if (client == null && !client.Connected)
+                return;
+            Data data = new Data();
+            data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
+            data.DataObject = new DeskControlData()
+            {
+                ControlDataType = ControlKeyType.ScreenSwitch,
+                ControlData = $"{DeskConnectionInformation.ScreenInformation.Screens.IndexOf(e)}:{JsonConvert.SerializeObject(e)}"
+            };
+            string json = JsonConvert.SerializeObject(data);
+            WriteObject(client.GetStream(), json);
         }
         //clipboard
 
@@ -430,6 +457,7 @@ namespace LucidDesk.Manager
             if (AudioTcpClient != null)
                 AudioTcpClient.Close();
         }
+
 
     }
 }

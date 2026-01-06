@@ -22,12 +22,12 @@ namespace LucidDesk.Manager.Enum
 
     public enum ReponseAndReqType
     {
-      ConnectReq,Disconnect, ScreenShareImageData, ScreenShareKeyData
+      ConnectReq,ReqResponse,Disconnect, ScreenShareImageData, ScreenShareKeyData
     }
 
     public enum ControlKeyType
     {
-        MouseDown, MouseMove, MouseUp, MouseRightDown, MouseRightUp, Scroll, KeyUp = 11, KeyDown = 12, Clipboard = 13, Audio = 14
+        MouseDown, MouseMove, MouseUp, MouseRightDown, MouseRightUp, Scroll, KeyUp = 11, KeyDown = 12, Clipboard = 13, Audio = 14,ScreenSwitch=15
     }
 
 }

@@ -4,6 +4,7 @@ using LucidDesk.Manager.Classes;
 using LucidDesk.Manager.Classes.DataSchema;
 using LucidDesk.Manager.Database;
 using LucidDesk.Manager.Enum;
+using LucidDesk.Manager.Files;
 using LucidDesk.Screen;
 using LucidDesk.Settings;
 using LucidDesk.UserControls;
@@ -108,14 +109,15 @@ namespace LucidDesk
             DeskProfileManager.DeskProfilesUpdated += DeskProfileManagerDeskProfilesUpdated;
 
             ServerNetworkManager.InviteRequestReceivedInvoke += ServerNetworkManagerInviteRequestReceivedInvoke;
-
             ServerNetworkManager.ConnectRequestReceivedInvoke += ServerNetworkManagerConnectRequestReceivedInvoke;
             ServerNetworkManager.ConnectRequestStatusInvoke += ServerNetworkManagerConnectRequestStatusInvoke;
 
-            ClientNetworkManager.ConnectedToSeverInvoke += ClientNetworkManagerConnectedToSeverInvoke;
+            screenSwitchControl.ScreenSelectionChanged += ScreenSwitchControlScreenSelectionChanged;
+
             ClientNetworkManager.ScreenShareUpdateInvoke += ClientNetworkManagerScreenShareUpdateInvoke;
             ClientNetworkManager.DisConnectedToSeverInvoke += ClientNetworkManagerDisConnectedToSeverInvoke;
             ClientNetworkManager.ConnectionEstabishFailInvoke += ClientNetworkManagerConnectionEstabishFailInvoke;
+            ClientNetworkManager.ConnectionResponseReceived += ClientNetworkManagerConnectionResponseReceived;
 
             ScreenImage.MouseRightButtonUp += ScreenImageMouseRightButtonUp;
             ScreenImage.MouseRightButtonDown += ScreenImageMouseRightButtonDown;
@@ -128,6 +130,24 @@ namespace LucidDesk
             this.KeyUp += Window_KeyUp;
             Closed += MainWindowClosed;
             SessionTabHeader.OnClickClose += SessionTabHeaderOnClickClose;
+        }
+
+        private Manager.Classes.DataSchema.Screens.Screen selectedScreen;
+        private void ScreenSwitchControlScreenSelectionChanged(object sender, Manager.Classes.DataSchema.Screens.Screen e)
+        {
+            selectedScreen = e;
+            ClientNetworkManager.SendScreenSwitchEvent(e);
+        }
+
+        private void ClientNetworkManagerConnectionResponseReceived(object sender, DeskConnectionInformation e)
+        {
+            Dispatcher.Invoke((Action)(() =>
+            {
+                if (e.Status == true && e.IsRequestStatusUpdate == true)
+                    screenSwitchControl.UpdateScreenInformation(e.ScreenInformation);
+                else
+                    NotificationManager.CreateNotification(e.Message, NotificationType.Error);
+            }));
         }
 
         private void SetUpCheck()
@@ -376,21 +396,58 @@ namespace LucidDesk
         #region   Screen Share
         private void ClientNetworkManagerScreenShareUpdateInvoke(object sender, DeskImageData e)
         {
+            BitmapImage screenShareImage = e.Image;
 
-            Dispatcher.Invoke(() =>
+            screenShareImage?.Freeze();
+            Dispatcher.BeginInvoke((Action)(() =>
             {
                 if (MainTabControl.SelectedItem == ConnectionSharePage)
                 {
                     ClientNetworkManagerConnectedToSeverInvoke(null, EventArgs.Empty);
                     ConnectionGifTimer.Stop();
                 }
-                ScreenImage.Source = e.Image;
-            });
+                ScreenImage.Source = screenShareImage;
+            }));
         }
+
+        private BitmapImage ExtractSpecificMonitor(System.Drawing.Bitmap fullBitmap, Manager.Classes.DataSchema.Screens.Screen targetScreen)
+        {
+            System.Drawing.Rectangle vs = System.Windows.Forms.SystemInformation.VirtualScreen;
+            System.Drawing.Rectangle sb = targetScreen.Bounds;
+
+            // Adjust for virtual screen offset
+            System.Drawing.Rectangle sourceRect = new System.Drawing.Rectangle(
+        sb.X - vs.X,
+        sb.Y - vs.Y,
+        sb.Width,
+        sb.Height);
+
+            System.Drawing.Bitmap monitorBitmap = new System.Drawing.Bitmap(
+        sourceRect.Width,
+        sourceRect.Height,
+        System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(monitorBitmap))
+            {
+                g.DrawImage(
+                    fullBitmap,
+                    new System.Drawing.Rectangle(0, 0, sourceRect.Width, sourceRect.Height),
+                    sourceRect,
+                    System.Drawing.GraphicsUnit.Pixel);
+            }
+
+            return FileManager.ConvertBitmapToBitmapImage(monitorBitmap);
+        }
+
 
         public void ScreenImageMouseWheel(object sender, MouseWheelEventArgs e)
         {
             Point position = e.GetPosition(this);
+            if (selectedScreen != null)
+            {
+                position.X += selectedScreen.Bounds.X;
+                position.Y += selectedScreen.Bounds.Y;
+            }
             ClientNetworkManager.SendMouseScrollEvent(ControlKeyType.Scroll, position.X, position.Y, e.Delta);
         }
 
@@ -399,6 +456,12 @@ namespace LucidDesk
             if (ClientNetworkManager.isConnected)
             {
                 Point position = e.GetPosition(ScreenImage);
+                if (selectedScreen != null)
+                {
+                    position.X += selectedScreen.Bounds.X;
+                    position.Y += selectedScreen.Bounds.Y;
+                }
+
                 ClientNetworkManager.SendMouseEvent(ControlKeyType.MouseDown, position, ScreenImage.ActualWidth, ScreenImage.ActualHeight);
             }
         }
@@ -412,6 +475,11 @@ namespace LucidDesk
             if (ClientNetworkManager.isConnected)
             {
                 Point position = e.GetPosition(ScreenImage);
+                if (selectedScreen != null)
+                {
+                    position.X += selectedScreen.Bounds.X;
+                    position.Y += selectedScreen.Bounds.Y;
+                }
                 ClientNetworkManager.SendMouseEvent(ControlKeyType.MouseMove, position, ScreenImage.ActualWidth, ScreenImage.ActualHeight);
             }
         }
@@ -421,6 +489,11 @@ namespace LucidDesk
             if (ClientNetworkManager.isConnected)
             {
                 Point position = e.GetPosition(ScreenImage);
+                if (selectedScreen != null)
+                {
+                    position.X += selectedScreen.Bounds.X;
+                    position.Y += selectedScreen.Bounds.Y;
+                }
                 ClientNetworkManager.SendMouseEvent(ControlKeyType.MouseUp, position, ScreenImage.ActualWidth, ScreenImage.ActualHeight);
             }
         }
@@ -691,7 +764,7 @@ namespace LucidDesk
 
         private void ServerNetworkManagerConnectRequestStatusInvoke(object sender, DeskConnectionInformation deskConnectionInformation)
         {
-            if (deskConnectionInformation.statusUpdate == false)
+            if (deskConnectionInformation.IsRequestStatusUpdate == false)
             {
 
             }
@@ -746,16 +819,20 @@ namespace LucidDesk
             ((Window)(sender)).Close();
             if (deskConnectionInformation.Status == true)
             {
-                ClientNetworkManager.DeskConnectionInformation.statusUpdate = true;
+                ClientNetworkManager.DeskConnectionInformation.IsRequestStatusUpdate = true;
+                ClientNetworkManager.DeskConnectionInformation.Message = "Connection Success";
+                ClientNetworkManager.DeskConnectionInformation.AddDeskScreensInformations();
                 if (!DeskProfileManager.DeskProfilesDictionary.ContainsKey("" + deskConnectionInformation.SenderDesk.DeskId))
                 {
                     DeskProfileManager.CreateDeskProfiledata(deskConnectionInformation.SenderDesk);
-
                 }
-                ServerNetworkManager.RequestUpdate(deskConnectionInformation);
             }
-
-
+            else
+            {
+                ClientNetworkManager.DeskConnectionInformation.IsRequestStatusUpdate = true;
+                ClientNetworkManager.DeskConnectionInformation.Message = "Connection Request rejected";
+            }
+            ServerNetworkManager.RequestUpdate(deskConnectionInformation);
         }
 
         private void ServerNetworkManagerConnectRequestReceivedInvoke(object sender, DeskConnectionInformation deskConnectionInformation)
