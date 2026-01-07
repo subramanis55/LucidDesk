@@ -223,3 +223,10 @@
    at LucidDesk.Manager.ServerNetworkManager.<HandleClientMessages>d__54.MoveNext() in F:\Lucid\LucidDesk_Latest\LucidDesk\Manager\Network\ServerNetworkManager.cs:line 295<---
 
 
+06-01-2026 23:11:28: System.InvalidOperationException: Cannot set Owner property to a Window that has been closed.
+   at System.Windows.Window.set_Owner(Window value)
+   at LucidDesk.UserControls.DeskMessageBox.ShowMessageBox(String message, String heading, MessageBoxType messageBoxType, Window parent) in F:\Lucid\LucidDesk_Latest\LucidDesk\UserControls\DeskMessageBox.cs:line 16
+   at LucidDesk.MainWindow.<>c__DisplayClass76_0.<ClientNetworkManagerDisConnectedToSeverInvoke>b__0() in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 734
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+

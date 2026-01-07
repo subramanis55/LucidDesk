@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
+using System.Windows.Forms;
 namespace LucidDesk.Manager
 {
     public static class SystemInformationManager
@@ -25,9 +26,9 @@ namespace LucidDesk.Manager
 
         public static BitmapImage DesktopWallpaper;
 
-        public static double ScreenWidth = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width;
+        public static double ScreenWidth = SystemInformation.VirtualScreen.Width;
 
-        public static double ScreenHeight = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height;
+        public static double ScreenHeight = SystemInformation.VirtualScreen.Height;
 
         public static string ApplicationName => SettingsManager.Settings.ApplicationMode == ApplicationMode.Online ? "Desk" : "Local Desk";
         public static string HostName

@@ -110,6 +110,7 @@ namespace LucidDesk.Manager
             set
             {
                 profileImage = value;
+                profileImageString = FileManager.ImageToString(desktopImage);
                 OnPropertyChanged(nameof(ProfileImage));
             }
         }
@@ -147,6 +148,7 @@ namespace LucidDesk.Manager
             set
             {
                 desktopImage = value;
+                desktopImageString = FileManager.ImageToString(desktopImage);
                 OnPropertyChanged(nameof(DesktopImage));
             }
         }

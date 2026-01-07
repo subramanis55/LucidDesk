@@ -4,47 +4,51 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LucidDesk"
-             mc:Ignorable="d" Height="274.705" Width="623.529">
+             mc:Ignorable="d" Height="104.705" Width="523.529">
 
-    <Grid>
-        <TextBox x:Name="mainTextBox" 
-                 Background="Transparent" 
-                 Foreground="Red" 
-                 BorderThickness="0" 
-                 VerticalContentAlignment="Center" 
-                 Padding="20, 0, 0, 0"
-                 GotFocus="MainTextBox_GotFocus"    
-                 LostFocus="MainTextBox_LostFocus"
-                 PreviewKeyDown="MainTextBox_PreviewKeyDown"    
-                 TextChanged="mainTextBox_TextChanged"
-                 PreviewTextInput="MainTextBox_PreviewTextInput"/>
+    <Grid >
+        <Rectangle  x:Name="roundedRectangle" RadiusX="15" RadiusY="15"  StrokeThickness="2"/>
+        <Grid x:Name="maingrid" Margin="3 3"  Background="Transparent" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="35"/>
 
-        <Rectangle x:Name="roundedRectangle" RadiusX="20" RadiusY="20" StrokeThickness="2"/>
-        <Label x:Name="placeHolder" Background="Transparent"    Foreground="Red"
-               Content="Username" FontSize="24" MouseDown="PlaceHolder_MouseDown" 
-               HorizontalAlignment="Left" VerticalAlignment="Center"
-               Margin="20, 0, 0, 0"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <TextBox x:Name="mainTextBox" 
+          Background="Transparent" 
+          Foreground="Red" 
+          BorderThickness="0" 
+          VerticalContentAlignment="Center" 
+          Padding="20, 0, 0, 0"
+          GotFocus="MainTextBox_GotFocus"    
+          LostFocus="MainTextBox_LostFocus"
+          PreviewKeyDown="MainTextBox_PreviewKeyDown"    
+          TextChanged="mainTextBox_TextChanged"
+          PreviewTextInput="MainTextBox_PreviewTextInput"/>
 
-        <Canvas
-            Name ="viewPassCanvas"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Margin = "0,0,48,48">
+             
+                <Label x:Name="placeHolder" Background="Transparent"    Foreground="Red"
+        Content="Username" FontSize="24" MouseDown="PlaceHolder_MouseDown" 
+        HorizontalAlignment="Left" VerticalAlignment="Center"
+        Margin="20, 0, 0, 0"/>
 
-            <Label Content="👁️" 
-                 
-               Foreground="Red" 
-               MouseDown="ViewPassLabelClicked"
-               Name="viewPassLabel" 
-               Cursor="Hand"
-                   FontSize="24"/>
-            <Line X1="0" 
-                  Y1="0" 
-                  X2="{Binding ActualWidth, ElementName=viewPassLabel}" 
-                  Y2="{Binding ActualHeight, ElementName=viewPassLabel}"
-                  Stroke="Red" StrokeThickness="2"
-                  Name="viewPassLabelLine"/>
+               
+            </Grid>
+            <Border Grid.Column="1" >
+                <Canvas  Name ="viewPassCanvas"  MinHeight="33" Height="33" Width="30">
+                    <Label Content="👁️"      Foreground="Red" MouseDown="ViewPassLabelClicked" Name="viewPassLabel" MinHeight="33"   Cursor="Hand"     FontSize="16"/>
+                    <Line X1="5" 
+Y1="7" 
+X2="26" 
+Y2="25"
+Stroke="Red" StrokeThickness="2"
+Name="viewPassLabelLine"/>
 
-        </Canvas>
+                </Canvas>
+            </Border>
+          
+        </Grid>
+
     </Grid>
 </UserControl>

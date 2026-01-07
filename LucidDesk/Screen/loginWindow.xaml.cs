@@ -37,6 +37,7 @@ namespace LucidDesk
 
         private void NextButtonClick(object sender, RoutedEventArgs e)
         {
+       
             if (passwordTextBox.mainTextBox.Text == "")
             {
                 PasswordError.Visibility = Visibility.Visible;

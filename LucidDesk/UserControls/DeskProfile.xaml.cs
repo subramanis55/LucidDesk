@@ -203,7 +203,7 @@ namespace LucidDesk.UserControls
         private void RemoveButtonClick(object sender, RoutedEventArgs e)
         {
 
-            var result = MessageBox2.ShowMessageBox("Do want to remove this desk?", "Conformation", MessageBoxType.YesOrNo);
+            var result = DeskMessageBox.ShowMessageBox("Do want to remove this desk?", "Conformation", MessageBoxType.YesOrNo);
             if (result == System.Windows.Forms.DialogResult.Yes)
             {
                 if (DeskProfileManager.DeleteProfile(desk.DeskId))

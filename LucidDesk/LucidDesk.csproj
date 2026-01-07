@@ -37,6 +37,9 @@
   <PropertyGroup>
     <ApplicationIcon>DeskIcon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Win32.Registry, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Registry.4.7.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
@@ -158,7 +161,7 @@
     <Compile Include="UserControls\MessageBoxScreen.xaml.cs">
       <DependentUpon>MessageBoxScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\MessageBox2.cs" />
+    <Compile Include="UserControls\DeskMessageBox.cs" />
     <Compile Include="UserControls\PageSelectContextMenu.xaml.cs">
       <DependentUpon>PageSelectContextMenu.xaml</DependentUpon>
     </Compile>
@@ -294,6 +297,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

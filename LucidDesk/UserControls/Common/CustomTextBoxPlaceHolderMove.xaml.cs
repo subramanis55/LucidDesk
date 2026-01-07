@@ -67,8 +67,8 @@ namespace LucidDesk.UserControls.Common
 
         public Brush AnimatedTextBoxBackground
         {
-            get => mainTextBox.Background;
-            set => mainTextBox.Background = placeHolder.Background = value;
+            get => maingrid.Background;
+            set => maingrid.Background = placeHolder.Background = value;
         }
 
         public Brush AnimatedTextBoxForeground

@@ -201,7 +201,7 @@ namespace LucidDesk.Manager
                 IsScreenShareON = true;
                 while (CurrentClients.Count > 0)
                 {
-                    await Task.Delay(50);
+                    await Task.Delay(40);
                     var screenImage = GetScreenShareImage();
                     Data data = new Data();
                     data.ReponseAndReqType = ReponseAndReqType.ScreenShareImageData;
@@ -268,9 +268,12 @@ namespace LucidDesk.Manager
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
                     var encoder = ImageCodecInfo.GetImageEncoders().First(e => e.FormatID == ImageFormat.Jpeg.Guid);
-                    var parameters = new EncoderParameters(1);
-                    parameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 60L);
-                    bitmap.Save(memoryStream, encoder, parameters);
+                    using (EncoderParameters encoderParams = new EncoderParameters(1))
+                    {
+                        encoderParams.Param[0] =
+                            new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 60L);
+                        bitmap.Save(memoryStream, encoder, encoderParams);
+                    }
                     return memoryStream.ToArray();
                 }
             }
@@ -317,8 +320,10 @@ namespace LucidDesk.Manager
                 string[] screenSize = parts[1].Split(',');
                 clientScreenWidth = double.Parse(screenSize[0]);
                 clientScreenHeight = double.Parse(screenSize[1]);
-                double scaleX = SystemInformationManager.ScreenWidth / clientScreenWidth;
-                double scaleY = SystemInformationManager.ScreenHeight / clientScreenHeight;
+                //double scaleX = SystemInformationManager.ScreenWidth / clientScreenWidth;
+                //double scaleY = SystemInformationManager.ScreenHeight / clientScreenHeight;
+                double scaleX = SystemInformationManager.ScreenWidth;
+                double scaleY = SystemInformationManager.ScreenHeight;
                 if (data.ControlDataType == ControlKeyType.Scroll)
                 {
                     delta = double.Parse(parts[2]);

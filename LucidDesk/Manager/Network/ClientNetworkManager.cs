@@ -315,14 +315,15 @@ namespace LucidDesk.Manager
             }
         }
 
-        public void SendMouseEvent(ControlKeyType controlKeyType, Point position, double ScreenImageActualWidth, double ScreenImageActualHeight)
+        public void SendMouseEvent(ControlKeyType controlKeyType, Point position, double ScreenImageActualWidth, double ScreenImageActualHeight, Manager.Classes.DataSchema.Screens.Screen selectedScreen=null)
         {
             if (client != null && client.Connected && deskConnectionInformation.MouseAccess)
             {
                 NetworkStream stream = client.GetStream();
                 // Get the client's screen resolution
 
-                string mouseData = $"{(position.X / ScreenImageActualWidth) * SystemInformationManager.ScreenWidth},{(position.Y / ScreenImageActualHeight) * SystemInformationManager.ScreenHeight}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
+                //string mouseData = $"{(position.X / ScreenImageActualWidth) * SystemInformationManager.ScreenWidth},{(position.Y / ScreenImageActualHeight) * SystemInformationManager.ScreenHeight}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
+                string mouseData = $"{(position.X / ScreenImageActualWidth)+(selectedScreen?.Bounds.X ?? 0) },{(position.Y / ScreenImageActualHeight)+ (selectedScreen?.Bounds.Y ?? 0)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
                 Data data = new Data();
                 data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
                 data.DataObject = new DeskControlData()

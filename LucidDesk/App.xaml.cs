@@ -39,7 +39,7 @@ namespace LucidDesk
             string deskMacAddress = SystemInformationManager.GetMacAddress();
             if (deskMacAddress == null)
             {
-                MessageBox2.ShowMessageBox("Something Wrong SetUp ", "Error", UserControls.MessageBoxType.Ok);
+                DeskMessageBox.ShowMessageBox("Something Wrong SetUp ", "Error", UserControls.MessageBoxType.Ok);
                 LogManager.LogException("Something Wrong SetUp ");
                 ShutdownApp();
             }
@@ -48,7 +48,7 @@ namespace LucidDesk
 
                 if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Online)
                 {
-                    MessageBox2.ShowMessageBox("Something Wrong Online SetUp ", "Error", UserControls.MessageBoxType.Ok);
+                    DeskMessageBox.ShowMessageBox("Something Wrong Online SetUp ", "Error", UserControls.MessageBoxType.Ok);
                     LogManager.LogException("Something Wrong  Online SetUp ");
                     ShutdownApp();
                 }
@@ -66,15 +66,9 @@ namespace LucidDesk
         }
         private void LoginWindowOnClickNext(object sender, Desk desk)
         {
-            if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Online)
-            {
 
-            }
-            else
-            {
                 DeskProfileManager.CreateDeskProfiledata(desk);
                 ((Window)sender).Hide();
-            }
         }
 
         private void StartNetWorkServerConnection()

@@ -321,7 +321,7 @@ namespace LucidDesk.UserControls
                 return;
             if (SelectedDesk != null && DeskProfileManager.DeskProfilesDictionary.ContainsKey(SelectedDesk.DeskId))
             {
-                if (MessageBox2.ShowMessageBox("Do you want Connect with password", "Confirm", MessageBoxType.YesOrNo) == System.Windows.Forms.DialogResult.Yes)
+                if (DeskMessageBox.ShowMessageBox("Do you want Connect with password", "Confirm", MessageBoxType.YesOrNo) == System.Windows.Forms.DialogResult.Yes)
                     OnClickConnectWithPassword?.Invoke(this, SelectedDesk);
                 else
                     OnClickConnect?.Invoke(this, SelectedDesk);
@@ -332,7 +332,7 @@ namespace LucidDesk.UserControls
                 Desk newDesk = new Desk();
                 if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Local)
                     newDesk.IPAddress = Textbox.Text;
-                if (MessageBox2.ShowMessageBox("Do you want Connect with password", "Confirm", MessageBoxType.YesOrNo) == System.Windows.Forms.DialogResult.Yes)
+                if (DeskMessageBox.ShowMessageBox("Do you want Connect with password", "Confirm", MessageBoxType.YesOrNo) == System.Windows.Forms.DialogResult.Yes)
                     OnClickConnectWithPassword?.Invoke(this, newDesk);
                 else
                     OnClickConnect?.Invoke(this, newDesk);
