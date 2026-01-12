@@ -22,9 +22,7 @@ namespace LucidDesk.Manager
         private static string macAddress, ipAddress, hostname;
         private const int SPI_GETDESKWALLPAPER = 0x0073;
         private const int MAX_PATH = 260;
-
-
-        public static BitmapImage DesktopWallpaper;
+        private static BitmapImage desktopWallpaper;
 
         public static double ScreenWidth = SystemInformation.VirtualScreen.Width;
 
@@ -58,6 +56,17 @@ namespace LucidDesk.Manager
                 return ipAddress;
             }
         }
+
+        public static BitmapImage DesktopWallpaper
+        {
+            get
+            {
+                if (desktopWallpaper == null)
+                    desktopWallpaper = GetDesktopWallpaper();
+                return desktopWallpaper;
+            }
+        }
+
 
         public static string GetHostName()
         {

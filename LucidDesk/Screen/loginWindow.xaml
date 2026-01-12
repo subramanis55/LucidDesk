@@ -9,7 +9,7 @@
         mc:Ignorable="d"  WindowStyle="None"  WindowStartupLocation="CenterScreen" 
         Title="loginWindow" Height="374" Width="700">
     <Grid >
-        <Border CornerRadius="10" BorderThickness="1" Background="{StaticResource SubColorBrush}">
+        <Border  BorderThickness="1" BorderBrush="{StaticResource DefaultIconColorBrush}" Background="{StaticResource SubColorBrush}">
             <Grid>
                 <StackPanel>
                     <DockPanel  Margin="20 0 0 0" Height="50" VerticalAlignment="Center">

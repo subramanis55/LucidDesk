@@ -175,7 +175,6 @@ namespace LucidDesk.Manager
             set
             {
                 isFavorite = value;
-
                 OnPropertyChanged(nameof(IsFavorite));
             }
         }
@@ -242,6 +241,10 @@ namespace LucidDesk.Manager
         public void Dispose()
         {
             OnClickDeleted?.Invoke(this, EventArgs.Empty);
+        }
+        public void Freeze(){
+        DesktopImage?.Freeze();
+        profileImage?.Freeze();
         }
     }
 }

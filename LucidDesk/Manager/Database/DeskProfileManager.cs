@@ -14,16 +14,30 @@ namespace LucidDesk.Manager.Database
     public static class DeskProfileManager
     {
         public static event EventHandler DeskProfilesUpdated;
-        private static Dictionary<string, Desk> deskProfilesDictionary;
-        public static Desk UserDesk { set; get; }
-        public static List<Desk> DeskProfiles;
+        private static Dictionary<string, Desk> deskProfilesDictionary = new Dictionary<string, Desk>();
+        private static Desk desk;
+        public static Desk UserDesk
+        {
+            set
+            {
+                desk = value;
+                desk.IPAddress = SystemInformationManager.IpAddresss;
+                desk.DesktopImage= SystemInformationManager.DesktopWallpaper;
+            }
+
+            get
+            {
+                return desk;
+            }
+        }
+
+        public static List<Desk> DeskProfiles { get => DeskProfilesDictionary.Values.ToList(); }
         public static Dictionary<string, Desk> DeskProfilesDictionary
         {
             get => deskProfilesDictionary;
             set
             {
                 deskProfilesDictionary = value;
-                DeskProfiles = deskProfilesDictionary.Values.ToList();
                 DeskProfilesUpdated?.Invoke(null, EventArgs.Empty);
             }
         }
@@ -31,8 +45,6 @@ namespace LucidDesk.Manager.Database
         public static void Intialize()
         {
             deskProfilesDictionary = GetDeskProfilesData();
-            DeskProfiles = deskProfilesDictionary.Values.ToList();
-
         }
 
         public static bool DeskExits(string macAddress)
@@ -97,7 +109,6 @@ namespace LucidDesk.Manager.Database
         }
         public static bool UpdateDeskProfiledata(Desk deskProfile)
         {
-
             try
             {
                 if (!DeskProfilesDictionary.ContainsKey(deskProfile.DeskId))
@@ -106,7 +117,8 @@ namespace LucidDesk.Manager.Database
                 string encodedData = SecurityManager.Encrypt(deskProfileData);
                 string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath + "/" + deskProfile.DeskId + ".txt";
                 File.WriteAllText(deskProfilePath, encodedData);
-                DeskProfilesDictionary = GetDeskProfilesData();
+                DeskProfilesDictionary[deskProfile.DeskId] = deskProfile;
+                DeskProfilesUpdated?.Invoke(null, EventArgs.Empty);
                 return true;
             }
             catch (Exception e)
@@ -116,20 +128,19 @@ namespace LucidDesk.Manager.Database
 
             return false;
         }
-        public static bool UpdateDeskProfilesdata(List<Desk> deskProfiles)
+        public static bool UpdateDeskProfilesdata()
         {
             try
             {
-                for (int i = 0; i < deskProfiles.Count; i++)
+                for (int i = 0; i < DeskProfiles.Count; i++)
                 {
-                    string deskProfileData = JsonConvert.SerializeObject(deskProfiles[i]);
+                    string deskProfileData = JsonConvert.SerializeObject(DeskProfiles[i]);
                     string encodedData = SecurityManager.Encrypt(deskProfileData);
-                    string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath + deskProfiles[i].DeskId + ".txt";
+                    string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath + DeskProfiles[i].DeskId + ".txt";
                     if (Directory.Exists(deskProfilePath))
                         Directory.CreateDirectory(deskProfilePath);
                     File.WriteAllText(deskProfilePath, encodedData);
                 }
-                DeskProfilesDictionary = GetDeskProfilesData();
                 return true;
             }
             catch (Exception e)
@@ -145,7 +156,6 @@ namespace LucidDesk.Manager.Database
             {
                 File.Delete(LocalDatabaseManager.DatabaseFolderPath + "/" + id + ".txt");
                 DeskProfilesDictionary.Remove(id + "");
-                DeskProfiles = DeskProfilesDictionary.Values.ToList();
                 DeskProfilesDictionary = GetDeskProfilesData();
                 return true;
             }

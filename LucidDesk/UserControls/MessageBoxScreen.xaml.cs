@@ -31,11 +31,13 @@ namespace LucidDesk.UserControls
                 messageBoxType = value;
                 if (messageBoxType == MessageBoxType.Ok)
                 {
+                    MainContainer.RowDefinitions[3].Height = new GridLength(50);
                     MainContainer.RowDefinitions[2].Height = new GridLength(0);
                 }
                 else if (messageBoxType == MessageBoxType.YesOrNo)
                 {
                     MainContainer.RowDefinitions[3].Height = new GridLength(0);
+                    MainContainer.RowDefinitions[2].Height = new GridLength(50);
                 }
             }
             get

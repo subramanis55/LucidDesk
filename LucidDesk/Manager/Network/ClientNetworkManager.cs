@@ -274,6 +274,8 @@ namespace LucidDesk.Manager
                     else if (data.ReponseAndReqType == ReponseAndReqType.ReqResponse)
                     {
                         DeskConnectionInformation deskConnectionInformation = data.GetDeserializeDeskConnectionInformation();
+                        deskConnectionInformation.SenderDesk.Freeze();
+                        deskConnectionInformation.ReceiverDesk.Freeze();
                         if (deskConnectionInformation.Status == true && deskConnectionInformation.IsRequestStatusUpdate == true)
                         {
                             DeskConnectionInformation.Status = true;
@@ -315,7 +317,7 @@ namespace LucidDesk.Manager
             }
         }
 
-        public void SendMouseEvent(ControlKeyType controlKeyType, Point position, double ScreenImageActualWidth, double ScreenImageActualHeight, Manager.Classes.DataSchema.Screens.Screen selectedScreen=null)
+        public void SendMouseEvent(ControlKeyType controlKeyType, Point position, double ScreenImageActualWidth, double ScreenImageActualHeight, Manager.Classes.DataSchema.Screens.Screen selectedScreen = null)
         {
             if (client != null && client.Connected && deskConnectionInformation.MouseAccess)
             {
@@ -323,7 +325,7 @@ namespace LucidDesk.Manager
                 // Get the client's screen resolution
 
                 //string mouseData = $"{(position.X / ScreenImageActualWidth) * SystemInformationManager.ScreenWidth},{(position.Y / ScreenImageActualHeight) * SystemInformationManager.ScreenHeight}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
-                string mouseData = $"{(position.X / ScreenImageActualWidth)+(selectedScreen?.Bounds.X ?? 0) },{(position.Y / ScreenImageActualHeight)+ (selectedScreen?.Bounds.Y ?? 0)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
+                string mouseData = $"{(position.X / ScreenImageActualWidth)},{(position.Y / ScreenImageActualHeight)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
                 Data data = new Data();
                 data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
                 data.DataObject = new DeskControlData()
@@ -335,6 +337,7 @@ namespace LucidDesk.Manager
                 WriteObject(stream, json);
             }
         }
+
 
         public void SendScreenSwitchEvent(Classes.DataSchema.Screens.Screen e)
         {
@@ -350,24 +353,6 @@ namespace LucidDesk.Manager
             string json = JsonConvert.SerializeObject(data);
             WriteObject(client.GetStream(), json);
         }
-        //clipboard
-
-
-        public void SendClipboardContentToServer()
-        {
-            //if (client != null && client.Connected && deskConnectionInformation.ClipboardAccess)
-            //{
-            //    NetworkStream stream = client.GetStream();
-            //    if (Clipboard.ContainsText())
-            //    {
-            //        string clipboardText = Clipboard.GetText();
-            //        writer.WriteLine($"ClipboardText:{clipboardText}");
-            //        writer.Flush();
-            //    }
-            //    // You can handle other clipboard content types (e.g., images) similarly
-            //}
-        }
-
 
         //KeyPress
 
@@ -385,30 +370,6 @@ namespace LucidDesk.Manager
             }
         }
 
-        //public void Window_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    if (deskConnectionInformation.KeyboardAccess)
-        //    {
-        //        if (e.Key == Key.V && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-        //        {
-        //            SendClipboardContentToServer();
-        //        }
-        //        if (e.Key == Key.C && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-        //        {
-        //            //  receiveThread = new Thread(ReceiveClipboard);
-        //        }
-        //        SendKeyEvent(e.Key, "KeyDown");
-        //    }
-
-        //}
-
-        //public void Window_KeyUp(object sender, KeyEventArgs e)
-        //{
-        //    if (deskConnectionInformation.KeyboardAccess)
-        //    {
-        //        SendKeyEvent(e.Key, "KeyUp");
-        //    }
-        //}
 
         public void SendKeyEvent(ControlKeyType controlKeyType, Key key)
         {
@@ -438,7 +399,7 @@ namespace LucidDesk.Manager
             {
                 NetworkStream stream = client.GetStream();
                 // Get the client's screen resolution
-                string keydata = $"{(position.X / ScreenImageActualWidth) * SystemInformationManager.ScreenWidth},{(position.Y / ScreenImageActualHeight) * SystemInformationManager.ScreenHeight}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
+                string keydata = $"{(position.X / ScreenImageActualWidth) },{(position.Y / ScreenImageActualHeight)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
                 Data data = new Data();
                 data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
                 data.DataObject = new DeskControlData()

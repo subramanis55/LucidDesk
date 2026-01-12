@@ -300,9 +300,8 @@
                     </Grid>
                 </TabItem>
                 <TabItem Name="ScreenSharePage">
-
                     <Grid Name="ScreenShowMainContainer"  >
-                        <Image Name="ScreenImage" Margin="10" ></Image>
+                        <Image Name="ScreenImage"   ></Image>
                     </Grid>
                 </TabItem>
                 <TabItem></TabItem>

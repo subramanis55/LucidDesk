@@ -35,6 +35,7 @@ using Newtonsoft.Json.Linq;
 using LucidDesk.Manager.Security;
 using System.Windows.Markup;
 using LucidDesk.UserControls;
+using LucidDesk.Manager.Classes.DataSchema.Screens;
 #endregion
 namespace LucidDesk.Manager
 {
@@ -168,6 +169,8 @@ namespace LucidDesk.Manager
             if (data.ReponseAndReqType == ReponseAndReqType.ConnectReq)
             {
                 var connectionInformation = data.GetDeserializeDeskConnectionInformation();
+                connectionInformation.SenderDesk.Freeze();
+                connectionInformation.ReceiverDesk.Freeze();
                 connectionInformation.TcpClient = client;
                 connections.Add(client, connectionInformation);
                 if (connectionInformation.ConnectionType == ConnectionType.Password && connectionInformation.ReceiverDesk.Password == SecurityManager.Decrypt(DeskProfileManager.UserDesk.Password))
@@ -322,39 +325,46 @@ namespace LucidDesk.Manager
                 clientScreenHeight = double.Parse(screenSize[1]);
                 //double scaleX = SystemInformationManager.ScreenWidth / clientScreenWidth;
                 //double scaleY = SystemInformationManager.ScreenHeight / clientScreenHeight;
-                double scaleX = SystemInformationManager.ScreenWidth;
-                double scaleY = SystemInformationManager.ScreenHeight;
-                if (data.ControlDataType == ControlKeyType.Scroll)
+                int screenX, screenY = 0;
+                if (selectedScreen != null)
                 {
-                    delta = double.Parse(parts[2]);
+                    System.Drawing.Rectangle virtualBounds = SystemInformation.VirtualScreen;
+                    System.Drawing.Rectangle bounds = selectedScreen.Bounds;
+                    screenX = (int)(bounds.X + (double)(x * selectedScreen.Bounds.Width));
+                    screenY = (int)(bounds.Y + (double)(y * selectedScreen.Bounds.Height));
                 }
-                int screenX = (int)(x * scaleX);
-                int screenY = (int)(y * scaleY);
-                System.Drawing.Point screenPos = new System.Drawing.Point(screenX, screenY);
-
+                else
+                {
+                    System.Drawing.Rectangle virtualBounds = SystemInformation.VirtualScreen;
+                    screenX = (int)(virtualBounds.X + (double)(x * virtualBounds.Width));
+                    screenY = (int)(virtualBounds.Y + (double)(y * virtualBounds.Height));
+                }
+                System.Windows.Forms.Cursor.Position = new System.Drawing.Point(screenX, screenY);
                 switch (data.ControlDataType)
                 {
                     case ControlKeyType.MouseMove:
-                        ExecuteMouseMove(screenX, screenY);
+
+                        //ExecuteMouseMove(screenX, screenY);
                         break;
                     case ControlKeyType.MouseDown:
-                        ExecuteMouseMove(screenX, screenY);
-                        ExecuteMouseButton(MOUSEEVENTF_LEFTDOWN);
+                        mouse_event(MOUSEEVENTF_LEFTDOWN, (uint)x, (uint)y, 0, UIntPtr.Zero);
+                        //ExecuteMouseButton(MOUSEEVENTF_LEFTDOWN);
                         break;
                     case ControlKeyType.MouseUp:
-                        ExecuteMouseButton(MOUSEEVENTF_LEFTUP);
+                        //ExecuteMouseMove(screenX, screenY);
+                        mouse_event(MOUSEEVENTF_LEFTUP, (uint)x, (uint)y, 0, UIntPtr.Zero);
+                        //ExecuteMouseButton(MOUSEEVENTF_LEFTUP);
                         break;
                     case ControlKeyType.MouseRightDown:
-                        ExecuteMouseMove(screenX, screenY);
                         ExecuteMouseButton(MOUSEEVENTF_RIGHTDOWN);
                         break;
                     case ControlKeyType.MouseRightUp:
                         ExecuteMouseButton(MOUSEEVENTF_RIGHTUP);
                         break;
                     case ControlKeyType.Scroll:
+                        delta = double.Parse(parts[2]);
                         ExecuteMouseWheel((int)delta);
                         break;
-
                 }
             }
             else
@@ -367,7 +377,7 @@ namespace LucidDesk.Manager
                         string[] coords = parts[0].Split(',');
                         x = double.Parse(coords[0]);
                         y = double.Parse(coords[1]);
-                        keybd_event(keyCode, 0, data.ControlDataType == ControlKeyType.Clipboard ? KEYEVENTF_KEYDOWN : KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        keybd_event(keyCode, 0, data.ControlDataType == ControlKeyType.KeyDown ? KEYEVENTF_KEYDOWN : KEYEVENTF_KEYUP, UIntPtr.Zero);
                         break;
                     case ControlKeyType.ScreenSwitch:
                         string[] screeninfo = parts[0].Split(',');
@@ -539,10 +549,17 @@ namespace LucidDesk.Manager
         {
             if (deskConnectionInformation.Status == true)
             {
+                if (!DeskProfileManager.DeskProfilesDictionary.ContainsKey("" + deskConnectionInformation.SenderDesk.DeskId))
+                {
+                    DeskProfileManager.CreateDeskProfiledata(deskConnectionInformation.SenderDesk);
+                }
+                else
+                    DeskProfileManager.UpdateDeskProfiledata(deskConnectionInformation.SenderDesk);
                 CurrentClients.Add(deskConnectionInformation.TcpClient);
                 if (!IsScreenShareON)
                     Task.Run(() => ScreenShareForClients(_cancellationTokenSource.Token));
                 deskConnectionInformation.SenderDesk.RecentLoginTime = DateTime.Now;
+                deskConnectionInformation.ReceiverDesk = DeskProfileManager.UserDesk;
             }
             Data data = new Data() { DataObject = deskConnectionInformation, ReponseAndReqType = ReponseAndReqType.ReqResponse };
             NetworkStream stream = deskConnectionInformation.TcpClient.GetStream();

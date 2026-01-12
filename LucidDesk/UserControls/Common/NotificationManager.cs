@@ -20,8 +20,8 @@ namespace LucidDesk.UserControls.Common
         public event EventHandler<DeskConnectionInformation> OnClickInviteStatusGet;
 
         System.Timers.Timer arrangeTimer = new System.Timers.Timer();
-        private int x = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 50;
-        private int y = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 80;
+        private int x = (int)SystemParameters.PrimaryScreenWidth- 50;
+        private int y = (int)SystemParameters.PrimaryScreenHeight- 80;
 
         public int BorderRadius
         {
@@ -39,6 +39,7 @@ namespace LucidDesk.UserControls.Common
         {
             for (int i = 0; i < NotifiactionList.Count; i++)
             {
+                
                 NotifiactionList[i].Left = x - NotifiactionList[i].ActualWidth;
                 NotifiactionList[i].Top = y - (NotifiactionList[i].ActualHeight * (NotifiactionList.Count - i) - 10 * i);
             }

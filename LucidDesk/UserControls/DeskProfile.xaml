@@ -190,7 +190,7 @@
 
                         <Viewbox Height="25">
                             <Path Name="IsFavoriteIcon" MouseDown="IsFavoriteIconMouseDown" VerticalAlignment="Center"
-              Stroke="{StaticResource DefaultIconColorBrush}" HorizontalAlignment="Center" Data="{StaticResource Star}">
+              Stroke="{StaticResource SubColorBrush}" HorizontalAlignment="Center" Data="{StaticResource Star}">
                                 <Path.Style>
                                     <Style TargetType="Path">
                                         <Style.Triggers>
@@ -234,14 +234,14 @@
                 </Border>
                 <Border Grid.Column="2">
 
-                    <Button Name="MenuButton" Click="MenuButtonClick" Foreground="{StaticResource DefaultIconColorBrush}" FontSize="16"  FontFamily="Segoe MDL2 Assets" Content="&#xE712;"    VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="1"   MaxHeight="35" MaxWidth="35"     >
+                    <Button Name="MenuButton" Click="MenuButtonClick" BorderBrush="{StaticResource SubColorBrush}"  FontSize="16"  FontFamily="Segoe MDL2 Assets" Content="&#xE712;"    VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="1"   MaxHeight="35" MaxWidth="35"     >
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Padding" Value="5"/>
                                 <Setter Property="FontSize" Value="18"/>
                                 <Setter Property="FontFamily" Value="Segoe UI"/>
                                 <Setter Property="Foreground" Value="White"/>
-                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="BorderThickness" Value="2"/>
                                 <Setter Property="Background" Value="Transparent"/>
                                 <Setter Property="Template">
                                     <Setter.Value>

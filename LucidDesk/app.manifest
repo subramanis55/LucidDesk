@@ -25,6 +25,7 @@
     <application>
       <windowsSettings>
         <dpiAware>true/pm</dpiAware>
+              <dpiAwareness>PerMonitorV2</dpiAwareness>
       </windowsSettings>
       <!-- A list of the Windows versions that this application has been tested on
            and is designed to work with. Uncomment the appropriate elements
