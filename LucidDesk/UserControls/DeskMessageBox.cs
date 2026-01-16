@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 
-namespace LucidDesk.UserControls
+namespace DeskUI.UserControls
 {
     public class DeskMessageBox
     {
-        public static LucidDesk.UserControls.MessageBoxScreen messagebox = new UserControls.MessageBoxScreen() { IsHideOnly = true, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+        public static DeskUI.UserControls.MessageBoxScreen messagebox = new UserControls.MessageBoxScreen() { IsHideOnly = true, WindowStartupLocation = WindowStartupLocation.CenterOwner };
         public static DialogResult ShowMessageBox(string message, string heading, MessageBoxType messageBoxType, Window parent=null)
         {
             messagebox.Owner = parent;

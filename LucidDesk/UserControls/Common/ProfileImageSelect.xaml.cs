@@ -1,4 +1,4 @@
-﻿using LucidDesk.Manager.Files;
+﻿using DeskUI.Manager.Files;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LucidDesk.UserControls.Common
+namespace DeskUI.UserControls.Common
 {
     /// <summary>
     /// Interaction logic for ProfileImageSelect.xaml

@@ -1,8 +1,9 @@
-﻿using LucidDesk.Manager;
-using LucidDesk.Manager.Classes;
-using LucidDesk.Manager.Database;
-using LucidDesk.Manager.Enum;
-using LucidDesk.UserControls.Common;
+﻿using DeskBackend.Database;
+using DeskDS.DeskStructure;
+using DeskDS.Enum;
+using DeskUI.DeskStructure;
+using DeskUI.Manager;
+using DeskUI.UserControls.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace LucidDesk
+namespace DeskUI
 {
     /// <summary>
     /// Interaction logic for InviteWindow.xaml

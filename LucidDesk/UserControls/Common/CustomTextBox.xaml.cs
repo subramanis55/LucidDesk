@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LucidDesk.UserControls.Common
+namespace DeskUI.UserControls.Common
 {
     /// <summary>
     /// Interaction logic for CustomTextBox.xaml

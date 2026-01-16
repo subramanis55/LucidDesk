@@ -1,10 +1,11 @@
-﻿using LucidDesk.Manager.Classes;
-using LucidDesk.Manager.Classes.DataSchema;
-using LucidDesk.Manager.Classes.DataSchema.Screens;
-using LucidDesk.Manager.Enum;
-using LucidDesk.Settings;
+﻿
+using DeskBackend;
+using DeskDS.DeskStructure;
+using DeskDS.Enum;
 using NAudio.Wave;
 using Newtonsoft.Json;
+using Settings;
+using Settings.Enum;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,7 +31,7 @@ using Point = System.Windows.Point;
 
 
 
-namespace LucidDesk.Manager
+namespace DeskUI.Manager
 {
 
     public partial class ClientNetworkManager
@@ -317,7 +318,7 @@ namespace LucidDesk.Manager
             }
         }
 
-        public void SendMouseEvent(ControlKeyType controlKeyType, Point position, double ScreenImageActualWidth, double ScreenImageActualHeight, Manager.Classes.DataSchema.Screens.Screen selectedScreen = null)
+        public void SendMouseEvent(ControlKeyType controlKeyType, Point position, double ScreenImageActualWidth, double ScreenImageActualHeight, DeskDS.Screens.Screen selectedScreen = null)
         {
             if (client != null && client.Connected && deskConnectionInformation.MouseAccess)
             {
@@ -339,7 +340,7 @@ namespace LucidDesk.Manager
         }
 
 
-        public void SendScreenSwitchEvent(Classes.DataSchema.Screens.Screen e)
+        public void SendScreenSwitchEvent(DeskDS.Screens.Screen e)
         {
             if (client == null && !client.Connected)
                 return;

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace LucidDesk.Manager.Classes.DataSchema
+namespace DeskUI.Manager.Classes.DataSchema
 {
     public class DeskImageData
     {

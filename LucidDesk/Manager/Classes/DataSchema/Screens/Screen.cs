@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LucidDesk.Manager.Classes.DataSchema.Screens
+namespace DeskUI.Manager.Classes.DataSchema.Screens
 {
     public class Screen
     {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace LucidDesk.FeaturesFuntionMangerClasses
+namespace DeskUI.FeaturesFuntionMangerClasses
 {
     public class NullToVisibilityConverter : IValueConverter
     {

@@ -1,0 +1,83 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <ApplicationIcon>DeskIcon.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Files\**" />
+    <Compile Remove="Log\**" />
+    <Compile Remove="Manager\Classes\**" />
+    <Compile Remove="Manager\Database\**" />
+    <Compile Remove="Manager\Enum\**" />
+    <Compile Remove="Manager\Security\**" />
+    <EmbeddedResource Remove="Files\**" />
+    <EmbeddedResource Remove="Log\**" />
+    <EmbeddedResource Remove="Manager\Classes\**" />
+    <EmbeddedResource Remove="Manager\Database\**" />
+    <EmbeddedResource Remove="Manager\Enum\**" />
+    <EmbeddedResource Remove="Manager\Security\**" />
+    <None Remove="Files\**" />
+    <None Remove="Log\**" />
+    <None Remove="Manager\Classes\**" />
+    <None Remove="Manager\Database\**" />
+    <None Remove="Manager\Enum\**" />
+    <None Remove="Manager\Security\**" />
+    <Page Remove="Files\**" />
+    <Page Remove="Log\**" />
+    <Page Remove="Manager\Classes\**" />
+    <Page Remove="Manager\Database\**" />
+    <Page Remove="Manager\Enum\**" />
+    <Page Remove="Manager\Security\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Manager\SystemInformationManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="MySqlConnector" Version="2.5.0" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="NAudio.Asio" Version="2.2.1" />
+    <PackageReference Include="NAudio.Core" Version="2.2.1" />
+    <PackageReference Include="NAudio.Midi" Version="2.2.1" />
+    <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
+    <PackageReference Include="NAudio.WinForms" Version="2.2.1" />
+    <PackageReference Include="NAudio.WinMM" Version="2.2.1" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Security.AccessControl" Version="6.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Screenshot %2836%29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\groups.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\loadingGif.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="DeskIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\DeskIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit %283%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeskBackend\DeskBackend.csproj" />
+    <ProjectReference Include="..\Settings\Settings.csproj" />
+  </ItemGroup>
+</Project>

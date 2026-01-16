@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LucidDesk.Manager.Database
+namespace DeskUI.Manager.Database
 {
 
     public static class LocalDatabaseManager

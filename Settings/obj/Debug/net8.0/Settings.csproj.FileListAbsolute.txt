@@ -1,0 +1,12 @@
+F:\Lucid\LucidProject_Latest2\LucidDesk\Settings\bin\Debug\net8.0\Settings.deps.json
+F:\Lucid\LucidProject_Latest2\LucidDesk\Settings\bin\Debug\net8.0\Settings.dll
+F:\Lucid\LucidProject_Latest2\LucidDesk\Settings\bin\Debug\net8.0\Settings.pdb
+F:\Lucid\LucidProject_Latest2\LucidDesk\Settings\obj\Debug\net8.0\Settings.GeneratedMSBuildEditorConfig.editorconfig
+F:\Lucid\LucidProject_Latest2\LucidDesk\Settings\obj\Debug\net8.0\Settings.AssemblyInfoInputs.cache
+F:\Lucid\LucidProject_Latest2\LucidDesk\Settings\obj\Debug\net8.0\Settings.AssemblyInfo.cs
+F:\Lucid\LucidProject_Latest2\LucidDesk\Settings\obj\Debug\net8.0\Settings.csproj.CoreCompileInputs.cache
+F:\Lucid\LucidProject_Latest2\LucidDesk\Settings\obj\Debug\net8.0\Settings.sourcelink.json
+F:\Lucid\LucidProject_Latest2\LucidDesk\Settings\obj\Debug\net8.0\Settings.dll
+F:\Lucid\LucidProject_Latest2\LucidDesk\Settings\obj\Debug\net8.0\refint\Settings.dll
+F:\Lucid\LucidProject_Latest2\LucidDesk\Settings\obj\Debug\net8.0\Settings.pdb
+F:\Lucid\LucidProject_Latest2\LucidDesk\Settings\obj\Debug\net8.0\ref\Settings.dll

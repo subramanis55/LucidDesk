@@ -12,9 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Forms.Integration;
-using LucidDesk.UserControls.Common;
+using DeskUI.UserControls.Common;
 
-namespace LucidDesk
+namespace DeskUI
 {
     /// <summary>
     /// Interaction logic for TestWindow.xaml

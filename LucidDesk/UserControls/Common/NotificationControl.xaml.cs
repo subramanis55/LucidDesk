@@ -1,4 +1,4 @@
-﻿using LucidDesk.Manager.Classes;
+﻿using DeskDS.DeskStructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace LucidDesk.UserControls.Common
+namespace DeskUI.UserControls.Common
 {
     /// <summary>
     /// Interaction logic for NotificationControl.xaml

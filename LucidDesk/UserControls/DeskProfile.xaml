@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="LucidDesk.UserControls.DeskProfile"
+﻿<UserControl x:Class="DeskUI.UserControls.DeskProfile"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:LucidDesk.UserControls.Common"
+             xmlns:local="clr-namespace:DeskUI.UserControls.Common"
              mc:Ignorable="d"  MouseEnter="ControlMouseEnter" MouseLeave="ControlMouseLeave"  Opacity ="0.9" Margin="10"  
             Height="180" Width="280" >
     <UserControl.Resources>
@@ -150,7 +150,7 @@
             <Border Panel.ZIndex="-1" CornerRadius="10" Grid.RowSpan="3" BorderBrush="Gainsboro" BorderThickness="1" Grid.ColumnSpan="2">
                 <local:RoundedImage x:Name="DesktopWallPaper"   ZoomFactor="1" BorderThickness="1" Stretch="UniformToFill"  CornerRadius="10
                        
-                       "   Image="/LucidDesk;component/Resources/Screenshot (36).png" Style="{StaticResource RoundedImage}" Grid.ColumnSpan="2" ></local:RoundedImage>
+                       "   Image="/DeskUI;component/Resources/Screenshot (36).png" Style="{StaticResource RoundedImage}" Grid.ColumnSpan="2" ></local:RoundedImage>
             </Border>
          
             <Grid Grid.Row="0" Grid.ColumnSpan="2">
@@ -160,7 +160,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0" >
-                    <local:RoundedImage x:Name="DeskUserProfileImage" Margin="4 6 0 0" Stretch="Uniform" ZoomFactor="1" Image="/LucidDesk;component/Resources/Screenshot (36).png"   Style="{StaticResource RoundedImage3}"  ></local:RoundedImage>
+                    <local:RoundedImage x:Name="DeskUserProfileImage" Margin="4 6 0 0" Stretch="Uniform" ZoomFactor="1" Image="/DeskUI;component/Resources/Screenshot (36).png"   Style="{StaticResource RoundedImage3}"  ></local:RoundedImage>
                 </Grid>
                 <Border Grid.Column="1" Padding="5 0">
                     <Grid>

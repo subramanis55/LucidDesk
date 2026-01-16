@@ -4,13 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LucidDesk.Manager.Enum
+namespace DeskUI.Manager.Enum
 {
-    public enum ApplicationMode
-    {
-        Local, Online
-    }
-
     public enum AccessType
     {
         Default, ScreenShareing, FullAccess

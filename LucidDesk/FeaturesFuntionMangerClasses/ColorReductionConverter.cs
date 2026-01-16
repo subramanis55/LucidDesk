@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace LucidDesk.FeaturesFuntionMangerClasses
+namespace DeskUI.FeaturesFuntionMangerClasses
 {
     public class ColorReductionConverter : IValueConverter
     {

@@ -23,21 +23,19 @@ using NAudio.Wave;
 using System.Windows.Threading;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
-using LucidDesk.Manager.Classes;
-using LucidDesk.Manager.Database;
-using LucidDesk.Manager.Enum;
-using LucidDesk.Manager.Classes.DataSchema;
 using System.Runtime.InteropServices.ComTypes;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Timer = System.Threading.Timer;
 using Newtonsoft.Json.Linq;
-using LucidDesk.Manager.Security;
 using System.Windows.Markup;
-using LucidDesk.UserControls;
-using LucidDesk.Manager.Classes.DataSchema.Screens;
+using DeskUI.UserControls;
+using DeskDS.DeskStructure;
+using DeskDS.Enum;
+using DeskBackend.Database;
+using DeskBackend.Security;
 #endregion
-namespace LucidDesk.Manager
+namespace DeskUI.Manager
 {
 
 
@@ -178,7 +176,12 @@ namespace LucidDesk.Manager
                     connectionInformation.Status = true;
                     connectionInformation.IsRequestStatusUpdate = true;
                     connectionInformation.Message = "Connection Success";
-                    connectionInformation.AddDeskScreensInformations();
+                    List<DeskDS.Screens.Screen> screens = new List<DeskDS.Screens.Screen>();
+                    foreach (var screen in System.Windows.Forms.Screen.AllScreens)
+                    {
+                        screens.Add(new DeskDS.Screens.Screen() { Bounds = screen.Bounds, IsPrimaryScreen = screen.Primary, DeviceName = screen.DeviceName });
+                    }
+                    connectionInformation.AddDeskScreensInformations(screens);
                     RequestUpdate(connectionInformation);
                 }
                 else if (connectionInformation.ConnectionType == ConnectionType.Connect)

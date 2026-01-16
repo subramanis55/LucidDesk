@@ -1,6 +1,6 @@
 ﻿
-using LucidDesk.Manager.Files;
-using MySql.Data.MySqlClient;
+using DeskUI.Manager.Files;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,9 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Security.Cryptography;
-using LucidDesk.Settings;
+using Settings;
 
-namespace LucidDesk.Manager.Database
+namespace DeskUI.Manager.Database
 {
     public static class ServerDatabaseManager
     {

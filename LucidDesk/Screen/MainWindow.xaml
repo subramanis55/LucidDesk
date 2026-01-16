@@ -1,13 +1,13 @@
-﻿<Window x:Class="LucidDesk.MainWindow"   
+﻿<Window x:Class="DeskUI.MainWindow"   
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LucidDesk"
-        xmlns:UserControl="clr-namespace:LucidDesk.UserControls"
-        xmlns:Controls="clr-namespace:LucidDesk.UserControls.Common"
+        xmlns:local="clr-namespace:DeskUI"
+        xmlns:UserControl="clr-namespace:DeskUI.UserControls"
+        xmlns:Controls="clr-namespace:DeskUI.UserControls.Common"
         mc:Ignorable="d" WindowStyle="None" Padding="0" Margin="0"  Loaded="MainWindowLoaded"
-        Title="MainWindow" MinHeight="500" MinWidth="900" Height="500" Width="800" Icon="/LucidDesk;Component/Resources/DeskIcon.png">
+        Title="MainWindow" MinHeight="500" MinWidth="900" Height="500" Width="800" Icon="/DeskUI;Component/Resources/DeskIcon.png">
     <Window.Resources>
         <ContextMenu x:Key="MenuContext" Style="{StaticResource CustomContextMenu}">
             <MenuItem Style="{StaticResource ContextMenuItem}" Click="SettingPageClick"  >
@@ -74,7 +74,7 @@
                         <ColumnDefinition Width="*"/>
 
                     </Grid.ColumnDefinitions>
-                    <!--<Image Height="25" VerticalAlignment="Center" HorizontalAlignment="Right" Width="25" Source="/LucidDesk;component\Resources\DeskIcon.png" ></Image>-->
+                    <!--<Image Height="25" VerticalAlignment="Center" HorizontalAlignment="Right" Width="25" Source="/DeskUI;component\Resources\DeskIcon.png" ></Image>-->
                     <TextBlock Grid.Column="1" FontSize="16" HorizontalAlignment="Left" Padding="10 0 0 0" FontWeight="DemiBold" Foreground="{StaticResource MainColorBrush}" VerticalAlignment="Center" >Desk</TextBlock>
                 </Grid>
                 <Grid Grid.Column="1">
@@ -447,7 +447,7 @@
                                                 <Border Grid.Column="1" CornerRadius="15"  Background="{StaticResource SubColorBrush}">
                                                     <StackPanel>
                                                         <Grid Height="180" >
-                                                            <Controls:RoundedImage x:Name="ProfilePicture"   MinHeight="120" MinWidth="120" MaxHeight="140" MaxWidth="140"   ZoomFactor="1" Stretch="UniformToFill"   CornerRadius="140 " Panel.ZIndex="-1"  Image="/LucidDesk;component/Resources/Screenshot (36).png" Style="{StaticResource RoundedImage}"  ></Controls:RoundedImage>
+                                                            <Controls:RoundedImage x:Name="ProfilePicture"   MinHeight="120" MinWidth="120" MaxHeight="140" MaxWidth="140"   ZoomFactor="1" Stretch="UniformToFill"   CornerRadius="140 " Panel.ZIndex="-1"  Image="/DeskUI;component/Resources/Screenshot (36).png" Style="{StaticResource RoundedImage}"  ></Controls:RoundedImage>
                                                         </Grid>
                                                         <StackPanel Orientation="Horizontal" Margin="7 0" HorizontalAlignment="Center">
                                                             <Label HorizontalAlignment="Center" TextBlock.TextAlignment="Center"  FontSize="17"    FontWeight="Medium" Foreground="{StaticResource MainColorBrush}">Profile</Label>

@@ -300,3 +300,17 @@
    at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
    at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
 
+16-01-2026 10:00:31: System.Net.Sockets.SocketException (0x80004005): Only one usage of each socket address (protocol/network address/port) is normally permitted
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at System.Net.Sockets.TcpListener.Start(Int32 backlog)
+   at System.Net.Sockets.TcpListener.Start()
+   at LucidDesk.Manager.ServerNetworkManager.StartServer() in F:\Lucid\LucidProject_Latest2\LucidDesk\LucidDesk\Manager\Network\ServerNetworkManager.cs:line 116
+   at LucidDesk.App.StartNetWorkServerConnection() in F:\Lucid\LucidProject_Latest2\LucidDesk\LucidDesk\App.xaml.cs:line 78
+   at LucidDesk.App.SetUpCheck() in F:\Lucid\LucidProject_Latest2\LucidDesk\LucidDesk\App.xaml.cs:line 64
+   at LucidDesk.App.Application_Startup(Object sender, StartupEventArgs e) in F:\Lucid\LucidProject_Latest2\LucidDesk\LucidDesk\App.xaml.cs:line 29
+   at System.Windows.Application.OnStartup(StartupEventArgs e)
+   at System.Windows.Application.<.ctor>b__1_0(Object unused)
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+

@@ -1,4 +1,4 @@
-﻿using LucidDesk.Manager.Classes;
+﻿using DeskDS.DeskStructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 
 
-namespace LucidDesk.UserControls.Common
+namespace DeskUI.UserControls.Common
 {
     public enum NotificationType
     {

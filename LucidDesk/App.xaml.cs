@@ -1,20 +1,23 @@
-﻿using LucidDesk.Log;
-using LucidDesk.Manager;
-using LucidDesk.Manager.Database;
-using LucidDesk.Manager.Enum;
-using LucidDesk.Settings;
-using LucidDesk.UserControls;
+﻿using DeskBackend;
+using DeskBackend.Database;
+using DeskUI.DeskStructure;
+using DeskUI.Log;
+using DeskUI.Manager;
+using DeskUI.UserControls;
+using Settings;
+using Settings.Enum;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace LucidDesk
+namespace DeskUI
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -26,6 +29,8 @@ namespace LucidDesk
             this.DispatcherUnhandledException += AppDispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskSchedulerUnobservedTaskException;
+            GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
+            SettingsManager.Initialize();
             SetUpCheck();
             MainWindow window = new MainWindow();
             window.Show();
@@ -74,8 +79,8 @@ namespace LucidDesk
         private void StartNetWorkServerConnection()
         {
 
-            if (LucidDesk.MainWindow.ServerNetworkManager.isStarted) return;
-            LucidDesk.MainWindow.ServerNetworkManager.StartServer();
+            if (DeskUI.MainWindow.ServerNetworkManager.isStarted) return;
+            DeskUI.MainWindow.ServerNetworkManager.StartServer();
 
         }
         private void AppDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

@@ -1,6 +1,8 @@
-﻿using LucidDesk.Manager;
-using LucidDesk.Manager.Classes;
-using LucidDesk.Manager.Enum;
+﻿using DeskDS.DeskStructure;
+using DeskDS.Enum;
+using DeskUI.DeskStructure;
+using DeskUI.Manager;
+using DeskUI.Manager.Files;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace LucidDesk
+namespace DeskUI
 {
     /// <summary>
     /// Interaction logic for InviteAcceptWindow.xaml
@@ -34,7 +36,7 @@ namespace LucidDesk
                
                 DeskUserNameTextBlock.Text = desk.ProfileName;
                 DeskIdTextBlock.Text = "(" + desk.DisplayID+ ")";
-                DeskUserProfileImageComponent.Image = desk.DesktopImage;
+                DeskUserProfileImageComponent.Image = FileManager.ConvertBytesToBitmapImage(desk.DesktopImage);
              
             }
             get

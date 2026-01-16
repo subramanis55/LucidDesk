@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LucidDesk.UserControls
+namespace DeskUI.UserControls
 {
     /// <summary>
     /// Interaction logic for SectionTabControl.xaml

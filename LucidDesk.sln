@@ -1,9 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 15 for Windows Desktop
-VisualStudioVersion = 15.0.27703.2047
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LucidDesk", "LucidDesk\LucidDesk.csproj", "{6112B2CF-6970-4C06-BECA-72961D800562}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeskUI", "LucidDesk\DeskUI.csproj", "{6112B2CF-6970-4C06-BECA-72961D800562}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Settings", "Settings\Settings.csproj", "{22F4155F-EAA1-4759-AF6A-4320C796D876}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskNetwork", "DeskNetworkManager\DeskNetwork.csproj", "{881FDCF0-D42F-4245-BF2E-450EE27F60B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskBackend", "DeskBackend\DeskBackend.csproj", "{F3843D49-08D5-4902-BEBC-BE87466FE406}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskDS", "DeskDS\DeskDS.csproj", "{BA47452E-9C81-49A2-93B8-D988CE706A56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,22 @@ Global
 		{6112B2CF-6970-4C06-BECA-72961D800562}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6112B2CF-6970-4C06-BECA-72961D800562}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6112B2CF-6970-4C06-BECA-72961D800562}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22F4155F-EAA1-4759-AF6A-4320C796D876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22F4155F-EAA1-4759-AF6A-4320C796D876}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22F4155F-EAA1-4759-AF6A-4320C796D876}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22F4155F-EAA1-4759-AF6A-4320C796D876}.Release|Any CPU.Build.0 = Release|Any CPU
+		{881FDCF0-D42F-4245-BF2E-450EE27F60B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{881FDCF0-D42F-4245-BF2E-450EE27F60B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{881FDCF0-D42F-4245-BF2E-450EE27F60B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{881FDCF0-D42F-4245-BF2E-450EE27F60B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3843D49-08D5-4902-BEBC-BE87466FE406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3843D49-08D5-4902-BEBC-BE87466FE406}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3843D49-08D5-4902-BEBC-BE87466FE406}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3843D49-08D5-4902-BEBC-BE87466FE406}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA47452E-9C81-49A2-93B8-D988CE706A56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA47452E-9C81-49A2-93B8-D988CE706A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA47452E-9C81-49A2-93B8-D988CE706A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA47452E-9C81-49A2-93B8-D988CE706A56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

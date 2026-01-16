@@ -1,8 +1,7 @@
-﻿using LucidDesk.Manager.Classes.DataSchema.Screens;
+﻿using DeskDS.Screens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Hosting;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,14 +14,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
-namespace LucidDesk.UserControls
+namespace DeskUI.UserControls
 {
     /// <summary>
     /// Interaction logic for ScreenSwitchControl.xaml
     /// </summary>
     public partial class ScreenSwitchControl : UserControl
     {
-        public event EventHandler<LucidDesk.Manager.Classes.DataSchema.Screens.Screen> ScreenSelectionChanged;
+        public event EventHandler<DeskDS.Screens.Screen> ScreenSelectionChanged;
 
         public ScreenInformation Screeninfo;
 

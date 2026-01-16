@@ -1,14 +1,10 @@
-﻿using LucidDesk.Log;
-using LucidDesk.Manager;
-using LucidDesk.Manager.Classes;
-using LucidDesk.Manager.Classes.DataSchema;
-using LucidDesk.Manager.Database;
-using LucidDesk.Manager.Enum;
-using LucidDesk.Manager.Files;
-using LucidDesk.Screen;
-using LucidDesk.Settings;
-using LucidDesk.UserControls;
-using LucidDesk.UserControls.Common;
+﻿using DeskUI.Log;
+using DeskUI.Manager;
+using DeskUI.Manager.Files;
+using DeskUI.Screen;
+using Settings;
+using DeskUI.UserControls;
+using DeskUI.UserControls.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,8 +20,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Settings.Enum;
+using DeskBackend.Database;
+using DeskDS.DeskStructure;
+using DeskUI.DeskStructure;
+using DeskDS.Enum;
+using DeskBackend;
+using System.IO;
 
-namespace LucidDesk
+namespace DeskUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -133,8 +136,8 @@ namespace LucidDesk
         }
 
 
-        private Manager.Classes.DataSchema.Screens.Screen selectedScreen;
-        private void ScreenSwitchControlScreenSelectionChanged(object sender, Manager.Classes.DataSchema.Screens.Screen e)
+        private DeskDS.Screens.Screen selectedScreen;
+        private void ScreenSwitchControlScreenSelectionChanged(object sender, DeskDS.Screens.Screen e)
         {
             selectedScreen = e;
             ClientNetworkManager.SendScreenSwitchEvent(e);
@@ -414,24 +417,65 @@ namespace LucidDesk
         }
         #endregion
 
+        private WriteableBitmap _screenBitmap;
+
         #region   Screen Share
         private void ClientNetworkManagerScreenShareUpdateInvoke(object sender, DeskImageData e)
         {
-            BitmapImage screenShareImage = e.Image;
+            //BitmapImage screenShareImage = FileManager.ConvertBytesToBitmapImage(e.ImageData);
 
-            screenShareImage?.Freeze();
-            Dispatcher.BeginInvoke((Action)(() =>
+            //screenShareImage?.Freeze();
+            //Dispatcher.BeginInvoke((Action)(() =>
+            //{
+            //    if (MainTabControl.SelectedItem == ConnectionSharePage)
+            //    {
+            //        ClientNetworkManagerConnectedToSeverInvoke(null, EventArgs.Empty);
+            //        ConnectionGifTimer.Stop();
+            //    }
+
+            //    ScreenImage.Source = screenShareImage;
+            //}));
+            Dispatcher.BeginInvoke(() =>
             {
                 if (MainTabControl.SelectedItem == ConnectionSharePage)
                 {
                     ClientNetworkManagerConnectedToSeverInvoke(null, EventArgs.Empty);
                     ConnectionGifTimer.Stop();
                 }
-                ScreenImage.Source = screenShareImage;
-            }));
+                using var ms = new MemoryStream(e.ImageData);
+
+                var decoder = BitmapDecoder.Create(
+                    ms,
+                    BitmapCreateOptions.PreservePixelFormat,
+                    BitmapCacheOption.OnLoad);
+
+                var frame = decoder.Frames[0];
+
+                if (_screenBitmap == null ||
+                    _screenBitmap.PixelWidth != frame.PixelWidth ||
+                    _screenBitmap.PixelHeight != frame.PixelHeight)
+                {
+                    _screenBitmap = new WriteableBitmap(frame);
+                    ScreenImage.Source = _screenBitmap;
+                }
+                else
+                {
+                    _screenBitmap.Lock();
+                    frame.CopyPixels(
+                        new Int32Rect(0, 0, frame.PixelWidth, frame.PixelHeight),
+                        _screenBitmap.BackBuffer,
+                        _screenBitmap.BackBufferStride * frame.PixelHeight,
+                        _screenBitmap.BackBufferStride);
+
+                    _screenBitmap.AddDirtyRect(
+                        new Int32Rect(0, 0, frame.PixelWidth, frame.PixelHeight));
+
+                    _screenBitmap.Unlock();
+                }
+            });
         }
 
-        private BitmapImage ExtractSpecificMonitor(System.Drawing.Bitmap fullBitmap, Manager.Classes.DataSchema.Screens.Screen targetScreen)
+        private BitmapImage ExtractSpecificMonitor(System.Drawing.Bitmap fullBitmap, DeskDS.Screens.Screen targetScreen)
         {
             System.Drawing.Rectangle vs = System.Windows.Forms.SystemInformation.VirtualScreen;
             System.Drawing.Rectangle sb = targetScreen.Bounds;
@@ -563,7 +607,7 @@ namespace LucidDesk
         {
             try
             {
-                var uri = new Uri("pack://application:,,,/LucidDesk;component/Resources/loadingGif.gif", UriKind.Absolute);
+                var uri = new Uri("pack://application:,,,/DeskUI;component/Resources/loadingGif.gif", UriKind.Absolute);
                 var decoder = new GifBitmapDecoder(uri, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
                 _frames = decoder.Frames.ToArray();
 
@@ -620,7 +664,7 @@ namespace LucidDesk
         {
             if (MainTabControl.SelectedItem == SettingPage)
             {
-                ProfilePicture.Image = DeskProfileManager.UserDesk.ProfileImage;
+                ProfilePicture.Image = FileManager.ConvertBytesToBitmapImage(DeskProfileManager.UserDesk.ProfileImage);
                 ProfilePageUserNameTextBox.Textbox.Text = DeskProfileManager.UserDesk.ProfileName;
                 ProfilePageUserDeskOsName.Content = DeskProfileManager.UserDesk.OsName;
                 ProfilePageUserDeskId.Content = "" + DeskProfileManager.UserDesk.DisplayID;
@@ -652,10 +696,10 @@ namespace LucidDesk
                 DeskProfileManager.DeskProfilesDictionary.Add("" + deskConnectionInformation.SenderDesk.DeskId, deskConnectionInformation.SenderDesk);
             try
             {
-                deskConnectionInformation.ReceiverDesk.DesktopImage.Freeze();
-                deskConnectionInformation.ReceiverDesk.ProfileImage.Freeze();
-                deskConnectionInformation.SenderDesk.DesktopImage.Freeze();
-                deskConnectionInformation.SenderDesk.ProfileImage.Freeze();
+                //deskConnectionInformation.ReceiverDesk.DesktopImage.Freeze();
+                //deskConnectionInformation.ReceiverDesk.ProfileImage.Freeze();
+                //deskConnectionInformation.SenderDesk.DesktopImage.Freeze();
+                //deskConnectionInformation.SenderDesk.ProfileImage.Freeze();
             }
             catch (Exception ex)
             {
@@ -833,7 +877,12 @@ namespace LucidDesk
             {
                 deskConnectionInformation.IsRequestStatusUpdate = true;
                 deskConnectionInformation.Message = "Connection Success";
-                deskConnectionInformation.AddDeskScreensInformations();
+                List<DeskDS.Screens.Screen> screens = new List<DeskDS.Screens.Screen>();
+                foreach (var screen in System.Windows.Forms.Screen.AllScreens)
+                {
+                    screens.Add(new DeskDS.Screens.Screen() { Bounds = screen.Bounds, IsPrimaryScreen = screen.Primary, DeviceName = screen.DeviceName });
+                }
+                deskConnectionInformation.AddDeskScreensInformations(screens);
 
             }
             else
@@ -848,10 +897,10 @@ namespace LucidDesk
         {
             try
             {
-                deskConnectionInformation.ReceiverDesk.DesktopImage?.Freeze();
-                deskConnectionInformation.ReceiverDesk.ProfileImage?.Freeze();
-                deskConnectionInformation.SenderDesk.DesktopImage?.Freeze();
-                deskConnectionInformation.SenderDesk.ProfileImage?.Freeze();
+                //deskConnectionInformation.ReceiverDesk.DesktopImage?.Freeze();
+                //deskConnectionInformation.ReceiverDesk.ProfileImage?.Freeze();
+                //deskConnectionInformation.SenderDesk.DesktopImage?.Freeze();
+                //deskConnectionInformation.SenderDesk.ProfileImage?.Freeze();
             }
             catch (Exception ex)
             {

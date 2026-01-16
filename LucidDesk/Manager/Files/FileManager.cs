@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace LucidDesk.Manager.Files
+namespace DeskUI.Manager.Files
 {
     public static class FileManager
     {
@@ -49,6 +49,26 @@ namespace LucidDesk.Manager.Files
 
             return bitmapImage;
         }
+
+        public static BitmapImage ConvertBytesToBitmapImage(byte[] imageBytes)
+        {
+            if (imageBytes == null || imageBytes.Length == 0)
+                return null;
+
+            BitmapImage bitmapImage = new BitmapImage();
+
+            using (var memoryStream = new MemoryStream(imageBytes))
+            {
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.StreamSource = memoryStream;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze(); // 🔥 ABSOLUTELY REQUIRED
+            }
+
+            return bitmapImage;
+        }
+
         private static byte[] ResizeImage(string filePath, int maxFileSizeInBytes)
         {
             BitmapImage bitmap = new BitmapImage(new Uri(filePath));

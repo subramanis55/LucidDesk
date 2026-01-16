@@ -1,10 +1,10 @@
-﻿<Window x:Class="LucidDesk.ConnectAcceptWindow"
+﻿<Window x:Class="DeskUI.ConnectAcceptWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LucidDesk"
-         xmlns:Usercontrol="clr-namespace:LucidDesk.UserControls.Common"
+        xmlns:local="clr-namespace:DeskUI"
+         xmlns:Usercontrol="clr-namespace:DeskUI.UserControls.Common"
         mc:Ignorable="d"   Background="{StaticResource SubColorBrush}"
         Title="InviteAcceptWindow" Height="450" Width="380" WindowStyle="None">
     <Grid>
@@ -60,7 +60,7 @@
                 <Grid Grid.Column="0"  >
                     <Usercontrol:RoundedImage Margin="15"  Style="{StaticResource RoundedImage3}" 
             x:Name="DeskUserProfileImageComponent"  Stretch="Uniform" ZoomFactor="1"
-            Image="/LucidDesk;component/Resources/groups.png"
+            Image="/DeskUI;component/Resources/groups.png"
             CornerRadius="3"/>
                 </Grid>
                 <StackPanel Grid.Column="1">

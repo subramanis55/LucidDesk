@@ -1,0 +1,17 @@
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\bin\Debug\net8.0\DeskDS.deps.json
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\bin\Debug\net8.0\DeskDS.dll
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\bin\Debug\net8.0\DeskDS.pdb
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\bin\Debug\net8.0\Newtonsoft.Json.dll
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\bin\Debug\net8.0\Settings.dll
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\bin\Debug\net8.0\Settings.pdb
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\obj\Debug\net8.0\DeskDS.csproj.AssemblyReference.cache
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\obj\Debug\net8.0\DeskDS.GeneratedMSBuildEditorConfig.editorconfig
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\obj\Debug\net8.0\DeskDS.AssemblyInfoInputs.cache
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\obj\Debug\net8.0\DeskDS.AssemblyInfo.cs
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\obj\Debug\net8.0\DeskDS.csproj.CoreCompileInputs.cache
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\obj\Debug\net8.0\DeskDS.sourcelink.json
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\obj\Debug\net8.0\DeskDS.csproj.Up2Date
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\obj\Debug\net8.0\DeskDS.dll
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\obj\Debug\net8.0\refint\DeskDS.dll
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\obj\Debug\net8.0\DeskDS.pdb
+F:\Lucid\LucidProject_Latest2\LucidDesk\DeskDS\obj\Debug\net8.0\ref\DeskDS.dll

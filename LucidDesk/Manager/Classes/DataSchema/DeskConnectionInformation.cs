@@ -1,5 +1,5 @@
-﻿using LucidDesk.Manager.Classes.DataSchema.Screens;
-using LucidDesk.Manager.Enum;
+﻿using DeskUI.Manager.Classes.DataSchema.Screens;
+using DeskUI.Manager.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LucidDesk.Manager.Classes
+namespace DeskUI.Manager.Classes
 {
     public class DeskConnectionInformation
     {
@@ -85,7 +85,7 @@ namespace LucidDesk.Manager.Classes
         {
             foreach (var screen in System.Windows.Forms.Screen.AllScreens)
             {
-                ScreenInformation.AddScreen(new LucidDesk.Manager.Classes.DataSchema.Screens.Screen() { Bounds = screen.Bounds, IsPrimaryScreen = screen.Primary, DeviceName = screen.DeviceName });
+                ScreenInformation.AddScreen(new DeskUI.Manager.Classes.DataSchema.Screens.Screen() { Bounds = screen.Bounds, IsPrimaryScreen = screen.Primary, DeviceName = screen.DeviceName });
             }
         }
     }

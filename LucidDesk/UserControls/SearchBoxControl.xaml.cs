@@ -1,9 +1,6 @@
-﻿using LucidDesk.Manager;
-using LucidDesk.Manager.Classes;
-using LucidDesk.Manager.Database;
-using LucidDesk.Manager.Enum;
-using LucidDesk.Settings;
-using LucidDesk.UserControls.Common;
+﻿using DeskUI.Manager;
+using Settings;
+using DeskUI.UserControls.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +17,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Settings.Enum;
+using DeskUI.DeskStructure;
+using DeskBackend.Database;
 
-namespace LucidDesk.UserControls
+namespace DeskUI.UserControls
 {
     /// <summary>
     /// Interaction logic for SearchBoxControl.xaml

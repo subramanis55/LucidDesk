@@ -17,7 +17,7 @@ using Brush = System.Windows.Media.Brush;
 using MediaColor = System.Windows.Media.Color;
 using DrawingColor = System.Drawing.Color;
 
-namespace LucidDesk.UserControls.Common
+namespace DeskUI.UserControls.Common
 {
     
     public partial class AnimatedTextBox : UserControl

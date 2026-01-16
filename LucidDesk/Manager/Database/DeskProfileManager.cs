@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LucidDesk.Manager.Security;
+using DeskUI.Manager.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft;
 using Newtonsoft.Json;
 using System.IO;
-using LucidDesk.UserControls;
+using DeskUI.UserControls;
 
-namespace LucidDesk.Manager.Database
+namespace DeskUI.Manager.Database
 {
     public static class DeskProfileManager
     {

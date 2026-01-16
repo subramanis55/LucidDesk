@@ -1,6 +1,4 @@
-﻿using LucidDesk.Manager.Enum;
-using LucidDesk.Settings;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -13,7 +11,9 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using System.Windows.Forms;
-namespace LucidDesk.Manager
+using Settings;
+using Settings.Enum;
+namespace DeskUI.Manager
 {
     public static class SystemInformationManager
     {

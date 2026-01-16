@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace LucidDesk.Files
+namespace DeskUI.Files
 {
     public static class FileLocationManager
     {

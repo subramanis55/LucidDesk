@@ -1,6 +1,8 @@
-﻿using LucidDesk.FeaturesFuntionMangerClasses;
-using LucidDesk.Manager;
-using LucidDesk.Manager.Database;
+﻿using DeskBackend.Database;
+using DeskUI.DeskStructure;
+using DeskUI.FeaturesFuntionMangerClasses;
+using DeskUI.Manager;
+using DeskUI.Manager.Files;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LucidDesk.UserControls
+namespace DeskUI.UserControls
 {
     /// <summary>
     /// Interaction logic for DeskProfile.xaml
@@ -43,9 +45,9 @@ namespace LucidDesk.UserControls
                         DeskUserProfileImage.Image = ColorFeatures.CreateBitmapImageWithCharacter(90, 90, ColorFeatures.GetColorBasedOnFirstChar(desk.ProfileName), desk.ProfileName[0], "Arial", 17, Colors.White);
                     }
                     else
-                        DeskUserProfileImage.Image = desk.ProfileImage;
+                        DeskUserProfileImage.Image = FileManager.ConvertBytesToBitmapImage(desk.ProfileImage);
                     DeskId = "" + desk.DisplayID;
-                    DesktopWallPaper.Image = desk.DesktopImage;
+                    DesktopWallPaper.Image = FileManager.ConvertBytesToBitmapImage(desk.DesktopImage);
                     desk.PropertyChanged += DeskPropertyChanged;
                     Desk.OnClickDeleted += DeskOnClickDeleted;
                 }

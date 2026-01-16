@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="LucidDesk.UserControls.Common.CustomTextBox"
+﻿<UserControl x:Class="DeskUI.UserControls.Common.CustomTextBox"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:LucidDesk.UserControls.Common"
+             xmlns:local="clr-namespace:DeskUI.UserControls.Common"
              mc:Ignorable="d" d:DesignHeight="38.667"   d:DesignWidth="250" Padding="0"    >
     <UserControl.Resources>
         <Style TargetType="TextBox">

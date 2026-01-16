@@ -21,7 +21,7 @@
 //using System.Windows.Shapes;
 //using System.Windows.Threading;
 
-//namespace LucidDesk.Manager
+//namespace DeskUI.Manager
 //{
 //    public class ServerNetworkManager
 //    {
@@ -316,11 +316,11 @@ using NAudio.Wave;
 using System.Windows.Threading;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
-using LucidDesk.Manager.Classes;
-using LucidDesk.Manager.Database;
-using LucidDesk.Manager.Enum;
+using DeskUI.Manager.Classes;
+using DeskUI.Manager.Database;
+using DeskUI.Manager.Enum;
 
-namespace LucidDesk.Manager
+namespace DeskUI.Manager
 {
 
     public partial class ServerNetworkManager

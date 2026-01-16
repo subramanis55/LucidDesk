@@ -1,0 +1,29 @@
+16-01-2026 12:15:14: System.Windows.Markup.XamlParseException: 'Provide value on 'System.Windows.Baml2006.TypeConverterMarkupExtension' threw an exception.' Line number '10' and line position '72'.
+ ---> System.IO.FileNotFoundException: Could not load file or assembly 'LucidDesk, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+File name: 'LucidDesk, Culture=neutral, PublicKeyToken=null'
+   at System.Reflection.RuntimeAssembly.InternalLoad(AssemblyName assemblyName, StackCrawlMark& stackMark, AssemblyLoadContext assemblyLoadContext, RuntimeAssembly requestingAssembly, Boolean throwOnFileNotFound)
+   at System.Reflection.Assembly.Load(AssemblyName assemblyRef)
+   at System.Windows.Navigation.BaseUriHelper.GetLoadedAssembly(String assemblyName, String assemblyVersion, String assemblyKey)
+   at MS.Internal.AppModel.ResourceContainer.GetResourceManagerWrapper(Uri uri, String& partName, Boolean& isContentFile)
+   at MS.Internal.AppModel.ResourceContainer.GetPartCore(Uri uri)
+   at System.IO.Packaging.Package.GetPartHelper(Uri partUri)
+   at System.IO.Packaging.Package.GetPart(Uri partUri)
+   at System.IO.Packaging.PackWebResponse.CachedResponse.GetResponseStream()
+   at System.Windows.Media.Imaging.BitmapDecoder.SetupDecoderFromUriOrStream(Uri uri, Stream stream, BitmapCacheOption cacheOption, Guid& clsId, Boolean& isOriginalWritable, Stream& uriStream, UnmanagedMemoryStream& unmanagedMemoryStream, SafeFileHandle& safeFilehandle)
+   at System.Windows.Media.Imaging.BitmapDecoder.CreateFromUriOrStream(Uri baseUri, Uri uri, Stream stream, BitmapCreateOptions createOptions, BitmapCacheOption cacheOption, RequestCachePolicy uriCachePolicy, Boolean insertInDecoderCache)
+   at System.Windows.Media.Imaging.BitmapFrame.CreateFromUriOrStream(Uri baseUri, Uri uri, Stream stream, BitmapCreateOptions createOptions, BitmapCacheOption cacheOption, RequestCachePolicy uriCachePolicy)
+   at System.Windows.Media.ImageSourceConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+   --- End of inner exception stack trace ---
+   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at LucidDesk.MainWindow.InitializeComponent() in F:\Lucid\LucidProject_Latest2\LucidDesk\LucidDesk\Screen\MainWindow.xaml:line 1
+   at LucidDesk.MainWindow..ctor() in F:\Lucid\LucidProject_Latest2\LucidDesk\LucidDesk\Screen\MainWindow.xaml.cs:line 78
+   at LucidDesk.App.Application_Startup(Object sender, StartupEventArgs e) in F:\Lucid\LucidProject_Latest2\LucidDesk\LucidDesk\App.xaml.cs:line 31
+   at System.Windows.Application.<.ctor>b__1_0(Object unused)
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+

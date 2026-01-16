@@ -1,6 +1,6 @@
-﻿using LucidDesk.Manager.Enum;
-using LucidDesk.Manager.Files;
-using LucidDesk.Settings;
+﻿using DeskUI.Manager.Enum;
+using DeskUI.Manager.Files;
+using Settings;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,8 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using Settings.Enum;
 
-namespace LucidDesk.Manager
+namespace DeskUI.Manager
 {
     public class Desk : INotifyPropertyChanged
     {
