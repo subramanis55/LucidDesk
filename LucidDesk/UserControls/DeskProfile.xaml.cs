@@ -36,8 +36,7 @@ namespace LucidDesk.UserControls
             {
                 MainContainer.DataContext = value;
                 desk = value;
-                try
-                {
+
                     if (desk.ProfileImage == null)
                     {
                         DeskUserProfileImage.Image = ColorFeatures.CreateBitmapImageWithCharacter(90, 90, ColorFeatures.GetColorBasedOnFirstChar(desk.ProfileName), desk.ProfileName[0], "Arial", 17, Colors.White);
@@ -48,16 +47,16 @@ namespace LucidDesk.UserControls
                     DesktopWallPaper.Image = desk.DesktopImage;
                     desk.PropertyChanged += DeskPropertyChanged;
                     Desk.OnClickDeleted += DeskOnClickDeleted;
-                }
-                catch
-                {
-                }
+                    Binding binding = new Binding("IsFavorite");
+                    binding.Source = Desk;
+                    binding.Mode = BindingMode.OneWay;
+                    this.SetBinding(IsFavoriteProperty, binding);
             }
             get
             {
                 return desk;
             }
-        }
+        }                                                                                                
 
 
         public string DeskId
@@ -78,8 +77,6 @@ namespace LucidDesk.UserControls
         public static readonly DependencyProperty DeskIdProperty =
             DependencyProperty.Register("DeskId", typeof(string), typeof(DeskProfile), new PropertyMetadata(""));
 
-
-
         public Brush BackgroundColor
         {
             get { return (Brush)GetValue(BackgroundColorProperty); }
@@ -89,12 +86,7 @@ namespace LucidDesk.UserControls
         public static readonly DependencyProperty BackgroundColorProperty =
             DependencyProperty.Register("BackgroundColor", typeof(Brush), typeof(DeskProfile), new PropertyMetadata(new SolidColorBrush(Colors.DodgerBlue)));
 
-        public static readonly DependencyProperty IsFavoriteProperty =
-     DependencyProperty.Register(
-         nameof(IsFavorite),
-         typeof(bool),
-         typeof(DeskProfile), // Replace with the actual class name
-         new PropertyMetadata(false, IsFavoriteChanged));
+        public static readonly DependencyProperty IsFavoriteProperty =DependencyProperty.Register(nameof(IsFavorite),typeof(bool),typeof(DeskProfile),  new PropertyMetadata(false, IsFavoriteChanged));
 
         private static void IsFavoriteChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -117,6 +109,16 @@ namespace LucidDesk.UserControls
 
         }
 
+        public DeskProfile(Desk desk)
+        {
+            InitializeComponent();
+            Desk = desk;
+            DataContext = this;
+            Desk.OnClickDeleted += DeskOnClickDeleted;
+            IsFavoriteCheckBox.Unchecked += IsFavoriteCheckBoxUnChecked;
+            IsFavoriteCheckBox.Checked += IsFavoriteCheckBoxChecked;
+        }
+
         private void DeskProfileLoaded(object sender, RoutedEventArgs e)
         {
 
@@ -128,21 +130,6 @@ namespace LucidDesk.UserControls
             {
                 //OnClickIsFavorite?.Invoke(this, e);
             }
-        }
-
-        public DeskProfile(Desk desk)
-        {
-            InitializeComponent();
-            Desk = desk;
-            DataContext = this;
-            Desk.OnClickDeleted += DeskOnClickDeleted;
-            IsFavoriteCheckBox.Unchecked += IsFavoriteCheckBoxUnChecked;
-            IsFavoriteCheckBox.Checked += IsFavoriteCheckBoxChecked;
-            Binding binding = new Binding("IsFavorite");
-            binding.Source = Desk;
-            binding.Mode = BindingMode.OneWay;
-            this.SetBinding(IsFavoriteProperty, binding);
-
         }
 
         private void IsFavoriteCheckBoxChecked(object sender, RoutedEventArgs e)
@@ -215,7 +202,7 @@ namespace LucidDesk.UserControls
 
         private void IsFavoriteClick(object sender, RoutedEventArgs e)
         {
-            if (IsFavorite)
+            if (!IsFavorite)
                 Desk.IsFavorite = !Desk.IsFavorite;
         }
 

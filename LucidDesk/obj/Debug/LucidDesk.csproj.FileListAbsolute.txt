@@ -284,7 +284,6 @@ F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\InviteWindow.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\loginWindow.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\MainWindow.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\ConnectWithPassword.g.cs
-F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\TestWindow.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\CustomTextBox.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\CustomTextBoxPlaceHolderMove.g.cs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\NotificationControl.g.cs
@@ -308,7 +307,6 @@ F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\loginWindow.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\MainWindow.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Screen\ConnectWithPassword.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\Styles\UIFrameworkStyles.baml
-F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\TestWindow.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\CustomTextBox.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\CustomTextBoxPlaceHolderMove.baml
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\NotificationControl.baml
@@ -328,3 +326,10 @@ F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\LucidDesk.csproj.CoreCompileInputs
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\LucidDesk.csproj.Up2Date
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\LucidDesk.exe
 F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\LucidDesk.pdb
+F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\TextBoxEditControl.g.cs
+F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\UserControls\Common\TextBoxEditControl.baml
+F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\LucidDesk.exe.manifest
+F:\Lucid\LucidDesk_Latest\LucidDesk\bin\Debug\LucidDesk.application
+F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\LucidDesk.TrustInfo.xml
+F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\LucidDesk.exe.manifest
+F:\Lucid\LucidDesk_Latest\LucidDesk\obj\Debug\LucidDesk.application

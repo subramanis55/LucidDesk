@@ -6,6 +6,8 @@ using LucidDesk.Settings;
 using LucidDesk.UserControls.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -238,7 +240,7 @@ namespace LucidDesk.UserControls
         private void TextboxLostFocus(object sender, RoutedEventArgs e)
         {
             SuggestionsDeskMenu.IsOpen = false;
-            if (string.IsNullOrEmpty(Textbox.Text))
+            if (string.IsNullOrEmpty(Textbox.Text) && Textbox.Text != "" && Textbox.Text.Length <= 0)
             {
                 PlaceholderLabel.Visibility = Visibility.Visible;
             }
@@ -250,7 +252,6 @@ namespace LucidDesk.UserControls
 
         private void TextboxGotFocus(object sender, RoutedEventArgs e)
         {
-
             PlaceholderLabel.Visibility = Visibility.Hidden;
         }
 
@@ -310,6 +311,8 @@ namespace LucidDesk.UserControls
         }
         private void TextboxTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (PlaceholderLabel.Visibility == Visibility.Visible)
+                PlaceholderLabel.Visibility = Visibility.Hidden;
             SelectedDesk = null;
             if (Textbox.Text != "")
                 SuggestionDeskShowInvoke();
@@ -341,5 +344,24 @@ namespace LucidDesk.UserControls
             }
         }
 
+        private void keyboardBtnClick(object sender, RoutedEventArgs e)
+        {
+            var processes = Process.GetProcessesByName("TabTip");
+
+            if (processes.Length > 0)
+            {
+                foreach (var p in processes)
+                    p.Kill();
+            }
+            else
+            {
+                string tabTipPath = @"C:\Program Files\Common Files\Microsoft Shared\Ink\TabTip.exe";
+
+                if (File.Exists(tabTipPath))
+                {
+                    Process.Start(tabTipPath);
+                }
+            }
+        }
     }
 }

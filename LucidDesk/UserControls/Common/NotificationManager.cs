@@ -55,6 +55,7 @@ namespace LucidDesk.UserControls.Common
             NotifiactionList.Add(obj);
             ArrangeNotification();
         }
+
         public void CreateInviteRequestNotification(DeskConnectionInformation deskConnectionInformation)
         {
             NotificationControl obj = new NotificationControl(deskConnectionInformation) { Left= x - 380 };
@@ -64,12 +65,14 @@ namespace LucidDesk.UserControls.Common
             NotifiactionList.Add(obj);
             ArrangeNotification();
         }
+
         private void DisposeNotification(object sender, EventArgs args)
         {
             NotifiactionList.Remove(((NotificationControl)sender));
             ((Window)sender).Close();
             ArrangeNotification();
         }
+
         public void NotificationFormClickInvoke(object sender, EventArgs args)
         {
             OnClickNotification?.Invoke(this, args);

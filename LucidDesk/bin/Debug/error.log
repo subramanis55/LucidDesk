@@ -300,3 +300,153 @@
    at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
    at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
 
+17-01-2026 06:38:31: System.AggregateException: A Task's exception(s) were not observed either by Waiting on the Task or accessing its Exception property. As a result, the unobserved exception was rethrown by the finalizer thread. ---> System.InvalidOperationException: Cannot set Owner property after Dialog is shown.
+   at System.Windows.Window.set_Owner(Window value)
+   at LucidDesk.UserControls.DeskMessageBox.ShowMessageBox(String message, String heading, MessageBoxType messageBoxType, Window parent)
+   at LucidDesk.MainWindow.<>c__DisplayClass76_0.<ClientNetworkManagerDisConnectedToSeverInvoke>b__0()
+   at System.Windows.Threading.DispatcherOperation.InvokeDelegateCore()
+   at System.Windows.Threading.DispatcherOperation.InvokeImpl()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Windows.Threading.DispatcherOperation.Wait(TimeSpan timeout)
+   at System.Windows.Threading.Dispatcher.InvokeImpl(DispatcherOperation operation, CancellationToken cancellationToken, TimeSpan timeout)
+   at System.Windows.Threading.Dispatcher.Invoke(Action callback, DispatcherPriority priority, CancellationToken cancellationToken, TimeSpan timeout)
+   at System.Windows.Threading.Dispatcher.Invoke(Action callback)
+   at LucidDesk.MainWindow.ClientNetworkManagerDisConnectedToSeverInvoke(Object sender, String message)
+   at LucidDesk.Manager.ClientNetworkManager.<HandleServerReponseDatas>d__44.MoveNext()
+   --- End of inner exception stack trace ---
+---> (Inner Exception #0) System.InvalidOperationException: Cannot set Owner property after Dialog is shown.
+   at System.Windows.Window.set_Owner(Window value)
+   at LucidDesk.UserControls.DeskMessageBox.ShowMessageBox(String message, String heading, MessageBoxType messageBoxType, Window parent)
+   at LucidDesk.MainWindow.<>c__DisplayClass76_0.<ClientNetworkManagerDisConnectedToSeverInvoke>b__0()
+   at System.Windows.Threading.DispatcherOperation.InvokeDelegateCore()
+   at System.Windows.Threading.DispatcherOperation.InvokeImpl()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Windows.Threading.DispatcherOperation.Wait(TimeSpan timeout)
+   at System.Windows.Threading.Dispatcher.InvokeImpl(DispatcherOperation operation, CancellationToken cancellationToken, TimeSpan timeout)
+   at System.Windows.Threading.Dispatcher.Invoke(Action callback, DispatcherPriority priority, CancellationToken cancellationToken, TimeSpan timeout)
+   at System.Windows.Threading.Dispatcher.Invoke(Action callback)
+   at LucidDesk.MainWindow.ClientNetworkManagerDisConnectedToSeverInvoke(Object sender, String message)
+   at LucidDesk.Manager.ClientNetworkManager.<HandleServerReponseDatas>d__44.MoveNext()<---
+
+
+17-01-2026 07:52:41: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 657
+
+17-01-2026 07:55:43: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 657
+
+17-01-2026 12:32:34: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 657
+
+17-01-2026 12:33:02: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 657
+
+17-01-2026 12:36:14: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 657
+
+17-01-2026 12:36:29: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 657
+
+17-01-2026 12:36:59: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 657
+
+17-01-2026 13:04:08: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 657
+
+17-01-2026 13:30:00: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 657
+
+17-01-2026 13:31:10: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation)
+
+17-01-2026 19:26:28: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 680
+
+17-01-2026 19:30:49: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 681
+
+17-01-2026 19:34:19: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 681
+
+17-01-2026 19:35:48: System.Windows.ResourceReferenceKeyNotFoundException: 's' resource not found.
+   at MS.Internal.Helper.FindResourceHelper.DoTryCatchWhen(Object arg)
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+
+17-01-2026 19:36:41: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 681
+
+17-01-2026 20:25:28: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 679
+
+18-01-2026 13:54:00: System.InvalidOperationException: The calling thread cannot access this object because a different thread owns it.
+   at System.Windows.Threading.Dispatcher.VerifyAccess()
+   at System.Windows.Media.Imaging.BitmapImage.get_IsDownloading()
+   at System.Windows.Media.Imaging.BitmapSource.FreezeCore(Boolean isChecking)
+   at System.Windows.Freezable.Freeze()
+   at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 691
+

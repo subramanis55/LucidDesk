@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,13 +24,36 @@ namespace LucidDesk
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            CloseOtherProcess();
             this.DispatcherUnhandledException += AppDispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskSchedulerUnobservedTaskException;
             SetUpCheck();
             MainWindow window = new MainWindow();
             window.Show();
-           // ShutdownApp();
+            // ShutdownApp();
+        }
+
+        private void CloseOtherProcess()
+        {
+            var current = Process.GetCurrentProcess();
+
+            var others = Process.GetProcessesByName(current.ProcessName)
+                                .Where(p => p.Id != current.Id);
+            foreach (var process in others)
+            {
+                try
+                {
+                    process.CloseMainWindow();
+                    if (!process.WaitForExit(3000))
+                    {
+                        process.Kill();
+                    }
+                }
+                catch
+                {
+                }
+            }
         }
 
         private void SetUpCheck()
@@ -67,8 +91,8 @@ namespace LucidDesk
         private void LoginWindowOnClickNext(object sender, Desk desk)
         {
 
-                DeskProfileManager.CreateDeskProfiledata(desk);
-                ((Window)sender).Hide();
+            DeskProfileManager.CreateDeskProfiledata(desk);
+            ((Window)sender).Hide();
         }
 
         private void StartNetWorkServerConnection()

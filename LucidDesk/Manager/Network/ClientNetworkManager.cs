@@ -10,22 +10,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Point = System.Windows.Point;
 
 
@@ -69,7 +59,6 @@ namespace LucidDesk.Manager
         private CancellationTokenSource _cancellationTokenSource;
         private TcpClient client;
         private NetworkStream stream;
-        private Thread receiveThread;
         public bool isConnected;
         private LowLevelKeyboardProc _proc;
         private IntPtr _hookID = IntPtr.Zero;
@@ -188,15 +177,16 @@ namespace LucidDesk.Manager
 
         public void InviteRequestSent(DeskConnectionInformation deskConnectionInformation)
         {
+            DeskConnectionInformation = deskConnectionInformation;
             try
             {
                 using (TcpClient client = new TcpClient(ClientIpaddress, PORT))
                 using (NetworkStream stream = client.GetStream())
                 using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
                 {
-                    string json = JsonConvert.SerializeObject(deskConnectionInformation);
-                    writer.Write(json);
-                    writer.Flush();
+                    string json = JsonConvert.SerializeObject(new Data() { DataObject = deskConnectionInformation, ReponseAndReqType = ReponseAndReqType.ConnectReq });
+                    WriteObject(stream, json);
+
                 }
             }
             catch
@@ -206,7 +196,7 @@ namespace LucidDesk.Manager
 
         }
 
-        public async Task ConnectToServer(DeskConnectionInformation deskConnectionInformation)
+        public async Task ConnectToServer(DeskConnectionInformation deskConnectionInformation, ReponseAndReqType reqType = ReponseAndReqType.ConnectReq)
         {
             DeskConnectionInformation = deskConnectionInformation;
             try
@@ -214,39 +204,53 @@ namespace LucidDesk.Manager
                 client = new TcpClient(ClientIpaddress, PORT);
                 stream = client.GetStream();
                 isConnected = true;
-                sendConnectRequest(deskConnectionInformation);
+                sendConnectRequest(deskConnectionInformation, reqType);
                 HandleServerReponseDatas();
             }
             catch (Exception ex)
             {
-                DisConnectedToSeverInvoke?.Invoke(this, ex.Message);
-                isConnected = false;
+                ConnectionClose(ex.Message);
+
             }
         }
 
-        private async Task sendConnectRequest(DeskConnectionInformation deskConnectionInformation)
+        private async Task sendConnectRequest(DeskConnectionInformation deskConnectionInformation, ReponseAndReqType reqType)
         {
-            string json = JsonConvert.SerializeObject(new Data() { DataObject = deskConnectionInformation, ReponseAndReqType = ReponseAndReqType.ConnectReq });
+            string json = JsonConvert.SerializeObject(new Data() { DataObject = deskConnectionInformation, ReponseAndReqType = reqType });
             WriteObject(stream, json);
         }
 
         private void WriteObject(Stream stream, byte[] data)
         {
-            using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
+            try
             {
-                writer.Write(data.Length);
-                writer.Write(data);
-                writer.Flush();
+                using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
+                {
+                    writer.Write(data.Length);
+                    writer.Write(data);
+                    writer.Flush();
+                }
+            }
+            catch (Exception ex)
+            {
+                ConnectionClose();
             }
         }
         private void WriteObject(Stream stream, string json)
         {
-            byte[] data = Encoding.UTF8.GetBytes(json);
-            byte[] lengthPrefix = BitConverter.GetBytes(data.Length); // 4 bytes
+            try
+            {
+                byte[] data = Encoding.UTF8.GetBytes(json);
+                byte[] lengthPrefix = BitConverter.GetBytes(data.Length); // 4 bytes
 
-            stream.Write(lengthPrefix, 0, lengthPrefix.Length);
-            stream.Write(data, 0, data.Length);
-            stream.Flush();
+                stream.Write(lengthPrefix, 0, lengthPrefix.Length);
+                stream.Write(data, 0, data.Length);
+                stream.Flush();
+            }
+            catch (Exception ex)
+            {
+                ConnectionClose();
+            }
         }
 
         private async Task HandleServerReponseDatas()
@@ -287,13 +291,12 @@ namespace LucidDesk.Manager
                 }
                 catch (IOException ex) when (ex.InnerException is SocketException socketEx && (socketEx.SocketErrorCode == SocketError.ConnectionReset || socketEx.SocketErrorCode == SocketError.ConnectionAborted))
                 {
-                    isConnected = false;
-                    DisConnectedToSeverInvoke?.Invoke(this, "Error at receiving reponse data: " + ex.Message);
+                    ConnectionClose("Error at receiving reponse data: " + ex.Message);
                 }
                 catch (Exception ex)
                 {
-                    DisConnectedToSeverInvoke?.Invoke(this, "Error at receiving reponse data: " + ex.Message);
-                    isConnected = false;
+                    ConnectionClose("Error at receiving reponse data: " + ex.Message);
+                    
                 }
             }
         }
@@ -399,7 +402,7 @@ namespace LucidDesk.Manager
             {
                 NetworkStream stream = client.GetStream();
                 // Get the client's screen resolution
-                string keydata = $"{(position.X / ScreenImageActualWidth) },{(position.Y / ScreenImageActualHeight)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
+                string keydata = $"{(position.X / ScreenImageActualWidth)},{(position.Y / ScreenImageActualHeight)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
                 Data data = new Data();
                 data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
                 data.DataObject = new DeskControlData()
@@ -412,15 +415,16 @@ namespace LucidDesk.Manager
             }
         }
 
-        public void ConnectionClose()
+        public void ConnectionClose(string err=null)
         {
-            if (client != null)
-                client.Close();
-            if (AudioTcpClient != null)
-                AudioTcpClient.Close();
+            client?.Close();
+            AudioTcpClient?.Close();
+            stream?.Dispose();
+            isConnected = false;
+            deskConnectionInformation = null;
+            DisConnectedToSeverInvoke?.Invoke(this, err);
+
         }
-
-
     }
 }
 

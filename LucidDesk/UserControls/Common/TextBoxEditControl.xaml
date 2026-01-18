@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="LucidDesk.UserControls.Common.TextBoxEditControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"    PreviewKeyDown="EditControlPreviewKeyDown"
+               xmlns:Controls="clr-namespace:LucidDesk.UserControls.Common"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="260">
+    <Grid>
+        <StackPanel Orientation="Horizontal" Grid.Column="1">
+            <Controls:CustomTextBox x:Name="textBox" IsEnabled="False" Width="220"  TextboxBackground="{StaticResource SubColorBrush}"  LostFocus="TextBoxLostFocus" FontWeight="Medium" HorizontalAlignment="Left"  FontSize="16"  CornerRadius="8" ></Controls:CustomTextBox>
+            <Button Name="editButton"  Width="35"  Background="White" Click="EditButtonClick" Style="{StaticResource NormalButton}">
+                <Button.ToolTip>
+                    <ToolTip Content="Edit Name"></ToolTip>
+                </Button.ToolTip>
+                <Path Name="editButtonIcon"   Stretch="Uniform" VerticalAlignment="Center" Stroke="Black"  Width="20" Height="20" HorizontalAlignment="Center" StrokeThickness="1.4" Data="{StaticResource Edit}"/>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

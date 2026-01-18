@@ -48,11 +48,11 @@ namespace LucidDesk.UserControls
         public void UpdateScreenInformation(ScreenInformation screeninfo)
         {
             Screeninfo = screeninfo;
-            //if (screeninfo.Count <= 1)
-            //{
-            //    Visibility = Visibility.Collapsed;
-            //    return;
-            //}
+            if (screeninfo.Count <= 1)
+            {
+                Visibility = Visibility.Collapsed;
+                return;
+            }
             Visibility = Visibility.Visible;
             ScreenSelectPanel.Children.Clear();
             ScreenSelectPanel.Children.Add(ScreenButtonCreate("ALL"));

@@ -44,9 +44,6 @@ namespace LucidDesk.UserControls.Common
                 return message;
           }
         }
-      
-        
-
 
         public Brush ThemeBrush
         {

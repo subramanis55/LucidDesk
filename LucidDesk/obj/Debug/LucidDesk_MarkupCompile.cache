@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 F:\Lucid\LucidDesk_Latest\LucidDesk\App.xaml
-231752988855
+23564133810
 
-4994295823
+49945873908
 29-1573377797
-Screen\ConnectionAcceptWindow.xaml;Screen\InviteWindow.xaml;Screen\loginWindow.xaml;Screen\MainWindow.xaml;Screen\ConnectWithPassword.xaml;Styles\DeskCustomStyle.xaml;Styles\Icons.xaml;Styles\ScrollBarStyle.xaml;Styles\Theme.xaml;Styles\UIFrameworkStyles.xaml;TestWindow.xaml;UserControls\Common\CustomTextBox.xaml;UserControls\Common\CustomTextBoxPlaceHolderMove.xaml;UserControls\Common\NotificationControl.xaml;UserControls\Common\ProfileImageSelect.xaml;UserControls\CustomHeaderSwicthControl.xaml;UserControls\DeskProfile.xaml;UserControls\MessageBoxScreen.xaml;UserControls\PageSelectContextMenu.xaml;UserControls\ScreenSwitchControl.xaml;UserControls\SearchBoxControl.xaml;UserControls\SessionHeaderControl.xaml;UserControls\WhileSearchDeskProfileShowControl.xaml;
+Screen\ConnectionAcceptWindow.xaml;Screen\InviteWindow.xaml;Screen\loginWindow.xaml;Screen\MainWindow.xaml;Screen\ConnectWithPassword.xaml;Styles\DeskCustomStyle.xaml;Styles\Icons.xaml;Styles\ScrollBarStyle.xaml;Styles\Theme.xaml;Styles\UIFrameworkStyles.xaml;UserControls\Common\CustomTextBox.xaml;UserControls\Common\CustomTextBoxPlaceHolderMove.xaml;UserControls\Common\NotificationControl.xaml;UserControls\Common\ProfileImageSelect.xaml;UserControls\Common\TextBoxEditControl.xaml;UserControls\CustomHeaderSwicthControl.xaml;UserControls\DeskProfile.xaml;UserControls\MessageBoxScreen.xaml;UserControls\PageSelectContextMenu.xaml;UserControls\ScreenSwitchControl.xaml;UserControls\SearchBoxControl.xaml;UserControls\SessionHeaderControl.xaml;UserControls\WhileSearchDeskProfileShowControl.xaml;
 
 False
 

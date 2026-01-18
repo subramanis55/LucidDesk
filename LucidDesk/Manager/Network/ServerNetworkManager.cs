@@ -11,31 +11,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Runtime.InteropServices;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using NAudio.Wave;
-using System.Windows.Threading;
-using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using LucidDesk.Manager.Classes;
 using LucidDesk.Manager.Database;
 using LucidDesk.Manager.Enum;
 using LucidDesk.Manager.Classes.DataSchema;
-using System.Runtime.InteropServices.ComTypes;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Timer = System.Threading.Timer;
-using Newtonsoft.Json.Linq;
 using LucidDesk.Manager.Security;
-using System.Windows.Markup;
-using LucidDesk.UserControls;
-using LucidDesk.Manager.Classes.DataSchema.Screens;
+
 #endregion
 namespace LucidDesk.Manager
 {
@@ -65,6 +50,7 @@ namespace LucidDesk.Manager
         public const int PORT = 12345;
         private CancellationTokenSource _cancellationTokenSource;
         private Dictionary<TcpClient, DeskConnectionInformation> connections = new Dictionary<TcpClient, DeskConnectionInformation>();
+        Dictionary<string, DeskConnectionInformation> InviteInformation = new Dictionary<string, DeskConnectionInformation>();
         private List<TcpClient> CurrentClients = new List<TcpClient>();
         private Dictionary<string, TcpClient> connectedClients = new Dictionary<string, TcpClient>();  // Track connected clients by MAC address
         public bool isStarted = false;
@@ -185,9 +171,22 @@ namespace LucidDesk.Manager
                 {
                     ConnectRequestReceivedInvoke?.Invoke(this, connectionInformation);
                 }
-                else if (connectionInformation.ConnectionType == ConnectionType.Invite)
+                else if ( connectionInformation.ConnectionType == ConnectionType.Invite)
                 {
                     InviteRequestReceivedInvoke?.Invoke(this, connectionInformation);
+                }
+            }
+            else if (data.ReponseAndReqType == ReponseAndReqType.ReqResponse)
+            {
+                var connectionInformation = data.GetDeserializeDeskConnectionInformation();
+                connectionInformation.SenderDesk?.Freeze();
+                connectionInformation.ReceiverDesk?.Freeze();
+                connectionInformation.TcpClient = client;
+                connections.Add(client, connectionInformation);
+                if (connectionInformation.ConnectionType == ConnectionType.Invite&&InviteInformation.ContainsKey(connectionInformation.InviteID) &&connectionInformation.Status == true && connectionInformation.IsRequestStatusUpdate == true )
+                {
+                    connectionInformation.AddDeskScreensInformations();
+                    RequestUpdate(connectionInformation);
                 }
             }
             else if (data.ReponseAndReqType == ReponseAndReqType.ScreenShareKeyData && connections[client].Status == true)
@@ -336,8 +335,8 @@ namespace LucidDesk.Manager
                 else
                 {
                     System.Drawing.Rectangle virtualBounds = SystemInformation.VirtualScreen;
-                    screenX = (int)(virtualBounds.X + (double)(x * virtualBounds.Width));
-                    screenY = (int)(virtualBounds.Y + (double)(y * virtualBounds.Height));
+                    screenX = (int)(virtualBounds.X + (double)(x * (double)virtualBounds.Width));
+                    screenY = (int)(virtualBounds.Y + (double)(y * (double)virtualBounds.Height));
                 }
                 System.Windows.Forms.Cursor.Position = new System.Drawing.Point(screenX, screenY);
                 switch (data.ControlDataType)
@@ -545,22 +544,31 @@ namespace LucidDesk.Manager
             StopServer();
         }
 
+        public void AddInviteReq(DeskConnectionInformation deskConnectionInformation)
+        {
+            InviteInformation.Add(deskConnectionInformation.InviteID, deskConnectionInformation);
+        }
+
         public void RequestUpdate(DeskConnectionInformation deskConnectionInformation)
         {
             if (deskConnectionInformation.Status == true)
             {
                 if (!DeskProfileManager.DeskProfilesDictionary.ContainsKey("" + deskConnectionInformation.SenderDesk.DeskId))
-                {
                     DeskProfileManager.CreateDeskProfiledata(deskConnectionInformation.SenderDesk);
-                }
-                else
-                    DeskProfileManager.UpdateDeskProfiledata(deskConnectionInformation.SenderDesk);
-                CurrentClients.Add(deskConnectionInformation.TcpClient);
-                if (!IsScreenShareON)
-                    Task.Run(() => ScreenShareForClients(_cancellationTokenSource.Token));
                 deskConnectionInformation.SenderDesk.RecentLoginTime = DateTime.Now;
-                deskConnectionInformation.ReceiverDesk = DeskProfileManager.UserDesk;
             }
+            else
+            {
+                deskConnectionInformation.SenderDesk.RecentLoginTime = DateTime.Now;
+                DeskProfileManager.UpdateDeskProfiledata(deskConnectionInformation.SenderDesk);
+            }
+
+            CurrentClients.Add(deskConnectionInformation.TcpClient);
+            if (!IsScreenShareON)
+                Task.Run(() => ScreenShareForClients(_cancellationTokenSource.Token));
+
+            deskConnectionInformation.ReceiverDesk = DeskProfileManager.UserDesk;
+
             Data data = new Data() { DataObject = deskConnectionInformation, ReponseAndReqType = ReponseAndReqType.ReqResponse };
             NetworkStream stream = deskConnectionInformation.TcpClient.GetStream();
             WriteObject(stream, data);

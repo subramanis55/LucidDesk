@@ -52,7 +52,7 @@ namespace LucidDesk.Manager
             get
             {
                 if (ipAddress == null)
-                    ipAddress = GetIpAddresss(MacAddress);
+                    ipAddress = GetLocalIPAddress();
                 return ipAddress;
             }
         }
@@ -92,6 +92,26 @@ namespace LucidDesk.Manager
             }
             return "UnknownOs";
         }
+
+        public static string GetLocalIPAddress()
+        {
+            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (ni.OperationalStatus != OperationalStatus.Up)
+                    continue;
+
+                foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
+                {
+                    if (ip.Address.AddressFamily == AddressFamily.InterNetwork &&
+                        !IPAddress.IsLoopback(ip.Address))
+                    {
+                        return ip.Address.ToString();
+                    }
+                }
+            }
+            return IPAddress.Loopback.ToString();
+        }
+
         public static string GetMacAddress()
         {
             foreach (var nic in NetworkInterface.GetAllNetworkInterfaces())
@@ -189,5 +209,11 @@ namespace LucidDesk.Manager
             return newGuid.ToString();
         }
 
+        internal static void Refresh()
+        {
+            ipAddress = null;
+            macAddress = null;
+            hostname = null;    
+        }
     }
 }

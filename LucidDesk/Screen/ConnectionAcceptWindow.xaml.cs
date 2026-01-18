@@ -1,6 +1,7 @@
 ﻿using LucidDesk.Manager;
 using LucidDesk.Manager.Classes;
 using LucidDesk.Manager.Enum;
+using MySqlX.XDevAPI.Relational;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,18 +25,18 @@ namespace LucidDesk
     {
         private Desk desk;
         public event EventHandler<DeskConnectionInformation> OnClickGetStatus;
-
+        private bool isInternal;
         private DeskConnectionInformation deskConnectionInformation;
         public Desk Desk
         {
             set
             {
                 desk = value;
-               
+
                 DeskUserNameTextBlock.Text = desk.ProfileName;
-                DeskIdTextBlock.Text = "(" + desk.DisplayID+ ")";
+                DeskIdTextBlock.Text = "(" + desk.DisplayID + ")";
                 DeskUserProfileImageComponent.Image = desk.DesktopImage;
-             
+
             }
             get
             {
@@ -53,6 +54,10 @@ namespace LucidDesk
             set
             {
                 deskConnectionInformation = value;
+                KeyboardAccessCheckBox.IsChecked = deskConnectionInformation.KeyboardAccess;
+                MouseAccessCheckBox.IsChecked = deskConnectionInformation.MouseAccess;
+                ClipboardAccessCheckBox.IsChecked = deskConnectionInformation.ClipboardAccess;
+                AudioAccessCheckBox.IsChecked = deskConnectionInformation.AudioAccess;
 
             }
         }
@@ -66,12 +71,19 @@ namespace LucidDesk
         {
             InitializeComponent();
             AccessTypeCombobox.ItemsSource = Enum.GetNames(typeof(AccessType));
-            DeskConnectionInformation = deskConnectionInformation;
+            isInternal = true;
             AccessTypeCombobox.SelectedItem = deskConnectionInformation.AccessType.ToString();
+            isInternal = false;
+            DeskConnectionInformation = deskConnectionInformation;
             Desk = deskConnectionInformation.SenderDesk;
-
+            header.Text = deskConnectionInformation.ConnectionType == ConnectionType.Invite ? "Invite Request" : "Connection Request";
+            AccessCheckBoxDisable(deskConnectionInformation.ConnectionType != ConnectionType.Invite);
         }
 
+        private void AccessCheckBoxDisable(bool enable)
+        {
+            AccessTypeCombobox.IsEnabled= KeyboardAccessCheckBox.IsEnabled = MouseAccessCheckBox.IsEnabled = ClipboardAccessCheckBox.IsEnabled = AudioAccessCheckBox.IsEnabled = enable;
+        }
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
             DeskConnectionInformation.Status = false;
@@ -90,7 +102,7 @@ namespace LucidDesk
             WindowState = WindowState.Minimized;
         }
 
-       
+
 
         private void AcceptClick(object sender, RoutedEventArgs e)
         {
@@ -98,10 +110,13 @@ namespace LucidDesk
             OnClickGetStatus?.Invoke(this, DeskConnectionInformation);
         }
 
-       
+
+
 
         private void AccessTypeComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (isInternal)
+                return;
             if (AccessTypeCombobox.SelectedItem.ToString() == AccessType.FullAccess.ToString())
             {
                 KeyboardAccessCheckBox.IsChecked = true;
@@ -137,7 +152,8 @@ namespace LucidDesk
 
         private void TopPanelMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(e.ButtonState==MouseButtonState.Pressed){
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
                 this.DragMove();
             }
             e.Handled = true;

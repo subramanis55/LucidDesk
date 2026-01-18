@@ -110,7 +110,7 @@ namespace LucidDesk.Manager
             set
             {
                 profileImage = value;
-                profileImageString = FileManager.ImageToString(desktopImage);
+                profileImageString = FileManager.ImageToString(profileImage);
                 OnPropertyChanged(nameof(ProfileImage));
             }
         }
@@ -242,9 +242,26 @@ namespace LucidDesk.Manager
         {
             OnClickDeleted?.Invoke(this, EventArgs.Empty);
         }
-        public void Freeze(){
-        DesktopImage?.Freeze();
-        profileImage?.Freeze();
+        public void Freeze()
+        {
+            DesktopImage?.Freeze();
+            profileImage?.Freeze();
+        }
+
+        public Desk Clone()
+        {
+            Desk desk = new Desk();
+            desk.Id = id;
+            desk.IPAddress = iPAddress;
+            desk.HostName = hostName;
+            desk.profileName = profileName;
+            desk.ProfileImageString = ProfileImageString;
+            desk.DesktopImageString = DesktopImageString;
+            desk.OsName = OsName;
+            desk.MacAddress = MacAddress;
+            desk.PcName = PcName;
+            desk.GUID = GUID;
+            return desk;
         }
     }
 }

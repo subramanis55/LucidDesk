@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using LucidDesk.Manager.Security;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft;
 using Newtonsoft.Json;
 using System.IO;
-using LucidDesk.UserControls;
 
 namespace LucidDesk.Manager.Database
 {
@@ -115,10 +111,9 @@ namespace LucidDesk.Manager.Database
                     return CreateDeskProfiledata(deskProfile);
                 string deskProfileData = JsonConvert.SerializeObject(deskProfile);
                 string encodedData = SecurityManager.Encrypt(deskProfileData);
-                string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath + "/" + deskProfile.DeskId + ".txt";
+                string deskProfilePath = Path.Combine( LocalDatabaseManager.DatabaseFolderPath , deskProfile.DeskId + ".txt");
                 File.WriteAllText(deskProfilePath, encodedData);
                 DeskProfilesDictionary[deskProfile.DeskId] = deskProfile;
-                DeskProfilesUpdated?.Invoke(null, EventArgs.Empty);
                 return true;
             }
             catch (Exception e)
@@ -136,7 +131,7 @@ namespace LucidDesk.Manager.Database
                 {
                     string deskProfileData = JsonConvert.SerializeObject(DeskProfiles[i]);
                     string encodedData = SecurityManager.Encrypt(deskProfileData);
-                    string deskProfilePath = LocalDatabaseManager.DatabaseFolderPath + DeskProfiles[i].DeskId + ".txt";
+                    string deskProfilePath = Path.Combine(LocalDatabaseManager.DatabaseFolderPath, DeskProfiles[i].DeskId + ".txt");  
                     if (Directory.Exists(deskProfilePath))
                         Directory.CreateDirectory(deskProfilePath);
                     File.WriteAllText(deskProfilePath, encodedData);
@@ -164,6 +159,11 @@ namespace LucidDesk.Manager.Database
 
             }
             return false;
+        }
+
+        internal static void Refresh()
+        {
+            deskProfilesDictionary = GetDeskProfilesData();
         }
     }
 }

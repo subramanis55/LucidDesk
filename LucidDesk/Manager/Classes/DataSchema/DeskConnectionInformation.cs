@@ -50,6 +50,7 @@ namespace LucidDesk.Manager.Classes
         public bool Status { get; set; }
         public string Message { get; set; }
         public bool IsRequestStatusUpdate { get; set; }
+        public string InviteID{  get; set; }
         public ScreenInformation ScreenInformation { set; get; } = new ScreenInformation();
 
         [NonSerialized]
