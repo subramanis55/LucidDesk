@@ -2,6 +2,7 @@
 using LucidDesk.Manager.Classes;
 using LucidDesk.Manager.Database;
 using LucidDesk.Manager.Enum;
+using LucidDesk.Settings;
 using LucidDesk.UserControls.Common;
 using System;
 using System.Collections.Generic;
@@ -102,8 +103,7 @@ namespace LucidDesk
         {
             if (desk == null)
             {
-                if (DeskProfileManager.DeskProfilesDictionary.ContainsKey("" + Textbox.Text))
-                    desk = DeskProfileManager.DeskProfilesDictionary[Textbox.Text];
+                desk = DeskProfileManager.DeskProfilesDictionary.Values.ToList().Where(i => i.DisplayID == Textbox.Text).FirstOrDefault();
             }
             if (desk != null)
                 OnClickInviteButton?.Invoke(this, new DeskConnectionInformation() { AccessType = (AccessType)Enum.Parse(typeof(AccessType), AccessTypeCombobox.SelectedItem.ToString()), ConnectionType = ConnectionType.Invite, AudioAccess = (bool)AudioAccessCheckBox.IsChecked, ClipboardAccess = (bool)ClipboardAccessCheckBox.IsChecked, KeyboardAccess = (bool)KeyboardAccessCheckBox.IsChecked, MouseAccess = (bool)MouseAccessCheckBox.IsChecked, SenderDesk = DeskProfileManager.UserDesk.Clone(), ReceiverDesk = this.Desk.Clone(), });
@@ -151,7 +151,7 @@ namespace LucidDesk
             {
                 if ((("" + DeskProfileManager.DeskProfiles[i].DisplayID).Contains(Textbox.Text) || DeskProfileManager.DeskProfiles[i].ProfileName.Contains(Textbox.Text)) && (DeskProfileManager.DeskProfiles[i].MacAddress != DeskProfileManager.UserDesk.MacAddress))
                 {
-                    MenuItem menuItem = new MenuItem { Foreground = Brushes.Black, Focusable = false, MinWidth = Textbox.ActualWidth-3, Background = Brushes.White };
+                    MenuItem menuItem = new MenuItem { Foreground = Brushes.Black, Focusable = false, MinWidth = Textbox.ActualWidth - 3, Background = Brushes.White };
                     menuItem.Style = SuggestionsDeskMenuStyle;
                     menuItem.DataContext = DeskProfileManager.DeskProfiles[i];
                     menuItem.Click += SuggestionDeskClick;
@@ -166,7 +166,7 @@ namespace LucidDesk
             Textbox.Focus();
         }
         private void SuggestionDeskClick(object sender, RoutedEventArgs e)
-        {  
+        {
             Desk desk = (Desk)((MenuItem)sender).DataContext;
             Textbox.Text = "" + desk.DisplayID;
             SuggestionsDeskMenu.IsOpen = false;
