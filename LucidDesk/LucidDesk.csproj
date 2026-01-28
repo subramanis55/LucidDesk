@@ -144,6 +144,7 @@
     <Compile Include="Manager\Classes\DataSchema\Data.cs" />
     <Compile Include="Manager\Classes\DataSchema\Screens\Screen.cs" />
     <Compile Include="Manager\Classes\DataSchema\Screens\ScreenInformation.cs" />
+    <Compile Include="Manager\Database\UnIdentifiedLocalDeskManager.cs" />
     <Compile Include="Screen\ConnectionAcceptWindow.xaml.cs">
       <DependentUpon>ConnectionAcceptWindow.xaml</DependentUpon>
     </Compile>

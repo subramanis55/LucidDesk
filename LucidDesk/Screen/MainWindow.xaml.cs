@@ -105,7 +105,7 @@ namespace LucidDesk
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
             MainTabControl.SelectedItem = HomePage;
-            headerText.Text = SettingsManager.Settings.ApplicationMode == ApplicationMode.Local ? "Local Desk" : "Desk";
+            headerText.Text = SettingsManager.Settings.ApplicationName;
             SelectedSettingPageButton = AccountButton;
             MenuContext = this.Resources["MenuContext"] as ContextMenu;
             DeskSwicthControl.OnclickDiscoverdButton += DeskSwicthControlOnclickDiscoverdButton;
@@ -685,10 +685,9 @@ namespace LucidDesk
                 DeskProfileManager.DeskProfilesDictionary.Add("" + deskConnectionInformation.SenderDesk.DeskId, deskConnectionInformation.SenderDesk);
             try
             {
-                deskConnectionInformation.ReceiverDesk.DesktopImage?.Freeze();
-                deskConnectionInformation.ReceiverDesk.ProfileImage?.Freeze();
-                deskConnectionInformation.SenderDesk.DesktopImage?.Freeze();
-                deskConnectionInformation.SenderDesk.ProfileImage?.Freeze();
+                deskConnectionInformation.ReceiverDesk?.Freeze();
+                deskConnectionInformation.SenderDesk?.Freeze();
+
             }
             catch (Exception ex)
             {
@@ -810,6 +809,7 @@ namespace LucidDesk
             {
                 if (MainTabControl.SelectedItem == ConnectionSharePage)
                 {
+                    ClientNetworkManager.ConnectionClose();
                     MainTabControl.SelectedItem = HomePage;
                     connectedStausIcon.Visibility = Visibility.Hidden;
                     ConnectionGifTimer.Stop();

@@ -28,7 +28,7 @@ namespace LucidDesk.Manager
 
         public static double ScreenHeight = SystemInformation.VirtualScreen.Height;
 
-        public static string ApplicationName => SettingsManager.Settings.ApplicationMode == ApplicationMode.Online ? "Desk" : "Local Desk";
+        public static string ApplicationName => SettingsManager.Settings.ApplicationName;
         public static string HostName
         {
             get

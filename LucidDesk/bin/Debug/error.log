@@ -450,3 +450,38 @@
    at System.Windows.Freezable.Freeze()
    at LucidDesk.MainWindow.ServerNetworkManagerInviteRequestReceivedInvoke(Object sender, DeskConnectionInformation deskConnectionInformation) in F:\Lucid\LucidDesk_Latest\LucidDesk\Screen\MainWindow.xaml.cs:line 691
 
+28-01-2026 05:53:07: System.AggregateException: A Task's exception(s) were not observed either by Waiting on the Task or accessing its Exception property. As a result, the unobserved exception was rethrown by the finalizer thread. ---> System.InvalidOperationException: Cannot set Owner property after Dialog is shown.
+   at System.Windows.Window.set_Owner(Window value)
+   at LucidDesk.UserControls.DeskMessageBox.ShowMessageBox(String message, String heading, MessageBoxType messageBoxType, Window parent)
+   at LucidDesk.MainWindow.<>c__DisplayClass79_0.<ClientNetworkManagerDisConnectedToSeverInvoke>b__0()
+   at System.Windows.Threading.DispatcherOperation.InvokeDelegateCore()
+   at System.Windows.Threading.DispatcherOperation.InvokeImpl()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Windows.Threading.DispatcherOperation.Wait(TimeSpan timeout)
+   at System.Windows.Threading.Dispatcher.InvokeImpl(DispatcherOperation operation, CancellationToken cancellationToken, TimeSpan timeout)
+   at System.Windows.Threading.Dispatcher.Invoke(Action callback, DispatcherPriority priority, CancellationToken cancellationToken, TimeSpan timeout)
+   at System.Windows.Threading.Dispatcher.Invoke(Action callback)
+   at LucidDesk.MainWindow.ClientNetworkManagerDisConnectedToSeverInvoke(Object sender, String message)
+   at LucidDesk.Manager.ClientNetworkManager.ConnectionClose(String err)
+   at LucidDesk.Manager.ClientNetworkManager.<HandleServerReponseDatas>d__43.MoveNext()
+   --- End of inner exception stack trace ---
+---> (Inner Exception #0) System.InvalidOperationException: Cannot set Owner property after Dialog is shown.
+   at System.Windows.Window.set_Owner(Window value)
+   at LucidDesk.UserControls.DeskMessageBox.ShowMessageBox(String message, String heading, MessageBoxType messageBoxType, Window parent)
+   at LucidDesk.MainWindow.<>c__DisplayClass79_0.<ClientNetworkManagerDisConnectedToSeverInvoke>b__0()
+   at System.Windows.Threading.DispatcherOperation.InvokeDelegateCore()
+   at System.Windows.Threading.DispatcherOperation.InvokeImpl()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Windows.Threading.DispatcherOperation.Wait(TimeSpan timeout)
+   at System.Windows.Threading.Dispatcher.InvokeImpl(DispatcherOperation operation, CancellationToken cancellationToken, TimeSpan timeout)
+   at System.Windows.Threading.Dispatcher.Invoke(Action callback, DispatcherPriority priority, CancellationToken cancellationToken, TimeSpan timeout)
+   at System.Windows.Threading.Dispatcher.Invoke(Action callback)
+   at LucidDesk.MainWindow.ClientNetworkManagerDisConnectedToSeverInvoke(Object sender, String message)
+   at LucidDesk.Manager.ClientNetworkManager.ConnectionClose(String err)
+   at LucidDesk.Manager.ClientNetworkManager.<HandleServerReponseDatas>d__43.MoveNext()<---
+
+

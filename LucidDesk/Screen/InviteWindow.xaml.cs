@@ -111,11 +111,6 @@ namespace LucidDesk
                 MainWindow.NotificationManager.CreateNotification("Id Doesn't exits", NotificationType.Information);
         }
 
-        private void AccessTypeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void AccessTypeComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (AccessTypeCombobox.SelectedItem.ToString() == AccessType.FullAccess.ToString())

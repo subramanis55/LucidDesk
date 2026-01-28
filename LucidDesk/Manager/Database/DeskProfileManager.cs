@@ -165,5 +165,10 @@ namespace LucidDesk.Manager.Database
         {
             deskProfilesDictionary = GetDeskProfilesData();
         }
+
+        internal static bool ContainsDisplayID(string id)
+        {
+           return DeskProfiles.Any(i => i.DisplayID == id);
+        }
     }
 }

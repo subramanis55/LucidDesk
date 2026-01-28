@@ -201,6 +201,10 @@ namespace LucidDesk.Manager
             DeskConnectionInformation = deskConnectionInformation;
             try
             {
+                if (ClientIpaddress == null || ClientIpaddress == "") {
+                    ConnectionEstabishFailInvoke?.Invoke(this, EventArgs.Empty);
+                    return;
+                }
                 client = new TcpClient(ClientIpaddress, PORT);
                 stream = client.GetStream();
                 isConnected = true;
@@ -296,7 +300,7 @@ namespace LucidDesk.Manager
                 catch (Exception ex)
                 {
                     ConnectionClose("Error at receiving reponse data: " + ex.Message);
-                    
+
                 }
             }
         }
@@ -415,7 +419,7 @@ namespace LucidDesk.Manager
             }
         }
 
-        public void ConnectionClose(string err=null)
+        public void ConnectionClose(string err = null)
         {
             client?.Close();
             AudioTcpClient?.Close();

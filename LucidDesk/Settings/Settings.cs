@@ -11,6 +11,8 @@ namespace LucidDesk.Settings
     public class Settings
     {
         public ApplicationMode ApplicationMode { get; set; } = ApplicationMode.Local;
+        public string ApplicationName { get; set; } = "LucidDesk";
+        public int FrameSharePerSecond { get; set; } = 24;
         public string ServerHostName { set; get; } = "";
         public string ServerPort { set; get; } = "3306";
         public string ServerIpAddress { set; get; } = "localhost";

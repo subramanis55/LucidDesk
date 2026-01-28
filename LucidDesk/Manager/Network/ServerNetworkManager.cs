@@ -91,7 +91,6 @@ namespace LucidDesk.Manager
         [DllImport("user32.dll", SetLastError = true)]
         static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
 
-
         System.Windows.Forms.Timer ScreenShareTimer = new System.Windows.Forms.Timer();
         public void StartServer()
         {
@@ -130,23 +129,6 @@ namespace LucidDesk.Manager
             HandleClientMessages(client);
 
         }
-
-        //private async Task HandleClientRequest(TcpClient client)
-        //{
-        //    Stream stream = client.GetStream();
-        //    byte[] lengthBuffer = new byte[4];
-        //    await stream.ReadAsync(lengthBuffer, 0, 4);
-        //    int lengthToRead = BitConverter.ToInt32(lengthBuffer, 0);
-        //    byte[] dataBuffer = new byte[lengthToRead];
-        //    int bytesRead = 0;
-        //    while (bytesRead < lengthToRead)
-        //    {
-        //        bytesRead += await stream.ReadAsync(dataBuffer, bytesRead, lengthToRead - bytesRead);
-        //    }
-        //    string json = Encoding.UTF8.GetString(dataBuffer);
-        //    Data data = JsonConvert.DeserializeObject<Data>(json);
-        //    HandleReceivedData(client, data);
-        //}
 
         private void HandleReceivedData(TcpClient client, Data data)
         {
@@ -291,6 +273,8 @@ namespace LucidDesk.Manager
                     byte[] lengthBuffer = new byte[4];
                     await stream.ReadAsync(lengthBuffer, 0, 4);
                     int lengthToRead = BitConverter.ToInt32(lengthBuffer, 0);
+                    if (lengthToRead==0)
+                    client.Close();
                     byte[] dataBuffer = new byte[lengthToRead];
                     int bytesRead = 0;
                     while (bytesRead < lengthToRead)
@@ -342,7 +326,6 @@ namespace LucidDesk.Manager
                 switch (data.ControlDataType)
                 {
                     case ControlKeyType.MouseMove:
-
                         //ExecuteMouseMove(screenX, screenY);
                         break;
                     case ControlKeyType.MouseDown:

@@ -414,7 +414,21 @@
                                                             <Label Grid.Column="0"  FontSize="16"    FontWeight="Medium" Foreground="{StaticResource MainColorBrush}">Name</Label>
                                                             <StackPanel Orientation="Horizontal" Grid.Column="1">
                                                                 <Controls:TextBoxEditControl x:Name="profilePageUserNameTextBox" DoneButtonClicked="UserNameTextBoxEdited"></Controls:TextBoxEditControl>
+                                                            </StackPanel>
 
+                                                        </Grid>
+                                                    </Border>
+                                                    <Border Padding="5">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" MinWidth="150" MaxWidth="250"/>
+                                                                <ColumnDefinition Width="*" MinWidth="350"/>
+
+                                                            </Grid.ColumnDefinitions>
+                                                            <Label Grid.Column="0"  FontSize="16"    FontWeight="Medium" Foreground="{StaticResource MainColorBrush}">Password</Label>
+                                                            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                   
+                                                                <Controls:TextBoxEditControl x:Name="profilePagePasswordTextBox" DoneButtonClicked="PasswordTextBoxEdited"></Controls:TextBoxEditControl>
                                                             </StackPanel>
 
                                                         </Grid>
