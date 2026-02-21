@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LucidDesk.UserControls.Common
 {
@@ -21,20 +12,40 @@ namespace LucidDesk.UserControls.Common
     public partial class TextBoxEditControl : UserControl
     {
         public event EventHandler<string> DoneButtonClicked;
+        private bool ispassword;
+        public bool IsPassword
+        {
+            get
+            {
+                return ispassword;
+            }
+            set
+            {
+                ispassword = value;
+                textBox.IsPasswordType = ispassword;
+            }
+        }
 
         private string originalText;
         public string TextBoxText
         {
             get
             {
-                return textBox.Text;
+                if (!ispassword)
+                    return textBox.Text;
+                else
+                    return textBox.Password;
             }
             set
             {
-                textBox.Text = value;
+                if (!ispassword)
+                    textBox.Text = value;
+                else
+                    textBox.Password = value;
                 originalText = value;
             }
         }
+
 
 
         public bool IsEditable
@@ -61,10 +72,26 @@ namespace LucidDesk.UserControls.Common
 
 
 
+        public int MyProperty
+        {
+            get { return (int)GetValue(MyPropertyProperty); }
+            set { SetValue(MyPropertyProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MyPropertyProperty =
+            DependencyProperty.Register("MyProperty", typeof(int), typeof(TextBoxEditControl), new PropertyMetadata(0));
+
+
+
+        public static readonly DependencyProperty IsPasswordPropertyProperty =
+            DependencyProperty.Register("IsPassword", typeof(bool), typeof(TextBoxEditControl), new PropertyMetadata(false));
+
+
         public TextBoxEditControl()
         {
             InitializeComponent();
-          
+
         }
 
 
@@ -96,7 +123,8 @@ namespace LucidDesk.UserControls.Common
 
         private void EditControlPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter&&IsEditable){
+            if (e.Key == Key.Enter && IsEditable)
+            {
                 EditButtonClick(null, e);
             }
         }

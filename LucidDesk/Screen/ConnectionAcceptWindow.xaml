@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LucidDesk"
          xmlns:Usercontrol="clr-namespace:LucidDesk.UserControls.Common"
-        mc:Ignorable="d"   Background="{StaticResource SubColorBrush}"
+        mc:Ignorable="d"   Background="{StaticResource SubColorBrush}"     Icon="/LucidDesk;Component/Resources/LucidImage.png"
         Title="InviteAcceptWindow" Height="450" Width="380" WindowStyle="None">
     <Grid>
         <Grid.RowDefinitions>

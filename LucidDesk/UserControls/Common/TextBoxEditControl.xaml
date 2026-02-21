@@ -8,7 +8,7 @@
              d:DesignHeight="50" d:DesignWidth="260">
     <Grid>
         <StackPanel Orientation="Horizontal" Grid.Column="1">
-            <Controls:CustomTextBox x:Name="textBox" IsEnabled="False" Width="220"  TextboxBackground="{StaticResource SubColorBrush}"  LostFocus="TextBoxLostFocus" FontWeight="Medium" HorizontalAlignment="Left"  FontSize="16"  CornerRadius="8" ></Controls:CustomTextBox>
+            <Controls:CustomTextBox x:Name="textBox" IsEnabled="False" Width="220"   TextboxBackground="{StaticResource SubColorBrush}"  LostFocus="TextBoxLostFocus" FontWeight="Medium" HorizontalAlignment="Left"  FontSize="16"  CornerRadius="8" ></Controls:CustomTextBox>
             <Button Name="editButton"  Width="35"  Background="White" Click="EditButtonClick" Style="{StaticResource NormalButton}">
                 <Button.ToolTip>
                     <ToolTip Content="Edit Name"></ToolTip>

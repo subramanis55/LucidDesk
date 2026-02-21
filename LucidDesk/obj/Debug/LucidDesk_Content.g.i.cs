@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("deskicon.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("lucidico2.ico")]
 
 

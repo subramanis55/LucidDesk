@@ -76,8 +76,10 @@ namespace LucidDesk.Manager
         private const uint MOUSEEVENTF_HWHEEL = 0x01000;
         private const uint MOUSEEVENTF_MOVE = 0x0001;
         private const uint MOUSEEVENTF_ABSOLUTE = 0x8000;
+        private const int MOUSEEVENTF_VIRTUALDESK = 0x4000;
         public bool isMouseAcess, isKeyboardAcess, isAudioAcess, isClipboardAcess;
         private byte VK_TAB = 0x09, VK_MENU = 0x12;
+
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, IntPtr dwExtraInfo);
@@ -156,6 +158,12 @@ namespace LucidDesk.Manager
                 else if ( connectionInformation.ConnectionType == ConnectionType.Invite)
                 {
                     InviteRequestReceivedInvoke?.Invoke(this, connectionInformation);
+                }
+                else{
+                    connectionInformation.Status = false;
+                    connectionInformation.IsRequestStatusUpdate = true;
+                    connectionInformation.Message = "Connection Failed";
+                    RequestUpdate(connectionInformation);
                 }
             }
             else if (data.ReponseAndReqType == ReponseAndReqType.ReqResponse)
@@ -322,18 +330,19 @@ namespace LucidDesk.Manager
                     screenX = (int)(virtualBounds.X + (double)(x * (double)virtualBounds.Width));
                     screenY = (int)(virtualBounds.Y + (double)(y * (double)virtualBounds.Height));
                 }
-                System.Windows.Forms.Cursor.Position = new System.Drawing.Point(screenX, screenY);
+              //  System.Windows.Forms.Cursor.Position = new System.Drawing.Point(screenX, screenY);
                 switch (data.ControlDataType)
                 {
                     case ControlKeyType.MouseMove:
-                        //ExecuteMouseMove(screenX, screenY);
+                        ExecuteMouseMove(screenX, screenY);
                         break;
                     case ControlKeyType.MouseDown:
+                        ExecuteMouseMove(screenX, screenY);
                         mouse_event(MOUSEEVENTF_LEFTDOWN, (uint)x, (uint)y, 0, UIntPtr.Zero);
                         //ExecuteMouseButton(MOUSEEVENTF_LEFTDOWN);
                         break;
                     case ControlKeyType.MouseUp:
-                        //ExecuteMouseMove(screenX, screenY);
+                        ExecuteMouseMove(screenX, screenY);
                         mouse_event(MOUSEEVENTF_LEFTUP, (uint)x, (uint)y, 0, UIntPtr.Zero);
                         //ExecuteMouseButton(MOUSEEVENTF_LEFTUP);
                         break;
@@ -419,8 +428,8 @@ namespace LucidDesk.Manager
                 {
                     dx = ToAbsoluteX(x),
                     dy = ToAbsoluteY(y),
-                    dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE
-                }
+                    dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_VIRTUALDESK
+        }
             };
             SendInput(1, new[] { input }, Marshal.SizeOf(typeof(INPUT)));
         }
@@ -536,21 +545,20 @@ namespace LucidDesk.Manager
         {
             if (deskConnectionInformation.Status == true)
             {
-                if (!DeskProfileManager.DeskProfilesDictionary.ContainsKey("" + deskConnectionInformation.SenderDesk.DeskId))
-                    DeskProfileManager.CreateDeskProfiledata(deskConnectionInformation.SenderDesk);
                 deskConnectionInformation.SenderDesk.RecentLoginTime = DateTime.Now;
+                DeskProfileManager.UpdateDeskProfileFromUserdata(deskConnectionInformation.SenderDesk.Clone());
+                CurrentClients.Add(deskConnectionInformation.TcpClient);
+                if (!IsScreenShareON)
+                    Task.Run(() => ScreenShareForClients(_cancellationTokenSource.Token));
+                deskConnectionInformation.ReceiverDesk = DeskProfileManager.UserDesk;
             }
-            else
-            {
-                deskConnectionInformation.SenderDesk.RecentLoginTime = DateTime.Now;
-                DeskProfileManager.UpdateDeskProfiledata(deskConnectionInformation.SenderDesk);
+            else {
+                if (!deskConnectionInformation.IsRequestStatusUpdate){
+                    deskConnectionInformation.IsRequestStatusUpdate = true;
+                    deskConnectionInformation.Message = "Connection failed";
+                }
+                    
             }
-
-            CurrentClients.Add(deskConnectionInformation.TcpClient);
-            if (!IsScreenShareON)
-                Task.Run(() => ScreenShareForClients(_cancellationTokenSource.Token));
-
-            deskConnectionInformation.ReceiverDesk = DeskProfileManager.UserDesk;
 
             Data data = new Data() { DataObject = deskConnectionInformation, ReponseAndReqType = ReponseAndReqType.ReqResponse };
             NetworkStream stream = deskConnectionInformation.TcpClient.GetStream();

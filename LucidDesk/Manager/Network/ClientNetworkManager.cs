@@ -33,6 +33,9 @@ namespace LucidDesk.Manager
                 deskConnectionInformation = value;
                 if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Local)
                 {
+                //if (deskConnectionInformation.ConnectionType==ConnectionType.Invite&& deskConnectionInformation.InviteID!=null&& deskConnectionInformation.Status==true)
+                //        ClientIpaddress = deskConnectionInformation.SenderDesk.HostName != null ? SystemInformationManager.GetPcIPAddress(deskConnectionInformation.SenderDesk.HostName) : deskConnectionInformation.SenderDesk.IPAddress;
+                //    else
                     ClientIpaddress = deskConnectionInformation.ReceiverDesk.HostName != null ? SystemInformationManager.GetPcIPAddress(deskConnectionInformation.ReceiverDesk.HostName) : deskConnectionInformation.ReceiverDesk.IPAddress;
                 }
 
@@ -305,13 +308,13 @@ namespace LucidDesk.Manager
             }
         }
 
-        public void SendMouseScrollEvent(ControlKeyType controlKeyType, double x, double y, double delta = 0)
+        public void SendMouseScrollEvent(ControlKeyType controlKeyType, Point position, double ScreenImageActualWidth, double ScreenImageActualHeight, double delta = 0)
         {
             if (client != null && client.Connected && deskConnectionInformation.MouseAccess)
             {
                 NetworkStream stream = client.GetStream();
                 // Get the client's screen resolution
-                string scrollData = $"{x},{y}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}:{delta}";
+                string scrollData = $"{(position.X / ScreenImageActualWidth)},{(position.Y / ScreenImageActualHeight)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}:{delta}";
                 Data data = new Data();
                 data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
                 data.DataObject = new DeskControlData()

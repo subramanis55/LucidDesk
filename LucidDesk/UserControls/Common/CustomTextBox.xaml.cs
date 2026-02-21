@@ -58,7 +58,7 @@ namespace LucidDesk.UserControls.Common
             }
         }
 
-        public string Password { get => PasswordTextBox.Password; private set => PasswordTextBox.Password = value; }
+        public string Password { get => PasswordTextBox.Password;  set => PasswordTextBox.Password = value; }
 
         public bool IsPasswordType
         {
@@ -109,6 +109,8 @@ namespace LucidDesk.UserControls.Common
             get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
         }
+
+
 
         public string Placeholder
         {

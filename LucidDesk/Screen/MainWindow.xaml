@@ -7,7 +7,7 @@
         xmlns:UserControl="clr-namespace:LucidDesk.UserControls"
         xmlns:Controls="clr-namespace:LucidDesk.UserControls.Common"
         mc:Ignorable="d" WindowStyle="None" Padding="0" Margin="0"  Loaded="MainWindowLoaded"
-        Title="MainWindow" MinHeight="500" MinWidth="900" Height="500" Width="800" Icon="/LucidDesk;Component/Resources/DeskIcon.png">
+        Title="MainWindow" MinHeight="500" MinWidth="900" Height="500" Width="800" Icon="/LucidDesk;Component/Resources/LucidImage.png">
     <Window.Resources>
         <ContextMenu x:Key="MenuContext" Style="{StaticResource CustomContextMenu}">
             <MenuItem Style="{StaticResource ContextMenuItem}" Click="SettingPageClick"  >
@@ -415,7 +415,6 @@
                                                             <StackPanel Orientation="Horizontal" Grid.Column="1">
                                                                 <Controls:TextBoxEditControl x:Name="profilePageUserNameTextBox" DoneButtonClicked="UserNameTextBoxEdited"></Controls:TextBoxEditControl>
                                                             </StackPanel>
-
                                                         </Grid>
                                                     </Border>
                                                     <Border Padding="5">
@@ -427,8 +426,7 @@
                                                             </Grid.ColumnDefinitions>
                                                             <Label Grid.Column="0"  FontSize="16"    FontWeight="Medium" Foreground="{StaticResource MainColorBrush}">Password</Label>
                                                             <StackPanel Orientation="Horizontal" Grid.Column="1">
-                                   
-                                                                <Controls:TextBoxEditControl x:Name="profilePagePasswordTextBox" DoneButtonClicked="PasswordTextBoxEdited"></Controls:TextBoxEditControl>
+                                                                <Controls:TextBoxEditControl x:Name="profilePagePasswordTextBox"  DoneButtonClicked="PasswordTextBoxEdited"></Controls:TextBoxEditControl>
                                                             </StackPanel>
 
                                                         </Grid>

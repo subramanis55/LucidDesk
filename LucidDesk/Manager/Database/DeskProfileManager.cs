@@ -120,7 +120,28 @@ namespace LucidDesk.Manager.Database
             {
 
             }
+            return false;
+        }
 
+        public static bool UpdateDeskProfileFromUserdata(Desk deskProfile)
+        {
+            try
+            {
+                if (!DeskProfilesDictionary.ContainsKey(deskProfile.DeskId))
+                    return CreateDeskProfiledata(deskProfile);
+                DeskProfilesDictionary[deskProfile.DeskId].ProfileImageString = deskProfile.ProfileImageString;
+                DeskProfilesDictionary[deskProfile.DeskId].DesktopImageString = deskProfile.DesktopImageString;
+                DeskProfilesDictionary[deskProfile.DeskId].IPAddress = deskProfile.IPAddress;
+                string deskProfileData = JsonConvert.SerializeObject(DeskProfilesDictionary[deskProfile.DeskId]);
+                string encodedData = SecurityManager.Encrypt(deskProfileData);
+                string deskProfilePath = Path.Combine(LocalDatabaseManager.DatabaseFolderPath, deskProfile.DeskId + ".txt");
+                File.WriteAllText(deskProfilePath, encodedData);
+                return true;
+            }
+            catch (Exception e)
+            {
+
+            }
             return false;
         }
         public static bool UpdateDeskProfilesdata()

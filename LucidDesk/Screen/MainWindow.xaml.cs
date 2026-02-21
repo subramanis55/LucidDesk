@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -37,7 +38,6 @@ namespace LucidDesk
         public static UserControls.Common.NotificationManager NotificationManager = new UserControls.Common.NotificationManager();
 
         public static ClientNetworkManager ClientNetworkManager = new ClientNetworkManager();
-
         public static ServerNetworkManager ServerNetworkManager = new ServerNetworkManager();
         public static DeskProfile SelectedDeskProfile { get; set; }
 
@@ -95,12 +95,15 @@ namespace LucidDesk
         public MainWindow()
         {
             InitializeComponent();
+            profilePagePasswordTextBox.IsPassword = true;
         }
+
         public void Load()
         {
             Loaded += MainWindowLoaded;
             this.Closed += (sender, e) => Environment.Exit(0);
         }
+
         #region setapplication
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
@@ -152,7 +155,6 @@ namespace LucidDesk
             SessionTabHeader.OnClickClose += SessionTabHeaderOnClickClose;
         }
 
-
         private void ScreenSwitchControlScreenSelectionChanged(object sender, Manager.Classes.DataSchema.Screens.Screen e)
         {
             selectedScreen = e;
@@ -167,12 +169,13 @@ namespace LucidDesk
                 {
                     e.ReceiverDesk.Freeze();
                     e.ReceiverDesk.RecentLoginTime = DateTime.Now;
-                    DeskProfileManager.UpdateDeskProfiledata(e.ReceiverDesk);
+                    DeskProfileManager.UpdateDeskProfileFromUserdata(e.ReceiverDesk.Clone());
                     screenSwitchControl.UpdateScreenInformation(e.ScreenInformation);
                 }
                 else
                 {
                     NotificationManager.CreateNotification(e.Message, NotificationType.Error);
+                    ClientNetworkManager.ConnectionClose();
                     ClientNetworkManagerDisConnectedToSeverInvoke(this, null);
                 }
 
@@ -228,6 +231,7 @@ namespace LucidDesk
         #endregion
 
         #region Desk Information
+
         private void DeskProfileManagerDeskProfilesUpdated(object sender, EventArgs e)
         {
             Dispatcher.BeginInvoke((Action)(() => { SetUpCheck(); }));
@@ -288,7 +292,7 @@ namespace LucidDesk
 
         private void DeskProfileOnClickConnectWithPassword(object sender, Desk e)
         {
-            ConnectWithPassword connectWithPassword = new ConnectWithPassword(e);
+            ConnectWithPassword connectWithPassword = new ConnectWithPassword(e.Clone());
             connectWithPassword.OnClickConnectButton += ConnectWithPasswordOnClickConnectButton;
             connectWithPassword.ShowDialog();
         }
@@ -330,6 +334,7 @@ namespace LucidDesk
         {
             FullScreenMode = false;
         }
+
         private void SearchBoxControlOnClickScreenZoom(object sender, EventArgs e)
         {
             ScreenImage.Stretch = Stretch.None;
@@ -349,7 +354,6 @@ namespace LucidDesk
         {
             FullScreenMode = true;
         }
-
         #endregion
         private void SessionTabHeaderOnClickClose(object sender, EventArgs e)
         {
@@ -363,6 +367,7 @@ namespace LucidDesk
         }
 
         #region Desk Section
+
         private void DeskSwicthControlOnclickRecentSessionsButton(object sender, EventArgs e)
         {
             DeskMainContainer.Children.Remove(RecentSessionsDeskContainer);
@@ -451,6 +456,7 @@ namespace LucidDesk
         #endregion
 
         #region   Screen Share
+
         private void ClientNetworkManagerScreenShareUpdateInvoke(object sender, DeskImageData e)
         {
             BitmapImage screenShareImage = e.Image;
@@ -499,8 +505,7 @@ namespace LucidDesk
         public void ScreenImageMouseWheel(object sender, MouseWheelEventArgs e)
         {
             Point position = e.GetPosition(this);
-
-            ClientNetworkManager.SendMouseScrollEvent(ControlKeyType.Scroll, position.X, position.Y, e.Delta);
+            ClientNetworkManager.SendMouseScrollEvent(ControlKeyType.Scroll, position, ScreenImage.ActualWidth, ScreenImage.ActualHeight, e.Delta);
         }
 
         private void ScreenImageMouseDown(object sender, MouseButtonEventArgs e)
@@ -655,6 +660,7 @@ namespace LucidDesk
             {
                 ProfilePicture.Image = DeskProfileManager.UserDesk.ProfileImage;
                 profilePageUserNameTextBox.TextBoxText = DeskProfileManager.UserDesk.ProfileName;
+                profilePagePasswordTextBox.TextBoxText = DeskProfileManager.UserDesk.Password;
                 ProfilePageUserDeskOsName.Content = DeskProfileManager.UserDesk.OsName;
                 ProfilePageUserDeskId.Content = "" + DeskProfileManager.UserDesk.DisplayID;
                 ProfilePageUserDeskName.Content = "" + DeskProfileManager.UserDesk.PcName;
@@ -670,9 +676,10 @@ namespace LucidDesk
         }
 
         #region Invite
+
         private void DeskProfileOnInviteConnect(object sender, Desk desk)
         {
-            InviteWindow inviteWindow = new InviteWindow(desk);
+            InviteWindow inviteWindow = new InviteWindow(desk.Clone());
             inviteWindow.OnClickInviteButton += InviteWindowOnClickInviteButton;
             inviteWindow.ShowDialog();
         }
@@ -821,10 +828,7 @@ namespace LucidDesk
 
         private void ServerNetworkManagerConnectRequestStatusInvoke(object sender, DeskConnectionInformation deskConnectionInformation)
         {
-            if (deskConnectionInformation.IsRequestStatusUpdate == false)
-            {
 
-            }
             if (deskConnectionInformation.Status)
             {
                 ClientNetworkManager.DeskConnectionInformation = deskConnectionInformation;
@@ -835,9 +839,9 @@ namespace LucidDesk
                     {
                         ConnectToServerCall(deskConnectionInformation, ReponseAndReqType.ConnectReq);
                     }
-                    catch
+                    catch(Exception e)
                     {
-
+                        NotificationManager.CreateNotification(e.Message, NotificationType.Error);
                     }
                 });
             }
@@ -911,7 +915,8 @@ namespace LucidDesk
         }
         #endregion
 
-        #region   Mainwindow
+        #region   Mainwindow  
+
         private void MainWindowClosed(object sender, EventArgs e)
         {
             List<Desk> deskProfiles = DeskProfileManager.DeskProfilesDictionary.Values.ToList();
@@ -983,6 +988,12 @@ namespace LucidDesk
             }
             DeskProfileManager.UpdateDeskProfiledata(DeskProfileManager.UserDesk);
         }
+
+        private void PasswordTextBoxEdited(object sender, string newpassword)
+        {
+            DeskProfileManager.UserDesk.Password = LucidDesk.Manager.Security.SecurityManager.Encrypt(newpassword);
+            DeskProfileManager.UpdateDeskProfiledata(DeskProfileManager.UserDesk);
+        }
         #endregion
 
         private void RefreshButtonClick(object sender, RoutedEventArgs e)
@@ -991,5 +1002,7 @@ namespace LucidDesk
             DeskProfileManager.Refresh();
             SetUpCheck();
         }
+
+     
     }
 }
