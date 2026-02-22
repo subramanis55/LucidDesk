@@ -147,7 +147,7 @@ namespace LucidDesk
                 if ((("" + DeskProfileManager.DeskProfiles[i].DisplayID).Contains(Textbox.Text) || DeskProfileManager.DeskProfiles[i].ProfileName.Contains(Textbox.Text)))         // && (DeskProfileManager.DeskProfiles[i].MacAddress != DeskProfileManager.UserDesk.MacAddress)
                 {
                     MenuItem menuItem = new MenuItem { Foreground = Brushes.Black, Focusable = false, MinWidth = Textbox.ActualWidth - 3, Background = Brushes.White };
-                    menuItem.Style = SuggestionsDeskMenuStyle;
+                        menuItem.Style = (Style)Application.Current.Resources["SuggestionDeskMenuItem"],
                     menuItem.DataContext = DeskProfileManager.DeskProfiles[i];
                     menuItem.Click += SuggestionDeskClick;
                     SuggestionsDeskMenu.Items.Add(menuItem);
