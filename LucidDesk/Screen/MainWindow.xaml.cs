@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Security;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -219,14 +220,14 @@ namespace LucidDesk
                         else
                         {
                             TextblockId.Text = "" + SystemInformationManager.IpAddresss;
-                            if(DeskProfileManager.UserDesk.IPAddress!= SystemInformationManager.IpAddresss)
-                                DeskProfileManager.UserDesk.IPAddress= SystemInformationManager.IpAddresss;
+                            if (DeskProfileManager.UserDesk.IPAddress != SystemInformationManager.IpAddresss)
+                                DeskProfileManager.UserDesk.IPAddress = SystemInformationManager.IpAddresss;
                         }
 
                     }
                 }
             }
-            
+
         }
         #endregion
 
@@ -679,8 +680,12 @@ namespace LucidDesk
 
         private void DeskProfileOnInviteConnect(object sender, Desk desk)
         {
-            InviteWindow inviteWindow = new InviteWindow(desk.Clone());
-            inviteWindow.OnClickInviteButton += InviteWindowOnClickInviteButton;
+            if (inviteWindow == null)
+            {
+                inviteWindow = new InviteWindow();
+                inviteWindow.OnClickInviteButton += InviteWindowOnClickInviteButton;
+            }
+            inviteWindow.InviteDesk(desk.Clone());
             inviteWindow.ShowDialog();
         }
 
@@ -700,7 +705,7 @@ namespace LucidDesk
             {
                 LogManager.LogException(ex.ToString());
             }
-            Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 ConnectAcceptWindow connectionAcceptWindow = new ConnectAcceptWindow(deskConnectionInformation);
                 connectionAcceptWindow.OnClickGetStatus += NotificationManagerOnClickInviteStatusGet;
@@ -727,7 +732,7 @@ namespace LucidDesk
 
         private void InviteWindowOnClickInviteButton(object sender, DeskConnectionInformation deskConnectionInformation)
         {
-            ((Window)(sender)).Close();
+            ((Window)(sender)).Hide();
             Task.Run(() =>
             {
                 deskConnectionInformation.InviteID = Guid.NewGuid().ToString();
@@ -738,8 +743,26 @@ namespace LucidDesk
 
         private void InviteButtonClick(object sender, RoutedEventArgs e)
         {
-            InviteWindow inviteWindow = new InviteWindow();
-            inviteWindow.OnClickInviteButton += InviteWindowOnClickInviteButton;
+            if (Application.Current.Dispatcher.CheckAccess())
+            {
+                OpenInviteWindow();
+            }
+            else
+            {
+                Application.Current.Dispatcher.BeginInvoke(
+                    new Action(OpenInviteWindow));
+            }
+
+        }
+        private InviteWindow inviteWindow;
+        private void OpenInviteWindow()
+        {
+            if (inviteWindow == null)
+            {
+                inviteWindow = new InviteWindow();
+                inviteWindow.OnClickInviteButton += InviteWindowOnClickInviteButton;
+            }
+            inviteWindow.InviteDesk(null);
             inviteWindow.ShowDialog();
         }
         #endregion
@@ -797,17 +820,17 @@ namespace LucidDesk
 
         private void ClientNetworkManagerConnectedToSeverInvoke(object sender, EventArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                MainTabControl.SelectedItem = ScreenSharePage;
-                SearchBoxControl.Text = "" + ClientNetworkManager.deskConnectionInformation.ReceiverDesk.DisplayID;
-                SearchBoxControl.IsReadOnly = true;
-                SearchBoxControl.IsConnected = true;
-                connectedStausIcon.Visibility = Visibility.Visible;
-                ScreenImage.Focus();
-                SessionTabHeader.IsCloseButtonVisible = true;
-                SessionTabHeader.Header = "" + ClientNetworkManager.deskConnectionInformation.ReceiverDesk.DisplayID;
-            }));
+            this.Dispatcher.Invoke(new Action(() =>
+             {
+                 MainTabControl.SelectedItem = ScreenSharePage;
+                 SearchBoxControl.Text = "" + ClientNetworkManager.deskConnectionInformation.ReceiverDesk.DisplayID;
+                 SearchBoxControl.IsReadOnly = true;
+                 SearchBoxControl.IsConnected = true;
+                 connectedStausIcon.Visibility = Visibility.Visible;
+                 ScreenImage.Focus();
+                 SessionTabHeader.IsCloseButtonVisible = true;
+                 SessionTabHeader.Header = "" + ClientNetworkManager.deskConnectionInformation.ReceiverDesk.DisplayID;
+             }));
         }
 
         private void ClientNetworkManagerConnectionEstabishFailInvoke(object sender, EventArgs e)
@@ -839,7 +862,7 @@ namespace LucidDesk
                     {
                         ConnectToServerCall(deskConnectionInformation, ReponseAndReqType.ConnectReq);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         NotificationManager.CreateNotification(e.Message, NotificationType.Error);
                     }
@@ -1003,6 +1026,6 @@ namespace LucidDesk
             SetUpCheck();
         }
 
-     
+
     }
 }

@@ -36,7 +36,7 @@ namespace LucidDesk
             set
             {
                 desk = value;
-                UserId = "" + desk.DisplayID;
+                UserId = desk != null ? "" + desk.DisplayID : "";
             }
             get
             {
@@ -55,6 +55,7 @@ namespace LucidDesk
         {
             InitializeComponent();
             Loaded += InviteWindowLoaded;
+
 
         }
         public InviteWindow(Desk desk)
@@ -139,26 +140,29 @@ namespace LucidDesk
 
         private void SuggestionDeskShowInvoke()
         {
-            SuggestionsDeskMenu.Items.Clear();
-            int count = 0;
-            //DeskProfile Control Create
-            for (int i = 0; i < DeskProfileManager.DeskProfiles.Count; i++)
+            Dispatcher.Invoke(new Action(() =>
             {
-                if ((("" + DeskProfileManager.DeskProfiles[i].DisplayID).Contains(Textbox.Text) || DeskProfileManager.DeskProfiles[i].ProfileName.Contains(Textbox.Text)))         // && (DeskProfileManager.DeskProfiles[i].MacAddress != DeskProfileManager.UserDesk.MacAddress)
+                SuggestionsDeskMenu?.Items.Clear();
+                int count = 0;
+                //DeskProfile Control Create
+                for (int i = 0; i < DeskProfileManager.DeskProfiles.Count; i++)
                 {
-                    MenuItem menuItem = new MenuItem { Foreground = Brushes.Black, Focusable = false, MinWidth = Textbox.ActualWidth - 3, Background = Brushes.White };
-                        menuItem.Style = (Style)Application.Current.Resources["SuggestionDeskMenuItem"],
-                    menuItem.DataContext = DeskProfileManager.DeskProfiles[i];
-                    menuItem.Click += SuggestionDeskClick;
-                    SuggestionsDeskMenu.Items.Add(menuItem);
-                    count++;
+                    if ((("" + DeskProfileManager.DeskProfiles[i].DisplayID).Contains(Textbox.Text) || DeskProfileManager.DeskProfiles[i].ProfileName.Contains(Textbox.Text)))         // && (DeskProfileManager.DeskProfiles[i].MacAddress != DeskProfileManager.UserDesk.MacAddress)
+                    {
+                        MenuItem menuItem = new MenuItem { Foreground = Brushes.Black, Focusable = false, MinWidth = Textbox.ActualWidth - 3, Background = Brushes.White };
+                        menuItem.Style = (Style)Application.Current.Resources["SuggestionDeskMenuItem"];
+                        menuItem.DataContext = DeskProfileManager.DeskProfiles[i];
+                        menuItem.Click += SuggestionDeskClick;
+                        SuggestionsDeskMenu.Items.Add(menuItem);
+                        count++;
+                    }
+                    if (count == 10)
+                        break;
                 }
-                if (count == 10)
-                    break;
-            }
 
-            SuggestionDeskShow();
-            Textbox.Focus();
+                SuggestionDeskShow();
+                Textbox.Focus();
+            }));
         }
         private void SuggestionDeskClick(object sender, RoutedEventArgs e)
         {
@@ -168,16 +172,16 @@ namespace LucidDesk
         }
         private void SuggestionDeskShow()
         {
-            SuggestionsDeskMenu.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            Size SuggestionsDeskMenuSize = SuggestionsDeskMenu.DesiredSize;
-            SuggestionsDeskMenu.Style = Application.Current.Resources["CustomContextMenu"] as Style;
-            SuggestionsDeskMenu.PlacementTarget = Textbox;
-            SuggestionsDeskMenu.Placement = PlacementMode.Relative;
+            //SuggestionsDeskMenu.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            //Size SuggestionsDeskMenuSize = SuggestionsDeskMenu.DesiredSize;
+            //SuggestionsDeskMenu.Style = Application.Current.Resources["CustomContextMenu"] as Style;
+            //SuggestionsDeskMenu.PlacementTarget = Textbox;
+            //SuggestionsDeskMenu.Placement = PlacementMode.Relative;
 
-            double y = Textbox.ActualHeight;
-            SuggestionsDeskMenu.HorizontalOffset = -2;
-            SuggestionsDeskMenu.VerticalOffset = y;
-            SuggestionsDeskMenu.IsOpen = true;
+            //double y = Textbox.ActualHeight;
+            //SuggestionsDeskMenu.HorizontalOffset = -2;
+            //SuggestionsDeskMenu.VerticalOffset = y;
+            //SuggestionsDeskMenu.IsOpen = true;
         }
         private void TopPanelMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -202,6 +206,18 @@ namespace LucidDesk
         {
             if (Textbox.Text != "")
                 SuggestionDeskShowInvoke();
+        }
+        internal void InviteDesk(Desk desk)
+        {
+            if (desk == null)
+            {
+                Panel.SetZIndex(UserIdLabelContainer, -1);
+                Desk = null;
+                Textbox.Text = "";
+                return;
+            }
+            Desk = desk;
+            Panel.SetZIndex(UserIdLabelContainer, 1);
         }
     }
 }

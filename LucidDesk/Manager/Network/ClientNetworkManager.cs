@@ -33,10 +33,19 @@ namespace LucidDesk.Manager
                 deskConnectionInformation = value;
                 if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Local)
                 {
-                //if (deskConnectionInformation.ConnectionType==ConnectionType.Invite&& deskConnectionInformation.InviteID!=null&& deskConnectionInformation.Status==true)
-                //        ClientIpaddress = deskConnectionInformation.SenderDesk.HostName != null ? SystemInformationManager.GetPcIPAddress(deskConnectionInformation.SenderDesk.HostName) : deskConnectionInformation.SenderDesk.IPAddress;
-                //    else
-                    ClientIpaddress = deskConnectionInformation.ReceiverDesk.HostName != null ? SystemInformationManager.GetPcIPAddress(deskConnectionInformation.ReceiverDesk.HostName) : deskConnectionInformation.ReceiverDesk.IPAddress;
+                    if (deskConnectionInformation.ConnectionType == ConnectionType.Invite && deskConnectionInformation.InviteID != null && deskConnectionInformation.Status == true)
+                    {
+                        ClientIpaddress = deskConnectionInformation.SenderDesk.HostName != null ? SystemInformationManager.GetPcIPAddress(deskConnectionInformation.SenderDesk.HostName) : deskConnectionInformation.SenderDesk.IPAddress;
+                        if (ClientIpaddress == "")
+                            ClientIpaddress = deskConnectionInformation.SenderDesk.IPAddress;
+                    }
+                    else
+                    {
+                        ClientIpaddress = deskConnectionInformation.ReceiverDesk.HostName != null ? SystemInformationManager.GetPcIPAddress(deskConnectionInformation.ReceiverDesk.HostName) : deskConnectionInformation.ReceiverDesk.IPAddress;
+                        if (ClientIpaddress == "")
+                            ClientIpaddress = deskConnectionInformation.ReceiverDesk.IPAddress;
+                    }
+
                 }
 
             }
@@ -204,7 +213,8 @@ namespace LucidDesk.Manager
             DeskConnectionInformation = deskConnectionInformation;
             try
             {
-                if (ClientIpaddress == null || ClientIpaddress == "") {
+                if (ClientIpaddress == null || ClientIpaddress == "")
+                {
                     ConnectionEstabishFailInvoke?.Invoke(this, EventArgs.Empty);
                     return;
                 }
