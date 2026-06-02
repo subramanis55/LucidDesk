@@ -1,11 +1,6 @@
                   
  
-<h1 align="center" style="font-weight: bold;">Messager </h1>
-
-<p align="center">
-<a href="#technologies">Technologies  </a> <br><a href="#colab">Collaborators</a>
-</p>
-
+<h1 align="center" style="font-weight: bold;">Remote Access Application </h1>
 
 <p align="center">  Desktop application to remotely access and control any system within the same local network, enabling real-time screen viewing and seamless remote access operations.
 
@@ -18,11 +13,11 @@
 
 <p align="center">
 
-[<img src="https://i.ibb.co/zR9vy4v/Screenshot-16.png-6.png" alt="Login" width="400px">](https://ibb.co/99d1rB2G
-https://ibb.co/7dSbm3yy
-https://ibb.co/S4mHpZth
-https://ibb.co/B5rx6Vt4
-https://ibb.co/21GwYvSZ)
+<img src="https://i.ibb.co/7J0Z1BVb/Lucid-Connect-Request.png" alt="Lucid Connect Request" border="0">
+<img src="https://i.ibb.co/dwf7YNKK/Invite-Screen.png" alt="Invite Screen" border="0">
+<img src="https://i.ibb.co/VcCb8kg7/Lucid-Desk-Home.png" alt="Lucid Desk Home" border="0">
+<img src="https://i.ibb.co/Jwy4pRKx/Lucid-Connect.png" alt="Lucid Connect" border="0">
+<img src="https://i.ibb.co/W4mQpk0V/Lucid-Connected-Screen.png" alt="Lucid Connected Screen" border="0">
 </p>
  
 <h2 id="technologies"> Technologies</h2>
@@ -35,8 +30,4 @@ https://ibb.co/21GwYvSZ)
 <h2>Prerequisites</h2>
 
  [.Net ](https://dotnet.microsoft.com/en-us/)
-
- 
-
 </table>
-[Demo Video Click  Here ](https://youtu.be/pdowefACFWY?si=G0JGVXoASbyHrfXo)
