@@ -25,8 +25,6 @@ using LucidDesk.Manager.Security;
 namespace LucidDesk.Manager
 {
 
-
-
     [StructLayout(LayoutKind.Sequential)]
     struct INPUT
     {

@@ -4,7 +4,7 @@
   <description asmv2:publisher="Lucid Imaging" asmv2:product="LucidDesk" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <deployment install="true" mapFileExtensions="true" />
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
-    <framework targetVersion="4.8" profile="Full" supportedRuntime="4.0.30319" />
+    <framework targetVersion="4.8.1" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
     <dependentAssembly dependencyType="install" codebase="LucidDesk.exe.manifest" size="13408">
@@ -14,7 +14,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Wj0R1VRyc7W+ZxOVIwRupXp11G/CZsNjQ9agtQIqPWY=</dsig:DigestValue>
+        <dsig:DigestValue>TsL3T+1csZdC3Qx5+DX/r9duRxZ9Tw2Qd/XFqpjwAVY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -144,6 +143,7 @@ namespace LucidDesk.UserControls.Common
             PasswordTextBox.GotFocus += TextboxGotFocus;
             PasswordTextBox.LostFocus += TextboxLostFocus;
             DataContext = this;
+        
         }
 
         private void TextboxLostFocus(object sender, RoutedEventArgs e)

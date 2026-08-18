@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LucidDesk.exe" size="4753344">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LucidDesk.exe" size="4761024">
       <assemblyIdentity name="LucidDesk" version="1.0.0.6" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Ku1OFrLu2z9xxl/7ImXw5qvJ0GGOE8Rtp0rvufE5Vws=</dsig:DigestValue>
+        <dsig:DigestValue>NgD7CnphnO7xicgv9fuFqBeksml5ikIHfHUWIrxIWbU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -163,14 +163,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Newtonsoft.Json.dll" size="712232">
-      <assemblyIdentity name="Newtonsoft.Json" version="13.0.1.0" publicKeyToken="30AD4FE6B2A6AEED" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Newtonsoft.Json.dll" size="721320">
+      <assemblyIdentity name="Newtonsoft.Json" version="13.0.0.0" publicKeyToken="30AD4FE6B2A6AEED" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>2rECl712mUpYFdAdQ6DGUSdCewE5ZwO96T+wUx2NXvY=</dsig:DigestValue>
+        <dsig:DigestValue>8MB68OhNTdTaS9eCO6RTW8BIGzv2I+1Atlm2gUemu3U=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -198,13 +198,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="LucidDesk.exe.config" size="184">
+  <file name="LucidDesk.exe.config" size="186">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>FihlZtVNgcNyH37Pf0Jtll3jZOm+L55ijXNjtoS2/mo=</dsig:DigestValue>
+      <dsig:DigestValue>Gzd2Nq2uFMFSpX8O7vwhr6hYsb+/2crNIQns3ZxraLY=</dsig:DigestValue>
     </hash>
   </file>
   <file name="LucidIco2.ico" size="190436">

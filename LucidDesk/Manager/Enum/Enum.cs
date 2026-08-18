@@ -20,6 +20,8 @@ namespace LucidDesk.Manager.Enum
         Invite, Connect, Password
     }
 
+
+
     public enum ReponseAndReqType
     {
       ConnectReq,ReqResponse,Disconnect, ScreenShareImageData, ScreenShareKeyData

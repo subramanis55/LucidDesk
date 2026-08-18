@@ -147,7 +147,7 @@
     <Compile Include="Manager\Classes\DataSchema\Screens\Screen.cs" />
     <Compile Include="Manager\Classes\DataSchema\Screens\ScreenInformation.cs" />
     <Compile Include="Manager\Database\UnIdentifiedLocalDeskManager.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Manager\Models\User.cs" />
     <Compile Include="Screen\ConnectionAcceptWindow.xaml.cs">
       <DependentUpon>ConnectionAcceptWindow.xaml</DependentUpon>
     </Compile>
@@ -170,8 +170,8 @@
     <Compile Include="Screen\ConnectWithPassword.xaml.cs">
       <DependentUpon>ConnectWithPassword.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Services\APIService.cs" />
-    <Compile Include="Services\UserService.cs" />
+    <Compile Include="Manager\Services\APIService.cs" />
+    <Compile Include="Manager\Services\UserService.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\SettingsManager.cs" />
     <Compile Include="UserControls\Common\CustomTextBox.xaml.cs">

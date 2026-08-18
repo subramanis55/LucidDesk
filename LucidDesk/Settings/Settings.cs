@@ -12,13 +12,11 @@ namespace LucidDesk.Settings
     {
         public ApplicationMode ApplicationMode { get; set; } = ApplicationMode.Local;
         public string ApplicationName { get; set; } = "LucidDesk";
-        public int FrameSharePerSecond { get; set; } = 24;
-        public string ServerHostName { set; get; } = "";
-        public string ServerPort { set; get; } = "3306";
-        public string ServerIpAddress { set; get; } = "localhost";
-        public string ServerPassword { set; get; } = "";
-        public string ServerUserName { set; get; } = "root";
-        public string ServerDatabase { set; get; } = "luciddesk";
+        public int FrameSharePerSecond { get; set; } = 20;
+        public int MouseInputSharePerSecond { get; set; } = 20;
+        public int ServerPort { set; get; } = 3306;
+        public string ServerAddress { set; get; } = "localhost";
+ 
 
     }
 }

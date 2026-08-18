@@ -1,6 +1,12 @@
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
-LucidDesk/publish
-LucidDesk/bin
+# Visual Studio
 .vs/
+
+# Build output
+**/bin/
+**/obj/
+
+# Publish output
+**/publish/

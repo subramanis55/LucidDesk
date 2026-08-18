@@ -1,5 +1,6 @@
 ﻿using LucidDesk.Manager.Enum;
 using LucidDesk.Manager.Files;
+using LucidDesk.Models;
 using LucidDesk.Settings;
 using Newtonsoft.Json;
 using System;
@@ -14,9 +15,21 @@ namespace LucidDesk.Manager
 {
     public class Desk : INotifyPropertyChanged
     {
+        public Desk() { }
+        public Desk(User user)
+        {
+            GUID = user.UserID.ToString();
+            Id = user.UserNumber;
+            ProfileImageString = user.profileImageString;
+            DesktopImageString = user.DesktopImageString;
+            PcName = user.PCName;
+            MacAddress = user.MacAddress;
+            ProfileName = user.FirstName;
+        }
+
         public event EventHandler OnClickDeleted;
         public event PropertyChangedEventHandler PropertyChanged;
-        private int id;
+        private string id;
 
         private string iPAddress;
         private bool isFavorite;
@@ -51,13 +64,14 @@ namespace LucidDesk.Manager
                 return SettingsManager.Settings.ApplicationMode == ApplicationMode.Online ? Id.ToString() : GUID;
             }
         }
-        private int Id
+        [JsonProperty]
+        public string Id
         {
             get
             {
                 return id;
             }
-            set
+            private set
             {
                 id = value;
                 OnPropertyChanged(nameof(Id));

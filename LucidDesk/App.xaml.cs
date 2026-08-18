@@ -70,21 +70,21 @@ namespace LucidDesk
             else
             {
 
-                if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Online)
-                {
-                    DeskMessageBox.ShowMessageBox("Something Wrong Online SetUp ", "Error", UserControls.MessageBoxType.Ok);
-                    LogManager.LogException("Something Wrong  Online SetUp ");
-                    ShutdownApp();
-                }
-                else
-                {
+                //if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Online)
+                //{
+                //    DeskMessageBox.ShowMessageBox("Something Wrong Online SetUp ", "Error", UserControls.MessageBoxType.Ok);
+                //    LogManager.LogException("Something Wrong  Online SetUp ");
+                //    ShutdownApp();
+                //}
+                //else
+                //{
                     if (!DeskProfileManager.DeskExits(SystemInformationManager.MacAddress))
                     {
                         loginWindow loginWindow = new loginWindow();
                         loginWindow.OnClickNext += LoginWindowOnClickNext;
                         loginWindow.ShowDialog();
                     }
-                }
+              //  }
                 StartNetWorkServerConnection();
             }
         }

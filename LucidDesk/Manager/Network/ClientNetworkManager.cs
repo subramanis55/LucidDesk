@@ -213,12 +213,12 @@ namespace LucidDesk.Manager
             DeskConnectionInformation = deskConnectionInformation;
             try
             {
-                if (ClientIpaddress == null || ClientIpaddress == "")
-                {
-                    ConnectionEstabishFailInvoke?.Invoke(this, EventArgs.Empty);
-                    return;
-                }
-                client = new TcpClient(ClientIpaddress, PORT);
+                //if (ClientIpaddress == null || ClientIpaddress == "")
+                //{
+                //    ConnectionEstabishFailInvoke?.Invoke(this, EventArgs.Empty);
+                //    return;
+                //}
+                client = new TcpClient(SettingsManager.Settings.ServerAddress,SettingsManager.Settings.ServerPort);
                 stream = client.GetStream();
                 isConnected = true;
                 sendConnectRequest(deskConnectionInformation, reqType);
