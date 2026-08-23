@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<Settings>
-  <ApplicationMode>Online</ApplicationMode>
-  <ApplicationName>LucidDesk</ApplicationName>
-  <FrameSharePerSecond>20</FrameSharePerSecond>
-  <MouseInputSharePerSecond>20</MouseInputSharePerSecond>
-  <ServerPort>9000</ServerPort>
-  <ServerAddress>10.202.146.126</ServerAddress>
-</Settings>
