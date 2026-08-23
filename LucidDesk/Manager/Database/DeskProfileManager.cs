@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using LucidDesk.DS.Classes;
 using LucidDesk.Manager.Security;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace LucidDesk.Manager.Database
 {
@@ -18,7 +19,7 @@ namespace LucidDesk.Manager.Database
             {
                 desk = value;
                 desk.IPAddress = SystemInformationManager.IpAddresss;
-                desk.DesktopImage= SystemInformationManager.DesktopWallpaper;
+                desk.DesktopImage = SystemInformationManager.DesktopWallpaper;
             }
 
             get
@@ -111,7 +112,7 @@ namespace LucidDesk.Manager.Database
                     return CreateDeskProfiledata(deskProfile);
                 string deskProfileData = JsonConvert.SerializeObject(deskProfile);
                 string encodedData = SecurityManager.Encrypt(deskProfileData);
-                string deskProfilePath = Path.Combine( LocalDatabaseManager.DatabaseFolderPath , deskProfile.DeskId + ".txt");
+                string deskProfilePath = Path.Combine(LocalDatabaseManager.DatabaseFolderPath, deskProfile.DeskId + ".txt");
                 File.WriteAllText(deskProfilePath, encodedData);
                 DeskProfilesDictionary[deskProfile.DeskId] = deskProfile;
                 return true;
@@ -152,7 +153,7 @@ namespace LucidDesk.Manager.Database
                 {
                     string deskProfileData = JsonConvert.SerializeObject(DeskProfiles[i]);
                     string encodedData = SecurityManager.Encrypt(deskProfileData);
-                    string deskProfilePath = Path.Combine(LocalDatabaseManager.DatabaseFolderPath, DeskProfiles[i].DeskId + ".txt");  
+                    string deskProfilePath = Path.Combine(LocalDatabaseManager.DatabaseFolderPath, DeskProfiles[i].DeskId + ".txt");
                     if (Directory.Exists(deskProfilePath))
                         Directory.CreateDirectory(deskProfilePath);
                     File.WriteAllText(deskProfilePath, encodedData);
@@ -189,7 +190,7 @@ namespace LucidDesk.Manager.Database
 
         internal static bool ContainsDisplayID(string id)
         {
-           return DeskProfiles.Any(i => i.DisplayID == id);
+            return DeskProfiles.Any(i => i.DisplayID == id);
         }
     }
 }

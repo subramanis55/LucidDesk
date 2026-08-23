@@ -1,11 +1,10 @@
-﻿using System;
+﻿using LucidDesk.DS.Classes;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LucidDesk.Manager.Database
@@ -25,8 +24,8 @@ namespace LucidDesk.Manager.Database
             List<(string IpAddress, string HostName)> desk = GetLocalNetworkDevices();
             foreach (var desk_ in desk)
             {
-                 if(!DeskProfileManager.ContainsDisplayID(desk_.IpAddress))
-                desks.Add(new Desk() { IPAddress = desk_.IpAddress, HostName = desk_.HostName });
+                if (!DeskProfileManager.ContainsDisplayID(desk_.IpAddress))
+                    desks.Add(new Desk() { IPAddress = desk_.IpAddress, HostName = desk_.HostName });
             }
             return desks;
         }

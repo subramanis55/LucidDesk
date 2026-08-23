@@ -1,0 +1,394 @@
+﻿using LucidDesk.DS.Classes;
+using LucidDesk.DS.Enum;
+using LucidDesK.DS.DataSchema;
+using NAudio.Wave;
+using Newtonsoft.Json;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Point = System.Windows.Point;
+
+namespace LucidDesk.Manager
+{
+    public partial class ClientNetworkManager
+    {
+        public DeskConnectionInformation deskConnectionInformation;
+        public DeskConnectionInformation DeskConnectionInformation
+        {
+            set
+            {
+                deskConnectionInformation = value;
+                if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Local)
+                {
+                    if (deskConnectionInformation.ConnectionType == ConnectionType.Invite && deskConnectionInformation.InviteID != null && deskConnectionInformation.Status == true)
+                    {
+                        ClientIpaddress = deskConnectionInformation.SenderDesk.HostName != null ? SystemInformationManager.GetPcIPAddress(deskConnectionInformation.SenderDesk.HostName) : deskConnectionInformation.SenderDesk.IPAddress;
+                        if (ClientIpaddress == "")
+                            ClientIpaddress = deskConnectionInformation.SenderDesk.IPAddress;
+                    }
+                    else
+                    {
+                        ClientIpaddress = deskConnectionInformation.ReceiverDesk.HostName != null ? SystemInformationManager.GetPcIPAddress(deskConnectionInformation.ReceiverDesk.HostName) : deskConnectionInformation.ReceiverDesk.IPAddress;
+                        if (ClientIpaddress == "")
+                            ClientIpaddress = deskConnectionInformation.ReceiverDesk.IPAddress;
+                    }
+
+                }
+
+            }
+            get
+            {
+                return deskConnectionInformation;
+            }
+        }
+
+        public const int PORT = 12345;
+        public event EventHandler<DeskImageData> ScreenShareUpdateInvoke;
+        public event EventHandler<string> DisConnectedToSeverInvoke;
+        public event EventHandler ConnectionEstabishFailInvoke;
+        public event EventHandler<DeskConnectionInformation> ConnectionResponseReceived;
+        public ClientNetworkManager()
+        {
+            _proc = HookCallback;
+            _hookID = SetHook(_proc);
+        }
+        private TcpClient AudioTcpClient;
+        private WaveOutEvent _waveOut;
+        private BufferedWaveProvider _bufferedWaveProvider;
+        private CancellationTokenSource _cancellationTokenSource;
+        private TcpClient client;
+        private NetworkStream stream;
+        public bool isConnected;
+        private LowLevelKeyboardProc _proc;
+        private IntPtr _hookID = IntPtr.Zero;
+        public string ClientIpaddress;
+
+        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool UnhookWindowsHookEx(IntPtr hhk);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr GetModuleHandle(string lpModuleName);
+
+        private IntPtr SetHook(LowLevelKeyboardProc proc)
+        {
+            using (var curProcess = Process.GetCurrentProcess())
+            using (var curModule = curProcess.MainModule)
+            {
+                return SetWindowsHookEx(13, proc, GetModuleHandle(curModule.ModuleName), 0);
+            }
+        }
+
+        private bool WindowsKey;
+        private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+        {
+
+            if (nCode >= 0 && (wParam == (IntPtr)0x0100 || wParam == (IntPtr)0x0104))
+            {
+                int vkCode = Marshal.ReadInt32(lParam);
+                bool isWindowsKey = (vkCode == 0x5B || vkCode == 0x5C);
+                bool isAltTab = (vkCode == 0x09 && (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)));
+                bool isCtrlV = (vkCode == 0x56) && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl));
+                bool isClipboardOpen = (vkCode == 0x56) && (Keyboard.IsKeyUp(Key.LWin) || Keyboard.IsKeyUp(Key.RWin));
+                if (isWindowsKey) WindowsKey = true;
+                else WindowsKey = false;
+
+                //if (isWindowsKey && !isClipboardOpen && !isCtrlV)
+                //{
+                //    // Send Windows key event to the server
+                //    //SendKeyEvent((Key)vkCode, "KeyDown");
+                //    SendKeyEvent((Key)vkCode, "WindowKey");
+                //    return (IntPtr)1;
+                //}
+                //else if (isClipboardOpen && !isCtrlV && WindowsKey)
+                //{
+                //    SendKeyEvent((Key)vkCode, "ClipBoardOpen");
+                //    return (IntPtr)(1);
+                //}
+                //else if (isAltTab)
+                //{
+                //    // Handle Alt+Tab locally (don't send to server)
+                //    SendKeyEvent((Key)vkCode, "AltTab");
+                //    return (IntPtr)1; // Suppress the key press locally
+                //}
+
+            }
+            return CallNextHookEx(_hookID, nCode, wParam, lParam);
+
+        }
+
+
+
+        public void InviteRequestSent(DeskConnectionInformation deskConnectionInformation)
+        {
+            DeskConnectionInformation = deskConnectionInformation;
+            try
+            {
+                using (TcpClient client = new TcpClient(ClientIpaddress, PORT))
+                using (NetworkStream stream = client.GetStream())
+                using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
+                {
+                    string json = JsonConvert.SerializeObject(new Data() { DataObject = deskConnectionInformation, ReponseAndReqType = ReponseAndReqType.ConnectReq });
+                    WriteObject(stream, json);
+
+                }
+            }
+            catch
+            {
+                ConnectionEstabishFailInvoke?.Invoke(this, EventArgs.Empty);
+            }
+
+        }
+
+        public async Task ConnectToServer(DeskConnectionInformation deskConnectionInformation, ReponseAndReqType reqType = ReponseAndReqType.ConnectReq)
+        {
+            DeskConnectionInformation = deskConnectionInformation;
+            try
+            {
+                //if (ClientIpaddress == null || ClientIpaddress == "")
+                //{
+                //    ConnectionEstabishFailInvoke?.Invoke(this, EventArgs.Empty);
+                //    return;
+                //}
+                client = new TcpClient(SettingsManager.Settings.ServerAddress, SettingsManager.Settings.ServerPort);
+                stream = client.GetStream();
+                isConnected = true;
+                sendConnectRequest(deskConnectionInformation, reqType);
+                HandleServerReponseDatas();
+            }
+            catch (Exception ex)
+            {
+                ConnectionClose(ex.Message);
+
+            }
+        }
+
+        private async Task sendConnectRequest(DeskConnectionInformation deskConnectionInformation, ReponseAndReqType reqType)
+        {
+            string json = JsonConvert.SerializeObject(new Data() { DataObject = deskConnectionInformation, ReponseAndReqType = reqType });
+            WriteObject(stream, json);
+        }
+
+        private void WriteObject(Stream stream, byte[] data)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
+                {
+                    writer.Write(data.Length);
+                    writer.Write(data);
+                    writer.Flush();
+                }
+            }
+            catch (Exception ex)
+            {
+                ConnectionClose();
+            }
+        }
+        private void WriteObject(Stream stream, string json)
+        {
+            try
+            {
+                byte[] data = Encoding.UTF8.GetBytes(json);
+                byte[] lengthPrefix = BitConverter.GetBytes(data.Length); // 4 bytes
+
+                stream.Write(lengthPrefix, 0, lengthPrefix.Length);
+                stream.Write(data, 0, data.Length);
+                stream.Flush();
+            }
+            catch (Exception ex)
+            {
+                ConnectionClose();
+            }
+        }
+
+        private async Task HandleServerReponseDatas()
+        {
+            while (isConnected)
+            {
+                try
+                {
+                    // Read the image data length from the stream (assuming length is sent as an int before image data)
+                    byte[] lengthBuffer = new byte[4];
+                    await stream.ReadAsync(lengthBuffer, 0, 4);
+                    int imageLength = BitConverter.ToInt32(lengthBuffer, 0);
+                    // Read the actual image data
+                    byte[] dataBuffer = new byte[imageLength];
+                    int bytesRead = 0;
+                    while (bytesRead < imageLength)
+                    {
+                        bytesRead += await stream.ReadAsync(dataBuffer, bytesRead, imageLength - bytesRead);
+                    }
+                    string json = Encoding.UTF8.GetString(dataBuffer);
+                    var data = JsonConvert.DeserializeObject<Data>(json);
+
+                    if (data.ReponseAndReqType == ReponseAndReqType.ScreenShareImageData)
+                        ScreenShareUpdateInvoke?.Invoke(this, data.GetDeserializeDeskImageData());
+                    else if (data.ReponseAndReqType == ReponseAndReqType.ReqResponse)
+                    {
+                        DeskConnectionInformation deskConnectionInformation = data.GetDeserializeDeskConnectionInformation();
+                        deskConnectionInformation.SenderDesk.Freeze();
+                        deskConnectionInformation.ReceiverDesk.Freeze();
+                        if (deskConnectionInformation.Status == true && deskConnectionInformation.IsRequestStatusUpdate == true)
+                        {
+                            DeskConnectionInformation.Status = true;
+                            DeskConnectionInformation.ScreenInformation = deskConnectionInformation.ScreenInformation;
+                        }
+                        ConnectionResponseReceived?.Invoke(this, deskConnectionInformation);
+                    }
+
+                }
+                catch (IOException ex) when (ex.InnerException is SocketException socketEx && (socketEx.SocketErrorCode == SocketError.ConnectionReset || socketEx.SocketErrorCode == SocketError.ConnectionAborted))
+                {
+                    ConnectionClose("Error at receiving reponse data: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    ConnectionClose("Error at receiving reponse data: " + ex.Message);
+
+                }
+            }
+        }
+
+        public void SendMouseScrollEvent(ControlKeyType controlKeyType, Point position, double ScreenImageActualWidth, double ScreenImageActualHeight, double delta = 0)
+        {
+            if (client != null && client.Connected && deskConnectionInformation.MouseAccess)
+            {
+                NetworkStream stream = client.GetStream();
+                // Get the client's screen resolution
+                string scrollData = $"{(position.X / ScreenImageActualWidth)},{(position.Y / ScreenImageActualHeight)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}:{delta}";
+                Data data = new Data();
+                data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
+                data.DataObject = new DeskControlData()
+                {
+                    ControlDataType = controlKeyType,
+                    ControlData = scrollData
+                };
+                string json = JsonConvert.SerializeObject(data);
+                WriteObject(stream, json);
+            }
+        }
+
+        public void SendMouseEvent(ControlKeyType controlKeyType, Point position, double ScreenImageActualWidth, double ScreenImageActualHeight, LucidDesK.DS.DataSchema.Screens.Screen selectedScreen = null)
+        {
+            if (client != null && client.Connected && deskConnectionInformation.MouseAccess)
+            {
+                NetworkStream stream = client.GetStream();
+                // Get the client's screen resolution
+
+                //string mouseData = $"{(position.X / ScreenImageActualWidth) * SystemInformationManager.ScreenWidth},{(position.Y / ScreenImageActualHeight) * SystemInformationManager.ScreenHeight}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
+                string mouseData = $"{(position.X / ScreenImageActualWidth)},{(position.Y / ScreenImageActualHeight)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
+                Data data = new Data();
+                data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
+                data.DataObject = new DeskControlData()
+                {
+                    ControlDataType = controlKeyType,
+                    ControlData = mouseData
+                };
+                string json = JsonConvert.SerializeObject(data);
+                WriteObject(stream, json);
+            }
+        }
+
+
+        public void SendScreenSwitchEvent(LucidDesK.DS.DataSchema.Screens.Screen e)
+        {
+            if (client == null && !client.Connected)
+                return;
+            Data data = new Data();
+            data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
+            data.DataObject = new DeskControlData()
+            {
+                ControlDataType = ControlKeyType.ScreenSwitch,
+                ControlData = $"{DeskConnectionInformation.ScreenInformation.Screens.IndexOf(e)}:{JsonConvert.SerializeObject(e)}"
+            };
+            string json = JsonConvert.SerializeObject(data);
+            WriteObject(client.GetStream(), json);
+        }
+
+        //KeyPress
+
+        public void ReceiveClipboard()
+        {
+            byte[] buffer = new byte[1024];
+            while (true)
+            {
+                int byteRead = stream.Read(buffer, 0, buffer.Length);
+                if (byteRead > 0)
+                {
+                    string receiveText = Encoding.UTF8.GetString(buffer, 0, byteRead);
+                    System.Windows.Clipboard.SetText(receiveText);
+                }
+            }
+        }
+
+
+        public void SendKeyEvent(ControlKeyType controlKeyType, Key key)
+        {
+            if (client != null && client.Connected)
+            {
+                NetworkStream stream = client.GetStream();
+                // Convert Key to virtual key code
+                byte virtualKeyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
+                // Get the client's screen resolution
+                string keydata = $"{0},{0}:{SystemInformationManager.ScreenWidth}:{SystemInformationManager.ScreenHeight}:{virtualKeyCode}";
+                Data data = new Data();
+                data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
+                data.DataObject = new DeskControlData()
+                {
+                    ControlDataType = controlKeyType,
+                    ControlData = keydata
+                };
+                string json = JsonConvert.SerializeObject(data);
+                WriteObject(stream, json);
+            }
+        }
+        //Mouse Rightclick
+
+        public void SendMouseRightEvent(ControlKeyType controlKeyType, Point position, double ScreenImageActualWidth, double ScreenImageActualHeight)
+        {
+            if (client != null && client.Connected)
+            {
+                NetworkStream stream = client.GetStream();
+                // Get the client's screen resolution
+                string keydata = $"{(position.X / ScreenImageActualWidth)},{(position.Y / ScreenImageActualHeight)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
+                Data data = new Data();
+                data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
+                data.DataObject = new DeskControlData()
+                {
+                    ControlDataType = controlKeyType,
+                    ControlData = keydata
+                };
+                string json = JsonConvert.SerializeObject(data);
+                WriteObject(stream, json);
+            }
+        }
+
+        public void ConnectionClose(string err = null)
+        {
+            client?.Close();
+            AudioTcpClient?.Close();
+            stream?.Dispose();
+            isConnected = false;
+            deskConnectionInformation = null;
+            DisConnectedToSeverInvoke?.Invoke(this, err);
+
+        }
+    }
+}
+
+

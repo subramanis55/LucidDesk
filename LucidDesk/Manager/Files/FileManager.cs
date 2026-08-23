@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace LucidDesk.Manager.Files
@@ -32,7 +28,6 @@ namespace LucidDesk.Manager.Files
             try
             {
                 byte[] imageBytes = Convert.FromBase64String(base64String);
-
 
                 using (MemoryStream memoryStream = new MemoryStream(imageBytes))
                 {

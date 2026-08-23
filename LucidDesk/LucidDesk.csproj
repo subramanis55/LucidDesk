@@ -135,19 +135,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="FeaturesFuntionMangerClasses\ColorFeatures.cs" />
-    <Compile Include="FeaturesFuntionMangerClasses\ColorReductionConverter.cs" />
-    <Compile Include="FeaturesFuntionMangerClasses\NullToVisibilityConverter.cs" />
-    <Compile Include="Files\FileInfo.cs" />
-    <Compile Include="Files\FileLocationManager.cs" />
-    <Compile Include="Log\LogManager.cs" />
-    <Compile Include="Manager\Classes\DataSchema\DeskControlData.cs" />
-    <Compile Include="Manager\Classes\DataSchema\DeskImageData.cs" />
-    <Compile Include="Manager\Classes\DataSchema\Data.cs" />
-    <Compile Include="Manager\Classes\DataSchema\Screens\Screen.cs" />
-    <Compile Include="Manager\Classes\DataSchema\Screens\ScreenInformation.cs" />
+    <Compile Include="DS\Models\PeerInfo.cs" />
+    <Compile Include="Manager\Connection\ConnectionHandler.cs" />
+    <Compile Include="Manager\FeaturesFuntionMangerClasses\ColorFeatures.cs" />
+    <Compile Include="Manager\FeaturesFuntionMangerClasses\ColorReductionConverter.cs" />
+    <Compile Include="Manager\FeaturesFuntionMangerClasses\NullToVisibilityConverter.cs" />
+    <Compile Include="Manager\Files\FileInfo.cs" />
+    <Compile Include="Manager\Files\FileLocationManager.cs" />
+    <Compile Include="Manager\Log\LogManager.cs" />
+    <Compile Include="DS\DataSchema\DeskControlData.cs" />
+    <Compile Include="DS\DataSchema\DeskImageData.cs" />
+    <Compile Include="DS\DataSchema\Data.cs" />
+    <Compile Include="DS\DataSchema\Screens\Screen.cs" />
+    <Compile Include="DS\DataSchema\Screens\ScreenInformation.cs" />
+    <Compile Include="Manager\Connection\ConnectionManager.cs" />
     <Compile Include="Manager\Database\UnIdentifiedLocalDeskManager.cs" />
-    <Compile Include="Manager\Models\User.cs" />
+    <Compile Include="DS\Models\User.cs" />
+    <Compile Include="Manager\Network\INetworkConnectionHandler.cs" />
+    <Compile Include="Manager\Network\INetworkConnectionManager.cs" />
+    <Compile Include="Manager\Network\TCP\TCPConnectionHandler.cs" />
+    <Compile Include="Manager\Network\TCP\TCPManager.cs" />
+    <Compile Include="Manager\Network\UDP\UDPConnectionHandler.cs" />
+    <Compile Include="Manager\RemoteControllers\RemoteInputReceiver.cs" />
+    <Compile Include="Manager\RemoteControllers\RemoteInputSender.cs" />
+    <Compile Include="Manager\RemoteControllers\ScreenShareManager.cs" />
     <Compile Include="Screen\ConnectionAcceptWindow.xaml.cs">
       <DependentUpon>ConnectionAcceptWindow.xaml</DependentUpon>
     </Compile>
@@ -157,23 +168,22 @@
     <Compile Include="Screen\loginWindow.xaml.cs">
       <DependentUpon>loginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Manager\Classes\DataSchema\DeskConnectionInformation.cs" />
-    <Compile Include="Manager\Enum\Enum.cs" />
+    <Compile Include="DS\Classes\DeskConnectionInformation.cs" />
+    <Compile Include="DS\Enum\Enum.cs" />
     <Compile Include="Manager\Files\FileManager.cs" />
-    <Compile Include="Manager\Network\ClientNetworkManager.cs" />
+    <Compile Include="Manager\Network\TCP\ClientNetworkManager.cs" />
     <Compile Include="Manager\Database\DeskProfileManager.cs" />
     <Compile Include="Manager\Database\LocalDatabaseManager.cs" />
-    <Compile Include="Manager\Database\ServerDatabaseManager.cs" />
-    <Compile Include="Manager\Network\ServerNetworkManager.cs" />
+    <Compile Include="Manager\Network\TCP\ServerNetworkManager.cs" />
     <Compile Include="Manager\Security\SecurityManager.cs" />
     <Compile Include="Manager\SystemInformationManager.cs" />
     <Compile Include="Screen\ConnectWithPassword.xaml.cs">
       <DependentUpon>ConnectWithPassword.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Manager\Services\APIService.cs" />
-    <Compile Include="Manager\Services\UserService.cs" />
-    <Compile Include="Settings\Settings.cs" />
-    <Compile Include="Settings\SettingsManager.cs" />
+    <Compile Include="DS\Settings\SystemSettings.cs" />
+    <Compile Include="Manager\Settings\SettingsManager.cs" />
+    <Compile Include="Services\APIService.cs" />
+    <Compile Include="Services\UserService.cs" />
     <Compile Include="UserControls\Common\CustomTextBox.xaml.cs">
       <DependentUpon>CustomTextBox.xaml</DependentUpon>
     </Compile>
@@ -318,7 +328,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Manager\Classes\Desk.cs" />
+    <Compile Include="DS\Classes\Desk.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -391,5 +401,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
