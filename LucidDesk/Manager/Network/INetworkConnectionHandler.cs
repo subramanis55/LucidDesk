@@ -8,6 +8,7 @@ namespace LucidDesk.Manager.Network
     {
         event EventHandler<Data> ReceivedDataInvoke;
 
+        bool IsConnected { get; }
         Task<bool> Start();
 
         void Close();

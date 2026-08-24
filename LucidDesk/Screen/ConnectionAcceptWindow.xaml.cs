@@ -1,20 +1,9 @@
-﻿using LucidDesk.Manager;
-using LucidDesk.Manager.Classes;
-using LucidDesk.Manager.Enum;
-using MySqlX.XDevAPI.Relational;
+﻿using LucidDesk.DS.Classes;
+using LucidDesk.DS.Enum;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace LucidDesk
 {
@@ -82,7 +71,7 @@ namespace LucidDesk
 
         private void AccessCheckBoxDisable(bool enable)
         {
-            AccessTypeCombobox.IsEnabled= KeyboardAccessCheckBox.IsEnabled = MouseAccessCheckBox.IsEnabled = ClipboardAccessCheckBox.IsEnabled = AudioAccessCheckBox.IsEnabled = enable;
+            AccessTypeCombobox.IsEnabled = KeyboardAccessCheckBox.IsEnabled = MouseAccessCheckBox.IsEnabled = ClipboardAccessCheckBox.IsEnabled = AudioAccessCheckBox.IsEnabled = enable;
         }
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {

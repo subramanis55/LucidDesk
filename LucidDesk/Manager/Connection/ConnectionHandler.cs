@@ -10,13 +10,15 @@ namespace LucidDesk.Manager.Connection
 {
     public class ConnectionHandler
     {
-        public event Action ConnectionEstabishFailInvoke;
+        public event Action DisConnectedToSeverInvoke;
         public event EventHandler<DeskConnectionInformation> ConnectionResponseReceived;
         public event Action<DeskImageData> ReceivedDeskImageDataInvoke;
 
         public DeskConnectionInformation deskConnectionInformation;
 
         public bool IsRemoteServer;
+
+        public bool IsConnected => networkConnectionHandler?.IsConnected ?? false;
 
         private INetworkConnectionHandler networkConnectionHandler;
 
@@ -58,7 +60,6 @@ namespace LucidDesk.Manager.Connection
                 RemoteInputReceiver.HandleRemoteEvent(data.GetDeserializeDeskControlData());
 
         }
-
 
         public void Close()
         {

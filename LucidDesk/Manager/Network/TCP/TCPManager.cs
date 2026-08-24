@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Timer = System.Threading.Timer;
 
 #endregion
 
@@ -48,17 +47,19 @@ namespace LucidDesk.Manager.Network.TCP
         public TCPManager(int port)
         {
             PORT = port;
+
         }
-        public void StartServer()
+        public bool StartServer()
         {
-            if (IsStarted) return;
+            if (IsStarted) return true;
             cancellationTokenSource = new CancellationTokenSource();
             tcpListener = new TcpListener(IPAddress.Any, PORT);
             tcpListener.Start();
             Task.Run(() => AcceptClients(cancellationTokenSource.Token));
-
-            remainTimer = new System.Threading.Timer(RemainingClientsCheck, null, TimeSpan.Zero, TimeSpan.FromSeconds(30));  // Check every 30 seconds
+            // Check every 30 seconds
+            remainTimer = new System.Threading.Timer(RemainingClientsCheck, null, TimeSpan.Zero, TimeSpan.FromSeconds(30));
             isStarted = true;
+            return isStarted;
         }
 
         private async Task AcceptClients(CancellationToken cancellationToken)
@@ -118,6 +119,7 @@ namespace LucidDesk.Manager.Network.TCP
             if (!IsStarted) return;
             cancellationTokenSource.Cancel();
             tcpListener.Stop();
+            remainTimer.Dispose();
             foreach (var client in connectedClients.Values)
             {
                 client.Close();

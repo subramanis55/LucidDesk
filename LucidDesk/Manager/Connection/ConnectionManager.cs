@@ -13,6 +13,7 @@ namespace LucidDesk.Manager.Connection
 {
     public static class ConnectionManager
     {
+
         public static event Action<DeskConnectionInformation> ConnectRequestStatusInvoke;
         public static event Action<DeskConnectionInformation> InviteRequestReceivedInvoke;
         public static event Action<DeskConnectionInformation> ConnectRequestReceivedInvoke;
@@ -26,6 +27,8 @@ namespace LucidDesk.Manager.Connection
         public static Dictionary<DeskConnectionInformation, INetworkConnectionHandler> WaitingConnectionDict = new Dictionary<DeskConnectionInformation, INetworkConnectionHandler>();
 
         private static INetworkConnectionManager networkConnectionManager;
+
+        public static bool IsSeverStarted { get => networkConnectionManager?.IsStarted ?? false; }
         public static bool StartConnectionServer()
         {
             if (SettingsManager.Settings.ConnectionMode == "TCP")
@@ -115,6 +118,8 @@ namespace LucidDesk.Manager.Connection
         public static ConnectionHandler ConnectReq(DeskConnectionInformation deskConnectionInformation)
         {
 
+            //TODO connection
+            return null;
         }
 
         private static void AddInviteReq(DeskConnectionInformation deskConnectionInformation)

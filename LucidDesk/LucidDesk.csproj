@@ -156,6 +156,7 @@
     <Compile Include="Manager\Network\TCP\TCPConnectionHandler.cs" />
     <Compile Include="Manager\Network\TCP\TCPManager.cs" />
     <Compile Include="Manager\Network\UDP\UDPConnectionHandler.cs" />
+    <Compile Include="Manager\Network\UDP\UDPManager.cs" />
     <Compile Include="Manager\RemoteControllers\RemoteInputReceiver.cs" />
     <Compile Include="Manager\RemoteControllers\RemoteInputSender.cs" />
     <Compile Include="Manager\RemoteControllers\ScreenShareManager.cs" />
@@ -171,10 +172,8 @@
     <Compile Include="DS\Classes\DeskConnectionInformation.cs" />
     <Compile Include="DS\Enum\Enum.cs" />
     <Compile Include="Manager\Files\FileManager.cs" />
-    <Compile Include="Manager\Network\TCP\ClientNetworkManager.cs" />
     <Compile Include="Manager\Database\DeskProfileManager.cs" />
     <Compile Include="Manager\Database\LocalDatabaseManager.cs" />
-    <Compile Include="Manager\Network\TCP\ServerNetworkManager.cs" />
     <Compile Include="Manager\Security\SecurityManager.cs" />
     <Compile Include="Manager\SystemInformationManager.cs" />
     <Compile Include="Screen\ConnectWithPassword.xaml.cs">
@@ -194,6 +193,9 @@
       <DependentUpon>NotificationControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Common\NotificationManager.cs" />
+    <Compile Include="UserControls\Common\PasswordTextBox.xaml.cs">
+      <DependentUpon>PasswordTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Common\ProfileImageSelect.xaml.cs">
       <DependentUpon>ProfileImageSelect.xaml</DependentUpon>
     </Compile>
@@ -283,6 +285,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\Common\NotificationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Common\PasswordTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

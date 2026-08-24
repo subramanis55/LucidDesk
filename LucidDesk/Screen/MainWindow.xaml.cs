@@ -1,27 +1,21 @@
-﻿using LucidDesk.Log;
+﻿using LucidDesk.DS.Classes;
+using LucidDesk.DS.Enum;
+using LucidDesk.Log;
 using LucidDesk.Manager;
-using LucidDesk.Manager.Classes;
-using LucidDesk.Manager.Classes.DataSchema;
+using LucidDesk.Manager.Connection;
 using LucidDesk.Manager.Database;
-using LucidDesk.Manager.Enum;
 using LucidDesk.Manager.Files;
+using LucidDesk.Manager.Settings;
 using LucidDesk.Screen;
-using LucidDesk.Settings;
 using LucidDesk.UserControls;
 using LucidDesk.UserControls.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Security;
-using System.Security.Cryptography;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -38,8 +32,7 @@ namespace LucidDesk
 
         public static UserControls.Common.NotificationManager NotificationManager = new UserControls.Common.NotificationManager();
 
-        public static ClientNetworkManager ClientNetworkManager = new ClientNetworkManager();
-        public static ServerNetworkManager ServerNetworkManager = new ServerNetworkManager();
+        public ConnectionHandler ConnectionHandler;
         public static DeskProfile SelectedDeskProfile { get; set; }
 
         private BitmapImage _gifImage;
@@ -64,7 +57,7 @@ namespace LucidDesk
         {
             get
             {
-                return ClientNetworkManager.isConnected;
+                return ConnectionHandler?.IsConnected ?? false;
             }
         }
 
@@ -91,7 +84,7 @@ namespace LucidDesk
 
         }
 
-        private Manager.Classes.DataSchema.Screens.Screen selectedScreen;
+        private LucidDesk.DS.DataSchema.Screens.Screen selectedScreen;
 
         public MainWindow()
         {
@@ -123,7 +116,6 @@ namespace LucidDesk
         public void MethodSubscribe()
         {
             NotificationManager.OnClickInviteStatusGet += NotificationManagerOnClickInviteStatusGet;
-
             SearchBoxControl.OnClickFullScreen += SearchBoxControlOnClickFullScreen;
             SearchBoxControl.OnClickScreenNormal += SearchBoxControlOnClickScreenNormal;
             SearchBoxControl.OnClickScreenStretch += SearchBoxControlOnClickScreenStrech;
@@ -132,15 +124,15 @@ namespace LucidDesk
             SearchBoxControl.OnClickConnectWithPassword += DeskProfileOnClickConnectWithPassword;
             DeskProfileManager.DeskProfilesUpdated += DeskProfileManagerDeskProfilesUpdated;
 
-            ServerNetworkManager.InviteRequestReceivedInvoke += ServerNetworkManagerInviteRequestReceivedInvoke;
-            ServerNetworkManager.ConnectRequestReceivedInvoke += ServerNetworkManagerConnectRequestReceivedInvoke;
-            ServerNetworkManager.ConnectRequestStatusInvoke += ServerNetworkManagerConnectRequestStatusInvoke;
+            ConnectionManager.InviteRequestReceivedInvoke += ServerNetworkManagerInviteRequestReceivedInvoke;
+            ConnectionManager.ConnectRequestReceivedInvoke += ServerNetworkManagerConnectRequestReceivedInvoke;
+            ConnectionManager.ConnectRequestStatusInvoke += ServerNetworkManagerConnectRequestStatusInvoke;
 
             screenSwitchControl.ScreenSelectionChanged += ScreenSwitchControlScreenSelectionChanged;
 
-            ClientNetworkManager.ScreenShareUpdateInvoke += ClientNetworkManagerScreenShareUpdateInvoke;
-            ClientNetworkManager.DisConnectedToSeverInvoke += ClientNetworkManagerDisConnectedToSeverInvoke;
-            ClientNetworkManager.ConnectionEstabishFailInvoke += ClientNetworkManagerConnectionEstabishFailInvoke;
+            ConnectionHandler.ReceivedDeskImageDataInvoke += ClientNetworkManagerScreenShareUpdateInvoke;
+            ConnectionHandler.DisConnectedToSeverInvoke += ClientNetworkManagerDisConnectedToSeverInvoke;
+            // ClientNetworkManager.ConnectionEstabishFailInvoke += ClientNetworkManagerConnectionEstabishFailInvoke;
             ClientNetworkManager.ConnectionResponseReceived += ClientNetworkManagerConnectionResponseReceived;
 
             ScreenImage.MouseRightButtonUp += ScreenImageMouseRightButtonUp;
@@ -156,7 +148,7 @@ namespace LucidDesk
             SessionTabHeader.OnClickClose += SessionTabHeaderOnClickClose;
         }
 
-        private void ScreenSwitchControlScreenSelectionChanged(object sender, Manager.Classes.DataSchema.Screens.Screen e)
+        private void ScreenSwitchControlScreenSelectionChanged(object sender, LucidDesk.DS.DataSchema.Screens.Screen e)
         {
             selectedScreen = e;
             ClientNetworkManager.SendScreenSwitchEvent(e);
@@ -689,7 +681,7 @@ namespace LucidDesk
             inviteWindow.ShowDialog();
         }
 
-        private void ServerNetworkManagerInviteRequestReceivedInvoke(object sender, DeskConnectionInformation deskConnectionInformation)
+        private void ServerNetworkManagerInviteRequestReceivedInvoke(DeskConnectionInformation deskConnectionInformation)
         {
             if (DeskProfileManager.DeskProfilesDictionary.ContainsKey("" + deskConnectionInformation.SenderDesk.DeskId))
                 deskConnectionInformation.SenderDesk = DeskProfileManager.DeskProfilesDictionary["" + deskConnectionInformation.SenderDesk.DeskId];
@@ -797,7 +789,7 @@ namespace LucidDesk
             });
         }
 
-        private void ClientNetworkManagerDisConnectedToSeverInvoke(object sender, string message)
+        private void ClientNetworkManagerDisConnectedToSeverInvoke(string message)
         {
 
             Dispatcher.Invoke(new Action(() =>
@@ -849,7 +841,7 @@ namespace LucidDesk
 
         }
 
-        private void ServerNetworkManagerConnectRequestStatusInvoke(object sender, DeskConnectionInformation deskConnectionInformation)
+        private void ServerNetworkManagerConnectRequestStatusInvoke(DeskConnectionInformation deskConnectionInformation)
         {
 
             if (deskConnectionInformation.Status)
@@ -915,7 +907,7 @@ namespace LucidDesk
             ServerNetworkManager.RequestUpdate(deskConnectionInformation);
         }
 
-        private void ServerNetworkManagerConnectRequestReceivedInvoke(object sender, DeskConnectionInformation deskConnectionInformation)
+        private void ServerNetworkManagerConnectRequestReceivedInvoke(DeskConnectionInformation deskConnectionInformation)
         {
             try
             {

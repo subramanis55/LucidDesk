@@ -1,18 +1,8 @@
-﻿using LucidDesk.Manager.Classes;
+﻿using LucidDesk.DS.Classes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace LucidDesk.UserControls.Common
@@ -22,7 +12,7 @@ namespace LucidDesk.UserControls.Common
     /// </summary>
     public partial class NotificationControl : Window
     {
-     
+
         private static int borderRadius;
         private string message;
         public int IncreaseWidthCount = 8;
@@ -30,19 +20,22 @@ namespace LucidDesk.UserControls.Common
         public Duration Duration = new Duration(TimeSpan.FromSeconds(8));
 
         public event EventHandler<DeskConnectionInformation> OnClickInviteStatusGet;
-       
+
         public event EventHandler OnEnd;
-       
+
         public DeskConnectionInformation DeskConnectionInformation;
         public DispatcherTimer DispatcherTimer = new DispatcherTimer();
-        public string Message{
-          set{
+        public string Message
+        {
+            set
+            {
                 message = value;
                 MessageText.Text = message;
-          }
-          get{
+            }
+            get
+            {
                 return message;
-          }
+            }
         }
 
         public Brush ThemeBrush
@@ -90,13 +83,13 @@ namespace LucidDesk.UserControls.Common
         public NotificationControl(string message, NotificationType notificationType)
         {
             InitializeComponent();
-            
+
             DataContext = this;
             Message = message;
             NotificationType = notificationType;
             Loaded += NotificationControlLoaded;
         }
-        public NotificationControl( DeskConnectionInformation deskConnectionInformation)
+        public NotificationControl(DeskConnectionInformation deskConnectionInformation)
         {
             InitializeComponent();
             DataContext = this;
@@ -120,10 +113,10 @@ namespace LucidDesk.UserControls.Common
 
         private void IncreaseWidthCompleted(object sender, EventArgs e)
         {
-            DoubleAnimation doubleAnimation = new DoubleAnimation() {  To = 0.1, Duration = new Duration(TimeSpan.FromSeconds(2)) };
+            DoubleAnimation doubleAnimation = new DoubleAnimation() { To = 0.1, Duration = new Duration(TimeSpan.FromSeconds(2)) };
             doubleAnimation.Completed += OpacityCompleted;
             this.BeginAnimation(OpacityProperty, doubleAnimation);
-          
+
         }
 
         private void OpacityCompleted(object sender, EventArgs e)
@@ -133,8 +126,8 @@ namespace LucidDesk.UserControls.Common
 
         private void NotificatinTimeEndCheck(object sender, EventArgs e)
         {
-           
-            if (Opacity <=0.1)
+
+            if (Opacity <= 0.1)
             {
                 DispatcherTimer.Stop();
                 OnEnd?.Invoke(this, EventArgs.Empty);
@@ -143,7 +136,8 @@ namespace LucidDesk.UserControls.Common
             {
                 IncreaseLine.Width += IncreaseWidthCount;
             }
-            else if(IncreaseLine.ActualWidth> ActualWidth) {
+            else if (IncreaseLine.ActualWidth > ActualWidth)
+            {
                 Opacity -= 0.1;
             }
         }
@@ -183,12 +177,11 @@ namespace LucidDesk.UserControls.Common
             OnClickInviteStatusGet?.Invoke(this, DeskConnectionInformation);
             OnEnd?.Invoke(this, EventArgs.Empty);
         }
-        public void Invoke(){
+        public void Invoke()
+        {
 
-          
-
-            DoubleAnimation doubleAnimation = new DoubleAnimation() {From= Left + Width, To = Left, Duration = new Duration(TimeSpan.FromSeconds(0.2)) };
-           Show();
+            DoubleAnimation doubleAnimation = new DoubleAnimation() { From = Left + Width, To = Left, Duration = new Duration(TimeSpan.FromSeconds(0.2)) };
+            Show();
             this.BeginAnimation(Window.LeftProperty, doubleAnimation);
         }
     }

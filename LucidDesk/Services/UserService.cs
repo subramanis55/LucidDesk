@@ -1,4 +1,5 @@
-﻿using LucidDesk.Models;
+﻿using LucidDesk.DS.Models;
+using LucidDesk.Models;
 using System.Threading.Tasks;
 
 namespace LucidDesk.Manager.Services
@@ -20,11 +21,16 @@ namespace LucidDesk.Manager.Services
         {
             return await ApiService.GetAsync<User>($"api/user/{userNumber}");
         }
+        public static async Task<PeerInfo> GetUserPeerInfoAsync(string userNumber)
+        {
+            return await ApiService.GetAsync<PeerInfo>($"api/user/{userNumber}/peerinfo");
+        }
 
         public static async Task<User> UpdateUserAsync(string id, UserUpdateDTO user)
         {
             return await ApiService.PutAsync<UserUpdateDTO, User>($"api/user/{id}", user);
         }
+
     }
 }
 

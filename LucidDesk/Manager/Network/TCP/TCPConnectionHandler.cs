@@ -15,16 +15,23 @@ namespace LucidDesk.Manager.Network.TCP
 
         public event EventHandler<Data> ReceivedDataInvoke;
 
+        public bool IsConnected { get; private set; }
         public TcpClient Client
         {
             get;
             private set;
         }
 
+        public TCPConnectionHandler()
+        {
+
+        }
+
         public TCPConnectionHandler(TcpClient client)
         {
             Client = client;
-            stream = client.GetStream();
+            stream = Client.GetStream();
+
         }
 
         public async Task<bool> Start()
@@ -35,16 +42,15 @@ namespace LucidDesk.Manager.Network.TCP
             return true;
         }
 
-        public async Task<bool> ConnectAsync(string IpAddress, int port)
+        public async Task<bool> ConnectAsync(string localIPAddress, int localPort, string remoteIpAddress, int remotePort)
         {
             try
             {
-                Client = new TcpClient(AddressFamily.InterNetwork);
-                await Client.ConnectAsync(
-                    IPAddress.Parse(IpAddress),
-                    port);
-                var localEndPoint = (IPEndPoint)Client.Client.LocalEndPoint;
-
+                var localEndPoint = new IPEndPoint(IPAddress.Parse(localIPAddress), localPort);
+                Client = new TcpClient(localEndPoint);
+                await Client.ConnectAsync(IPAddress.Parse(remoteIpAddress), remotePort);
+                stream = Client.GetStream();
+                IsConnected = true;
                 return true;
             }
             catch (Exception ex)
@@ -60,7 +66,7 @@ namespace LucidDesk.Manager.Network.TCP
         {
             try
             {
-                var stream = Client.GetStream();
+                stream = Client.GetStream();
                 while (Client.Connected)
                 {
                     {
@@ -124,6 +130,7 @@ namespace LucidDesk.Manager.Network.TCP
 
         public void Close()
         {
+            IsConnected = false;
             Client.Close();
         }
     }

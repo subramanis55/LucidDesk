@@ -1,9 +1,6 @@
-﻿using LucidDesk.Manager.Classes;
+﻿using LucidDesk.DS.Classes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 
@@ -20,8 +17,8 @@ namespace LucidDesk.UserControls.Common
         public event EventHandler<DeskConnectionInformation> OnClickInviteStatusGet;
 
         System.Timers.Timer arrangeTimer = new System.Timers.Timer();
-        private int x = (int)SystemParameters.PrimaryScreenWidth- 50;
-        private int y = (int)SystemParameters.PrimaryScreenHeight- 80;
+        private int x = (int)SystemParameters.PrimaryScreenWidth - 50;
+        private int y = (int)SystemParameters.PrimaryScreenHeight - 80;
 
         public int BorderRadius
         {
@@ -39,7 +36,7 @@ namespace LucidDesk.UserControls.Common
         {
             for (int i = 0; i < NotifiactionList.Count; i++)
             {
-                
+
                 NotifiactionList[i].Left = x - NotifiactionList[i].ActualWidth;
                 NotifiactionList[i].Top = y - (NotifiactionList[i].ActualHeight * (NotifiactionList.Count - i) - 10 * i);
             }
@@ -51,16 +48,16 @@ namespace LucidDesk.UserControls.Common
             NotificationControl obj = new NotificationControl(message, notificationType) { Left = x - 380 };
             obj.OnEnd += DisposeNotification;
             obj.Invoke();
-          
+
             NotifiactionList.Add(obj);
             ArrangeNotification();
         }
 
         public void CreateInviteRequestNotification(DeskConnectionInformation deskConnectionInformation)
         {
-            NotificationControl obj = new NotificationControl(deskConnectionInformation) { Left= x - 380 };
+            NotificationControl obj = new NotificationControl(deskConnectionInformation) { Left = x - 380 };
             obj.OnEnd += DisposeNotification;
-            obj.OnClickInviteStatusGet+= OnClickInviteStatusGet;
+            obj.OnClickInviteStatusGet += OnClickInviteStatusGet;
             obj.Invoke();
             NotifiactionList.Add(obj);
             ArrangeNotification();

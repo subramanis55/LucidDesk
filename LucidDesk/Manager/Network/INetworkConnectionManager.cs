@@ -8,7 +8,7 @@ namespace LucidDesk.Manager.Network
         int PORT { get; }
         bool IsStarted { get; }
 
-        void StartServer();
+        bool StartServer();
 
         void StopServer();
     }

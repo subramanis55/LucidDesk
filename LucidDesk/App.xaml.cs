@@ -1,16 +1,13 @@
-﻿using LucidDesk.Log;
+﻿using LucidDesk.DS.Classes;
+using LucidDesk.Log;
 using LucidDesk.Manager;
+using LucidDesk.Manager.Connection;
 using LucidDesk.Manager.Database;
-using LucidDesk.Manager.Enum;
-using LucidDesk.Settings;
 using LucidDesk.UserControls;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -31,7 +28,7 @@ namespace LucidDesk
             SetUpCheck();
             MainWindow window = new MainWindow();
             window.Show();
-            // ShutdownApp();
+
         }
 
         private void CloseOtherProcess()
@@ -69,28 +66,17 @@ namespace LucidDesk
             }
             else
             {
-
-                //if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Online)
-                //{
-                //    DeskMessageBox.ShowMessageBox("Something Wrong Online SetUp ", "Error", UserControls.MessageBoxType.Ok);
-                //    LogManager.LogException("Something Wrong  Online SetUp ");
-                //    ShutdownApp();
-                //}
-                //else
-                //{
-                    if (!DeskProfileManager.DeskExits(SystemInformationManager.MacAddress))
-                    {
-                        loginWindow loginWindow = new loginWindow();
-                        loginWindow.OnClickNext += LoginWindowOnClickNext;
-                        loginWindow.ShowDialog();
-                    }
-              //  }
+                if (!DeskProfileManager.DeskExits(SystemInformationManager.MacAddress))
+                {
+                    loginWindow loginWindow = new loginWindow();
+                    loginWindow.OnClickNext += LoginWindowOnClickNext;
+                    loginWindow.ShowDialog();
+                }
                 StartNetWorkServerConnection();
             }
         }
         private void LoginWindowOnClickNext(object sender, Desk desk)
         {
-
             DeskProfileManager.CreateDeskProfiledata(desk);
             ((Window)sender).Hide();
         }
@@ -98,8 +84,8 @@ namespace LucidDesk
         private void StartNetWorkServerConnection()
         {
 
-            if (LucidDesk.MainWindow.ServerNetworkManager.isStarted) return;
-            LucidDesk.MainWindow.ServerNetworkManager.StartServer();
+            if (ConnectionManager.IsSeverStarted) return;
+            ConnectionManager.StartConnectionServer();
 
         }
         private void AppDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

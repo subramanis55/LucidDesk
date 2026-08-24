@@ -1,25 +1,11 @@
-﻿using LucidDesk.Manager;
+﻿using LucidDesk.DS.Classes;
+using LucidDesk.Manager;
 using LucidDesk.Manager.Files;
-using LucidDesk.Manager.Security;
 using LucidDesk.Manager.Services;
 using LucidDesk.Models;
 using LucidDesk.UserControls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using SecurityManager = LucidDesk.Manager.Security.SecurityManager;
 
 namespace LucidDesk
 {

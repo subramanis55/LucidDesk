@@ -1,27 +1,15 @@
-﻿using LucidDesk.Manager;
-using LucidDesk.Manager.Classes;
+﻿using LucidDesk.DS.Classes;
+using LucidDesk.DS.Enum;
 using LucidDesk.Manager.Database;
-using LucidDesk.Manager.Enum;
-using LucidDesk.Settings;
-using LucidDesk.UserControls.Common;
+using LucidDesk.Manager.Settings;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LucidDesk.UserControls
 {
