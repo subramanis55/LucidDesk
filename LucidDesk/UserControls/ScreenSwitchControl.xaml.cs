@@ -1,20 +1,8 @@
-﻿using LucidDesk.Manager.Classes.DataSchema.Screens;
+﻿using LucidDesK.DS.DataSchema.Screens;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Hosting;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Linq;
 namespace LucidDesk.UserControls
 {
     /// <summary>
@@ -22,7 +10,7 @@ namespace LucidDesk.UserControls
     /// </summary>
     public partial class ScreenSwitchControl : UserControl
     {
-        public event EventHandler<LucidDesk.Manager.Classes.DataSchema.Screens.Screen> ScreenSelectionChanged;
+        public event EventHandler<LucidDesK.DS.DataSchema.Screens.Screen> ScreenSelectionChanged;
 
         public ScreenInformation Screeninfo;
 
@@ -67,11 +55,12 @@ namespace LucidDesk.UserControls
             Button screenBtn = new Button()
             {
                 Content = name,
-                Height=35,Width=40,
+                Height = 35,
+                Width = 40,
                 Style = (Style)Application.Current.Resources["NormalButton"],
-                Margin = new Thickness(4)   ,
-                BorderThickness=new Thickness(1), 
-                BorderBrush=Brushes.Gainsboro
+                Margin = new Thickness(4),
+                BorderThickness = new Thickness(1),
+                BorderBrush = Brushes.Gainsboro
             };
             screenBtn.Click += ScreenBtnClick;
             return screenBtn;
@@ -79,7 +68,7 @@ namespace LucidDesk.UserControls
 
         private void ScreenBtnClick(object sender, RoutedEventArgs e)
         {
-              SelectedButton=(Button)sender;
+            SelectedButton = (Button)sender;
             if (ScreenSelectPanel.Children.IndexOf((Button)sender) == 0)
                 ScreenSelectionChanged?.Invoke(sender, null);
             else

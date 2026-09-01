@@ -97,7 +97,7 @@ namespace LucidDesk
                 desk = DeskProfileManager.DeskProfilesDictionary.Values.ToList().Where(i => i.DisplayID == Textbox.Text).FirstOrDefault();
             }
             if (desk != null)
-                OnClickInviteButton?.Invoke(this, new DeskConnectionInformation() { AccessType = (AccessType)Enum.Parse(typeof(AccessType), AccessTypeCombobox.SelectedItem.ToString()), ConnectionType = ConnectionType.Invite, AudioAccess = (bool)AudioAccessCheckBox.IsChecked, ClipboardAccess = (bool)ClipboardAccessCheckBox.IsChecked, KeyboardAccess = (bool)KeyboardAccessCheckBox.IsChecked, MouseAccess = (bool)MouseAccessCheckBox.IsChecked, SenderDesk = DeskProfileManager.UserDesk.Clone(), ReceiverDesk = this.Desk.Clone(), });
+                OnClickInviteButton?.Invoke(this, new DeskConnectionInformation() { AccessType = (AccessType)Enum.Parse(typeof(AccessType), AccessTypeCombobox.SelectedItem.ToString()), ConnectionType = ConnectionType.Invite, AudioAccess = (bool)AudioAccessCheckBox.IsChecked, ClipboardAccess = (bool)ClipboardAccessCheckBox.IsChecked, KeyboardAccess = (bool)KeyboardAccessCheckBox.IsChecked, MouseAccess = (bool)MouseAccessCheckBox.IsChecked, SenderDesk = new DeskInfo(DeskProfileManager.UserDesk), ReceiverDesk = new DeskInfo(this.Desk), });
             else
                 MainWindow.NotificationManager.CreateNotification("Id Doesn't exits", NotificationType.Information);
         }

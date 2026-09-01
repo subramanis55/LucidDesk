@@ -13,8 +13,8 @@ namespace LucidDesk.DS.Classes
         }
         public DeskConnectionInformation(Desk receiverDesk, Desk senderDesk, AccessType accessType, ConnectionType connectionType)
         {
-            ReceiverDesk = receiverDesk;
-            SenderDesk = senderDesk;
+            ReceiverDesk = new DeskInfo(receiverDesk);
+            SenderDesk = new DeskInfo(senderDesk);
             ConnectionType = connectionType;
             AccessType = accessType;
             if (AccessType == AccessType.FullAccess)
@@ -25,8 +25,8 @@ namespace LucidDesk.DS.Classes
         }
         public DeskConnectionInformation(Desk receiverDesk, Desk senderDesk, bool keyboardAccess, bool mouseAccess, bool audioAccess, bool clipboardAccess, ConnectionType connectionType)
         {
-            ReceiverDesk = receiverDesk;
-            SenderDesk = senderDesk;
+            ReceiverDesk = new DeskInfo(receiverDesk);
+            SenderDesk = new DeskInfo(senderDesk);
             KeyboardAccess = keyboardAccess;
             MouseAccess = mouseAccess;
             AudioAccess = audioAccess;
@@ -37,8 +37,8 @@ namespace LucidDesk.DS.Classes
         private AccessType accessType;
 
         private ConnectionType connectionType;
-        public Desk ReceiverDesk { get; set; }
-        public Desk SenderDesk { get; set; }
+        public DeskInfo ReceiverDesk { get; set; }
+        public DeskInfo SenderDesk { get; set; }
         public bool AudioAccess { get; set; }
         public bool ClipboardAccess { get; set; }
         public bool KeyboardAccess { get; set; }
@@ -47,6 +47,7 @@ namespace LucidDesk.DS.Classes
         public string Message { get; set; }
         public bool IsRequestStatusUpdate { get; set; }
         public string InviteID { get; set; }
+        public string Password { get; set; }
         public ScreenInformation ScreenInformation { set; get; } = new ScreenInformation();
 
         [NonSerialized]

@@ -6,6 +6,11 @@ namespace LucidDesK.DS.DataSchema
 {
     public class Data
     {
+        public Data(ReponseAndReqType reponseAndReqType, object data)
+        {
+            ReponseAndReqType = reponseAndReqType;
+            DataObject = data;
+        }
         public ReponseAndReqType ReponseAndReqType { set; get; }
         public object DataObject { set; get; }
 

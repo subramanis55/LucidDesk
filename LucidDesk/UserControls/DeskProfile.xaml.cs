@@ -1,20 +1,12 @@
-﻿using LucidDesk.FeaturesFuntionMangerClasses;
-using LucidDesk.Manager;
+﻿using LucidDesk.DS.Classes;
+using LucidDesk.FeaturesFuntionMangerClasses;
 using LucidDesk.Manager.Database;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LucidDesk.UserControls
 {
@@ -37,26 +29,26 @@ namespace LucidDesk.UserControls
                 MainContainer.DataContext = value;
                 desk = value;
 
-                    if (desk.ProfileImage == null)
-                    {
-                        DeskUserProfileImage.Image = ColorFeatures.CreateBitmapImageWithCharacter(90, 90, ColorFeatures.GetColorBasedOnFirstChar(desk.ProfileName), desk.ProfileName[0], "Arial", 17, Colors.White);
-                    }
-                    else
-                        DeskUserProfileImage.Image = desk.ProfileImage;
-                    DeskId = "" + desk.DisplayID;
-                    DesktopWallPaper.Image = desk.DesktopImage;
-                    desk.PropertyChanged += DeskPropertyChanged;
-                    Desk.OnClickDeleted += DeskOnClickDeleted;
-                    Binding binding = new Binding("IsFavorite");
-                    binding.Source = Desk;
-                    binding.Mode = BindingMode.OneWay;
-                    this.SetBinding(IsFavoriteProperty, binding);
+                if (desk.ProfileImage == null)
+                {
+                    DeskUserProfileImage.Image = ColorFeatures.CreateBitmapImageWithCharacter(90, 90, ColorFeatures.GetColorBasedOnFirstChar(desk.ProfileName), desk.ProfileName[0], "Arial", 17, Colors.White);
+                }
+                else
+                    DeskUserProfileImage.Image = desk.ProfileImage;
+                DeskId = "" + desk.DisplayID;
+                DesktopWallPaper.Image = desk.DesktopImage;
+                desk.PropertyChanged += DeskPropertyChanged;
+                Desk.OnClickObjectDisposed += DeskOnClickDeleted;
+                Binding binding = new Binding("IsFavorite");
+                binding.Source = Desk;
+                binding.Mode = BindingMode.OneWay;
+                this.SetBinding(IsFavoriteProperty, binding);
             }
             get
             {
                 return desk;
             }
-        }                                                                                                
+        }
 
 
         public string DeskId
@@ -86,7 +78,7 @@ namespace LucidDesk.UserControls
         public static readonly DependencyProperty BackgroundColorProperty =
             DependencyProperty.Register("BackgroundColor", typeof(Brush), typeof(DeskProfile), new PropertyMetadata(new SolidColorBrush(Colors.DodgerBlue)));
 
-        public static readonly DependencyProperty IsFavoriteProperty =DependencyProperty.Register(nameof(IsFavorite),typeof(bool),typeof(DeskProfile),  new PropertyMetadata(false, IsFavoriteChanged));
+        public static readonly DependencyProperty IsFavoriteProperty = DependencyProperty.Register(nameof(IsFavorite), typeof(bool), typeof(DeskProfile), new PropertyMetadata(false, IsFavoriteChanged));
 
         private static void IsFavoriteChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -114,7 +106,7 @@ namespace LucidDesk.UserControls
             InitializeComponent();
             Desk = desk;
             DataContext = this;
-            Desk.OnClickDeleted += DeskOnClickDeleted;
+            Desk.OnClickObjectDisposed += DeskOnClickDeleted;
             IsFavoriteCheckBox.Unchecked += IsFavoriteCheckBoxUnChecked;
             IsFavoriteCheckBox.Checked += IsFavoriteCheckBoxChecked;
         }

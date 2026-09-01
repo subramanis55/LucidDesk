@@ -45,9 +45,8 @@ namespace LucidDesk.Manager.RemoteControllers
                 {
                     await Task.Delay(1000 / SettingsManager.Settings.FrameSharePerSecond);
                     var screenImage = GetScreenShareImage();
-                    Data data = new Data();
-                    data.ReponseAndReqType = ReponseAndReqType.ScreenShareImageData;
-                    data.DataObject = new DeskImageData() { ImageData = screenImage };
+                    var screenData = new DeskImageData() { ImageData = screenImage };
+                    Data data = new Data(ReponseAndReqType.ScreenShareImageData, screenData);
                     NewImageGenerated?.Invoke(data);
                 }
                 IsScreenShareON = false;

@@ -1,5 +1,6 @@
 ﻿using LucidDesk.DS.Settings;
 using LucidDesk.Files;
+using System;
 using System.IO;
 using System.Xml.Serialization;
 namespace LucidDesk.Manager.Settings
@@ -19,7 +20,7 @@ namespace LucidDesk.Manager.Settings
         }
         private static SystemSettings readSettingsFile()
         {
-            if (System.IO.File.Exists(FileLocationManager.settingsFileInfo.FullName))
+            if (File.Exists(FileLocationManager.settingsFileInfo.FullName))
             {
                 return ReadXml<SystemSettings>(FileLocationManager.settingsFileInfo.FullName);
             }
@@ -40,26 +41,35 @@ namespace LucidDesk.Manager.Settings
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
                     return xmlSerializer.Deserialize(fileStream) as T;
                 }
+
             }
-            catch
+            catch (Exception ex)
             {
-                return null;
+                //ToDo Log
             }
+            return null;
         }
 
         public static void WriteXml(this object obj, string path)
         {
-            if (!Directory.Exists(FileLocationManager.settingsFileInfo.FullName))
+            try
             {
-                Directory.CreateDirectory(FileLocationManager.settingsFileInfo.DirectoryPath);
-            }
+                if (!Directory.Exists(FileLocationManager.settingsFileInfo.FullName))
+                {
+                    Directory.CreateDirectory(FileLocationManager.settingsFileInfo.DirectoryPath);
+                }
 
-            using (FileStream fileStream = System.IO.File.Create(path))
+                using (FileStream fileStream = System.IO.File.Create(path))
+                {
+                    XmlSerializer xmlSerializer = new XmlSerializer(obj.GetType());
+                    XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
+                    xmlSerializerNamespaces.Add(string.Empty, string.Empty);
+                    xmlSerializer.Serialize(fileStream, obj, xmlSerializerNamespaces);
+                }
+            }
+            catch (Exception ex)
             {
-                XmlSerializer xmlSerializer = new XmlSerializer(obj.GetType());
-                XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
-                xmlSerializerNamespaces.Add(string.Empty, string.Empty);
-                xmlSerializer.Serialize(fileStream, obj, xmlSerializerNamespaces);
+                //ToDo Log
             }
         }
     }

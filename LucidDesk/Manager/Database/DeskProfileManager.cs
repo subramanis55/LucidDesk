@@ -55,6 +55,20 @@ namespace LucidDesk.Manager.Database
             return false;
         }
 
+        public static bool DeskIDExits(string id)
+        {
+            if (DeskProfiles == null)
+                return false;
+            return DeskProfiles.Any(i => i.Id == id);
+        }
+
+        public static Desk GetDeskProfileData(string id)
+        {
+            if (DeskProfilesDictionary.ContainsKey(id))
+                return DeskProfilesDictionary[id];
+            return null;
+        }
+
         public static Dictionary<string, Desk> GetDeskProfilesData()
         {
             Dictionary<string, Desk> deskProfilesDictionary = new Dictionary<string, Desk>();
@@ -73,7 +87,7 @@ namespace LucidDesk.Manager.Database
                 }
                 catch (Exception e)
                 {
-
+                    //ToDo Log
                 }
             }
 
@@ -81,7 +95,6 @@ namespace LucidDesk.Manager.Database
         }
         public static bool CreateDeskProfiledata(Desk deskProfile)
         {
-
             try
             {
                 string deskProfileData = JsonConvert.SerializeObject(deskProfile);
@@ -101,6 +114,7 @@ namespace LucidDesk.Manager.Database
             }
             catch (Exception e)
             {
+                //ToDo Log
                 return false;
             }
         }
@@ -119,12 +133,12 @@ namespace LucidDesk.Manager.Database
             }
             catch (Exception e)
             {
-
+                //ToDo Log
             }
             return false;
         }
 
-        public static bool UpdateDeskProfileFromUserdata(Desk deskProfile)
+        public static bool UpdateDeskProfileInformations(Desk deskProfile)
         {
             try
             {
@@ -133,6 +147,7 @@ namespace LucidDesk.Manager.Database
                 DeskProfilesDictionary[deskProfile.DeskId].ProfileImageString = deskProfile.ProfileImageString;
                 DeskProfilesDictionary[deskProfile.DeskId].DesktopImageString = deskProfile.DesktopImageString;
                 DeskProfilesDictionary[deskProfile.DeskId].IPAddress = deskProfile.IPAddress;
+                DeskProfilesDictionary[deskProfile.DeskId].RecentLoginTime = deskProfile.RecentLoginTime;
                 string deskProfileData = JsonConvert.SerializeObject(DeskProfilesDictionary[deskProfile.DeskId]);
                 string encodedData = SecurityManager.Encrypt(deskProfileData);
                 string deskProfilePath = Path.Combine(LocalDatabaseManager.DatabaseFolderPath, deskProfile.DeskId + ".txt");
@@ -141,7 +156,7 @@ namespace LucidDesk.Manager.Database
             }
             catch (Exception e)
             {
-
+                //ToDo Log
             }
             return false;
         }
@@ -162,7 +177,7 @@ namespace LucidDesk.Manager.Database
             }
             catch (Exception e)
             {
-
+                //ToDo Log
             }
 
             return false;
@@ -178,14 +193,14 @@ namespace LucidDesk.Manager.Database
             }
             catch
             {
-
+                //ToDo Log
             }
             return false;
         }
 
         internal static void Refresh()
         {
-            deskProfilesDictionary = GetDeskProfilesData();
+            DeskProfilesDictionary = GetDeskProfilesData();
         }
 
         internal static bool ContainsDisplayID(string id)

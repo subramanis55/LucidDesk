@@ -24,7 +24,7 @@ namespace LucidDesk.DS.Classes
             ProfileName = user.FirstName;
         }
 
-        public event EventHandler OnClickDeleted;
+        public event EventHandler OnClickObjectDisposed;
         public event PropertyChangedEventHandler PropertyChanged;
         private string id;
 
@@ -44,7 +44,7 @@ namespace LucidDesk.DS.Classes
         private string macAddress;
         private string osName;
         private string pcName;
-        private DateTime recentLoginTime;
+        private DateTime recentLoginTime, recentConnectedTime = default;
         public string GUID { set; get; }
 
         public string DisplayID
@@ -191,19 +191,6 @@ namespace LucidDesk.DS.Classes
             }
         }
 
-        public string PcName
-        {
-            get
-            {
-                return pcName;
-            }
-
-            set
-            {
-                pcName = value;
-            }
-        }
-
         public DateTime RecentLoginTime
         {
             get
@@ -217,6 +204,35 @@ namespace LucidDesk.DS.Classes
                 OnPropertyChanged(nameof(RecentLoginTime));
             }
         }
+
+        public DateTime RecentConnectedTime
+        {
+            get
+            {
+                return recentLoginTime;
+            }
+
+            set
+            {
+                recentLoginTime = value;
+                OnPropertyChanged(nameof(RecentConnectedTime));
+            }
+        }
+
+
+        public string PcName
+        {
+            get
+            {
+                return pcName;
+            }
+
+            set
+            {
+                pcName = value;
+            }
+        }
+
 
         public string DesktopImageString
         {
@@ -254,7 +270,7 @@ namespace LucidDesk.DS.Classes
         }
         public void Dispose()
         {
-            OnClickDeleted?.Invoke(this, EventArgs.Empty);
+            OnClickObjectDisposed?.Invoke(this, EventArgs.Empty);
         }
         public void Freeze()
         {
@@ -275,6 +291,7 @@ namespace LucidDesk.DS.Classes
             desk.MacAddress = MacAddress;
             desk.PcName = PcName;
             desk.GUID = GUID;
+            desk.recentLoginTime = recentLoginTime;
             return desk;
         }
     }

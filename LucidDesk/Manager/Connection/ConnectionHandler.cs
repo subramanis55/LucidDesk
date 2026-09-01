@@ -4,20 +4,18 @@ using LucidDesk.Manager.Network;
 using LucidDesk.Manager.RemoteControllers;
 using LucidDesK.DS.DataSchema;
 using System;
-using System.Threading.Tasks;
 
 namespace LucidDesk.Manager.Connection
 {
     public class ConnectionHandler
     {
-        public event Action DisConnectedToSeverInvoke;
+        public event Action<string> DisConnectedToSeverInvoke;
         public event EventHandler<DeskConnectionInformation> ConnectionResponseReceived;
         public event Action<DeskImageData> ReceivedDeskImageDataInvoke;
-
+        public event Action<DeskControlData> ReceivedDeskControlDataInvoke;
         public DeskConnectionInformation deskConnectionInformation;
 
         public bool IsRemoteServer;
-
         public bool IsConnected => networkConnectionHandler?.IsConnected ?? false;
 
         private INetworkConnectionHandler networkConnectionHandler;
@@ -36,6 +34,10 @@ namespace LucidDesk.Manager.Connection
             {
                 return deskConnectionInformation;
             }
+        }
+        public ConnectionHandler()
+        {
+
         }
 
         public ConnectionHandler(DeskConnectionInformation deskConnectionInformation, RemoteInputReceiver remoteInputReceiver, INetworkConnectionHandler connectionHandler)
@@ -66,14 +68,9 @@ namespace LucidDesk.Manager.Connection
             networkConnectionHandler?.Close();
         }
 
-        public Task<bool> Start()
-        {
-            return networkConnectionHandler?.Start();
-        }
-
         public void WriteObject(Data dataObject)
         {
-            networkConnectionHandler?.WriteObject(dataObject);
+            networkConnectionHandler?.WriteObjectAsync(dataObject);
         }
 
     }

@@ -1,7 +1,6 @@
 ﻿using LucidDesk.DS.Enum;
 using LucidDesk.Manager.Connection;
 using LucidDesK.DS.DataSchema;
-using NAudio.Wave;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
@@ -21,7 +20,6 @@ namespace LucidDesk.Manager.RemoteControllers
             _hookID = SetHook(_proc);
         }
 
-        private BufferedWaveProvider _bufferedWaveProvider;
         private LowLevelKeyboardProc _proc;
         private IntPtr _hookID = IntPtr.Zero;
         private bool WindowsKey;
@@ -71,14 +69,13 @@ namespace LucidDesk.Manager.RemoteControllers
 
         public void SendScreenSwitchEvent(int index, LucidDesK.DS.DataSchema.Screens.Screen e)
         {
-            Data data = new Data();
-            data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
-            data.DataObject = new DeskControlData()
+            var controlData = new DeskControlData()
             {
                 ControlDataType = ControlKeyType.ScreenSwitch,
                 //need to revert
                 ControlData = $"{index}:{JsonConvert.SerializeObject(e)}"
             };
+            Data data = new Data(ReponseAndReqType.ScreenShareKeyData, controlData);
             ConnectionHandler.WriteObject(data);
         }
 
@@ -86,13 +83,12 @@ namespace LucidDesk.Manager.RemoteControllers
         {
             // Get the client's screen resolution
             string scrollData = $"{(position.X / ScreenImageActualWidth)},{(position.Y / ScreenImageActualHeight)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}:{delta}";
-            Data data = new Data();
-            data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
-            data.DataObject = new DeskControlData()
+            var controlData = new DeskControlData()
             {
                 ControlDataType = controlKeyType,
                 ControlData = scrollData
             };
+            Data data = new Data(ReponseAndReqType.ScreenShareKeyData, controlData);
             ConnectionHandler.WriteObject(data);
         }
 
@@ -101,13 +97,13 @@ namespace LucidDesk.Manager.RemoteControllers
             // Get the client's screen resolution
             //string mouseData = $"{(position.X / ScreenImageActualWidth) * SystemInformationManager.ScreenWidth},{(position.Y / ScreenImageActualHeight) * SystemInformationManager.ScreenHeight}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
             string mouseData = $"{(position.X / ScreenImageActualWidth)},{(position.Y / ScreenImageActualHeight)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
-            Data data = new Data();
-            data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
-            data.DataObject = new DeskControlData()
+
+            var controlData = new DeskControlData()
             {
                 ControlDataType = controlKeyType,
                 ControlData = mouseData
             };
+            Data data = new Data(ReponseAndReqType.ScreenShareKeyData, controlData);
             ConnectionHandler.WriteObject(data);
         }
 
@@ -115,17 +111,16 @@ namespace LucidDesk.Manager.RemoteControllers
         {
             // Get the client's screen resolution
             string keydata = $"{(position.X / ScreenImageActualWidth)},{(position.Y / ScreenImageActualHeight)}:{SystemInformationManager.ScreenWidth},{SystemInformationManager.ScreenHeight}";
-            Data data = new Data();
-            data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
-            data.DataObject = new DeskControlData()
+            var controlData = new DeskControlData()
             {
                 ControlDataType = controlKeyType,
                 ControlData = keydata
             };
+            Data data = new Data(ReponseAndReqType.ScreenShareKeyData, controlData);
             ConnectionHandler.WriteObject(data);
         }
 
-    
+
 
         public void SendKeyEvent(ControlKeyType controlKeyType, Key key)
         {
@@ -133,13 +128,12 @@ namespace LucidDesk.Manager.RemoteControllers
             byte virtualKeyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
             // Get the client's screen resolution
             string keydata = $"{0},{0}:{SystemInformationManager.ScreenWidth}:{SystemInformationManager.ScreenHeight}:{virtualKeyCode}";
-            Data data = new Data();
-            data.ReponseAndReqType = ReponseAndReqType.ScreenShareKeyData;
-            data.DataObject = new DeskControlData()
+            var controlData = new DeskControlData()
             {
                 ControlDataType = controlKeyType,
                 ControlData = keydata
             };
+            Data data = new Data(ReponseAndReqType.ScreenShareKeyData, controlData);
             ConnectionHandler.WriteObject(data);
         }
 

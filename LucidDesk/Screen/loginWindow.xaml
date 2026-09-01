@@ -21,17 +21,23 @@
                             </Button.ToolTip>
                             <Path VerticalAlignment="Stretch" Height="12" Width="12"  HorizontalAlignment="Stretch" Stroke="Gray" StrokeThickness="1.5" Data="m 0 0 L 12 12 M 0 12 L 12 0"></Path>
                         </Button>
+                       
                     </DockPanel>
                     <!--<Border CornerRadius="4" BorderBrush="Gainsboro" Width="350"  Height="45" BorderThickness="1" Background="White">-->
                     <!--<UserControl:CustomTextBox  Placeholder="Name" FontSize="16"   ></UserControl:CustomTextBox>-->
                     <!--</Border>-->
-                    <UserControl:AnimatedTextBox x:Name="ProfileNameTextBox"  Height="45" Width="350" Margin="25 25 25 3" AnimatedTextBoxBorderRadius="4" AnimatedTextBoxFontSize="17" AnimatedTextBoxBackground="White" AnimatedTextBoxForeground="Black"  AnimatedTextBoxPlaceHolder="Name"  />
-                    <Label  Name="NameError" Visibility="Hidden" Content="Enter the name" Padding="20 3 0 0" Foreground="#FF5739" Height="25" Width="350"  HorizontalAlignment="Center"></Label>
-                    <UserControl:AnimatedTextBox x:Name="passwordTextBox"   IsPasswordType="True" Height="45" Width="350" Margin="25 2 25 3" AnimatedTextBoxBorderRadius="4" AnimatedTextBoxFontSize="17" AnimatedTextBoxBackground="White" AnimatedTextBoxForeground="Black"  AnimatedTextBoxPlaceHolder="Password"  />
-                    <Label Name="PasswordError" Visibility="Hidden" Content="Enter the Password" Foreground="#FF5739" Padding="20 3 0 0" Height="25" Width="350"  HorizontalAlignment="Center"></Label>
-                    <Border Height="70" >
-                        <Button Height="40"  FontSize="18" Content="Next" Width="140" Background="{StaticResource MainColorBrush}" Style="{StaticResource MainButton}" Click="NextButtonClick"></Button>
-                    </Border>
+                    <StackPanel Margin="15">
+                        <UserControl:PasswordTextBox x:Name="ProfileNameTextBox" Margin="4" Placeholder="Name"  TextboxBackground="White" CornerRadius="4"  IsPassword="false"  FontSize="14" Height="48" Width="350" ></UserControl:PasswordTextBox>
+                        <!--<UserControl:AnimatedTextBox x:Name="ProfileNameTextBox"  Height="45" Width="350" Margin="25 25 25 3" AnimatedTextBoxBorderRadius="4" AnimatedTextBoxFontSize="17" AnimatedTextBoxBackground="White" AnimatedTextBoxForeground="Black"  AnimatedTextBoxPlaceHolder="Name"  />-->
+                        <Label  Name="NameError"  Visibility="Hidden" Content="Enter the name" Padding="20 3 0 0"  Background="White"  Foreground="#FF5739" Height="25" Width="350"  HorizontalAlignment="Center"></Label>
+                        <UserControl:PasswordTextBox x:Name="passwordTextBox" TextboxBackground="White" CornerRadius="4"  Margin="4"  Placeholder="Password"  FontSize="14" IsPassword="True"  Height="48" Width="350" ></UserControl:PasswordTextBox>
+                        <!--<UserControl:AnimatedTextBox x:Name="passwordTextBox"   IsPasswordType="True" Height="45" Width="350" Margin="25 2 25 3" AnimatedTextBoxBorderRadius="4" AnimatedTextBoxFontSize="17" AnimatedTextBoxBackground="White" AnimatedTextBoxForeground="Black"  AnimatedTextBoxPlaceHolder="Password"  />-->
+                        <Label Name="PasswordError" Visibility="Hidden" Content="Enter the Password" Foreground="#FF5739" Padding="20 3 0 0" Height="25" Width="350"  HorizontalAlignment="Center"></Label>
+                        <Border Height="70" >
+                            <Button Height="40"  FontSize="18" Content="Next" Width="140" Background="{StaticResource MainColorBrush}" Style="{StaticResource MainButton}" Click="NextButtonClick"></Button>
+                        </Border>
+
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </Border>

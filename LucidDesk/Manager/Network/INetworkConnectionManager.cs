@@ -2,7 +2,7 @@
 
 namespace LucidDesk.Manager.Network
 {
-    public interface INetworkConnectionManager
+    public interface INetworkConnectionManager : IDisposable
     {
         event Action<INetworkConnectionHandler> NewConnectionInvoke;
         int PORT { get; }

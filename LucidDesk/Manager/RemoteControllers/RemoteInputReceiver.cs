@@ -27,12 +27,10 @@ namespace LucidDesk.Manager.RemoteControllers
 
     public class RemoteInputReceiver
     {
-        public RemoteInputReceiver(ConnectionHandler connectionHandler)
+        public RemoteInputReceiver()
         {
-            ConnectionHandler = connectionHandler;
-            ConnectionHandler.ReceivedDeskControlDataInvoke += HandleRemoteEvent;
-        }
 
+        }
 
         const uint INPUT_MOUSE = 0;
         private const uint MOUSEEVENTF_LEFTDOWN = 0x02;

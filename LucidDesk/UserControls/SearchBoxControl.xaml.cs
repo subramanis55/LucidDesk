@@ -1,7 +1,6 @@
 ﻿using LucidDesk.DS.Classes;
-using LucidDesk.DS.Enum;
 using LucidDesk.Manager.Database;
-using LucidDesk.Manager.Settings;
+using LucidDesk.Manager.Services;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -29,6 +28,7 @@ namespace LucidDesk.UserControls
         private ContextMenu SuggestionsDeskMenu = new ContextMenu() { Focusable = false };
         private Style SuggestionsDeskMenuStyle = Application.Current.Resources["SuggestionDeskMenuItem"] as Style;
         private bool isConnected = true;
+        private Desk SelectedDesk;
         public bool IsConnected
         {
             set
@@ -199,7 +199,7 @@ namespace LucidDesk.UserControls
             SuggestionsDeskMenu.VerticalOffset = y;
             SuggestionsDeskMenu.IsOpen = true;
         }
-        private Desk SelectedDesk;
+
         private void SuggestionDeskClick(object sender, RoutedEventArgs e)
         {
             Textbox.Text = "" + ((Desk)((MenuItem)(sender)).DataContext).DisplayID;
@@ -306,30 +306,30 @@ namespace LucidDesk.UserControls
                 SuggestionDeskShowInvoke();
         }
 
-        private void ConnectClick(object sender, RoutedEventArgs e)
+        private async void ConnectClick(object sender, RoutedEventArgs e)
         {
             if (Textbox.Text == "")
                 return;
-            if (SelectedDesk != null && DeskProfileManager.DeskProfilesDictionary.ContainsKey(SelectedDesk.DeskId))
+            if (SelectedDesk == null && !DeskProfileManager.DeskProfilesDictionary.ContainsKey(SelectedDesk.DeskId))
             {
-                var result = DeskMessageBox.ShowMessageBox("Do you want Connect with password?", "Confirm", MessageBoxType.YesOrNo);
-                if (result == System.Windows.Forms.DialogResult.Yes)
-                    OnClickConnectWithPassword?.Invoke(this, SelectedDesk);
-                else if (result == System.Windows.Forms.DialogResult.No)
-                    OnClickConnect?.Invoke(this, SelectedDesk);
+                var user = await UserService.GetUserByIdAsync(Textbox.Text);
+                if (user == null)
+                {
+                    DeskMessageBox.ShowMessageBox("User Information not found", "Warning", MessageBoxType.Ok, Window.GetWindow(this));
+                    return;
+                }
+                Desk newDesk = new Desk(user);
+                var res = DeskProfileManager.CreateDeskProfiledata(newDesk);
+                if (res)
+                    SelectedDesk = DeskProfileManager.GetDeskProfileData(newDesk.Id);
+                else
+                    return;
             }
-
-            else
-            {
-                Desk newDesk = new Desk();
-                if (SettingsManager.Settings.ApplicationMode == ApplicationMode.Local)
-                    newDesk.IPAddress = Textbox.Text;
-                var result = DeskMessageBox.ShowMessageBox("Do you want Connect with password?", "Confirm", MessageBoxType.YesOrNo);
-                if (result == System.Windows.Forms.DialogResult.Yes)
-                    OnClickConnectWithPassword?.Invoke(this, newDesk);
-                else if (result == System.Windows.Forms.DialogResult.No)
-                    OnClickConnect?.Invoke(this, newDesk);
-            }
+            var result = DeskMessageBox.ShowMessageBox("Do you want Connect with password?", "Confirm", MessageBoxType.YesOrNo);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+                OnClickConnectWithPassword?.Invoke(this, SelectedDesk);
+            else if (result == System.Windows.Forms.DialogResult.No)
+                OnClickConnect?.Invoke(this, SelectedDesk);
         }
 
         private void keyboardBtnClick(object sender, RoutedEventArgs e)

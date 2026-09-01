@@ -1,5 +1,6 @@
 ﻿using LucidDesk.DS.Classes;
 using LucidDesk.DS.Enum;
+using LucidDesk.Manager.Database;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -64,7 +65,8 @@ namespace LucidDesk
             AccessTypeCombobox.SelectedItem = deskConnectionInformation.AccessType.ToString();
             isInternal = false;
             DeskConnectionInformation = deskConnectionInformation;
-            Desk = deskConnectionInformation.SenderDesk;
+            if (DeskProfileManager.DeskExits(deskConnectionInformation.SenderDesk.Id))
+                Desk = DeskProfileManager.DeskProfilesDictionary[deskConnectionInformation.SenderDesk.Id];
             header.Text = deskConnectionInformation.ConnectionType == ConnectionType.Invite ? "Invite Request" : "Connection Request";
             AccessCheckBoxDisable(deskConnectionInformation.ConnectionType != ConnectionType.Invite);
         }
@@ -91,16 +93,11 @@ namespace LucidDesk
             WindowState = WindowState.Minimized;
         }
 
-
-
         private void AcceptClick(object sender, RoutedEventArgs e)
         {
             DeskConnectionInformation.Status = true;
             OnClickGetStatus?.Invoke(this, DeskConnectionInformation);
         }
-
-
-
 
         private void AccessTypeComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {

@@ -11,7 +11,7 @@
     }
     public enum ConnectionType
     {
-        Invite, Connect, Password
+        Invite, Connect, Password, OneTimePassword
     }
 
     public enum ReponseAndReqType

@@ -28,7 +28,7 @@ namespace LucidDesk
 
         private async void NextButtonClick(object sender, RoutedEventArgs e)
         {
-            if (passwordTextBox.mainTextBox.Text == "")
+            if (passwordTextBox.Password == "")
             {
                 PasswordError.Visibility = Visibility.Visible;
             }
@@ -36,7 +36,7 @@ namespace LucidDesk
             {
                 PasswordError.Visibility = Visibility.Hidden;
             }
-            if (ProfileNameTextBox.mainTextBox.Text == "")
+            if (ProfileNameTextBox.PART_VisibleTextBox.Text == "")
             {
                 NameError.Visibility = Visibility.Visible;
             }
@@ -46,7 +46,7 @@ namespace LucidDesk
             }
             if (PasswordError.Visibility == Visibility.Hidden && NameError.Visibility == Visibility.Hidden)
             {
-                UserCreateDTO userCreateDTO = new UserCreateDTO() { MacAddress = SystemInformationManager.GetMacAddress(), FirstName = ProfileNameTextBox.mainTextBox.Text, Password = passwordTextBox.Password, PcName = SystemInformationManager.GetPcUserName(), DesktopImageString = FileManager.ImageToString(SystemInformationManager.GetDesktopWallpaper()) };
+                UserCreateDTO userCreateDTO = new UserCreateDTO() { MacAddress = SystemInformationManager.GetMacAddress(), FirstName = ProfileNameTextBox.PART_VisibleTextBox.Text, Password = passwordTextBox.Password, PcName = SystemInformationManager.GetPcUserName(), DesktopImageString = FileManager.ImageToString(SystemInformationManager.GetDesktopWallpaper()) };
                 var user = await UserService.CreateUserAsync(userCreateDTO);
                 if (user == null)
                 {

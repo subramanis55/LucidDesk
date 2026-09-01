@@ -1,18 +1,14 @@
-﻿using LucidDesk.Manager.Enum;
-using LucidDesk.Settings;
+﻿
+using LucidDesk.Manager.Settings;
+using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media.Imaging;
-using Microsoft.Win32;
 using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 namespace LucidDesk.Manager
 {
     public static class SystemInformationManager
@@ -213,7 +209,7 @@ namespace LucidDesk.Manager
         {
             ipAddress = null;
             macAddress = null;
-            hostname = null;    
+            hostname = null;
         }
     }
 }

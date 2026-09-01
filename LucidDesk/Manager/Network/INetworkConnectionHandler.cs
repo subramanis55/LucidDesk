@@ -9,15 +9,16 @@ namespace LucidDesk.Manager.Network
         event EventHandler<Data> ReceivedDataInvoke;
 
         bool IsConnected { get; }
-        Task<bool> Start();
+        int LocalPort { get; }
+        string LocalIpAddress { get; }
+
+        Task<bool> ConnectAsync(string remoteAddress, int remotePort);
 
         void Close();
 
-        void WriteObject(Data dataObject);
 
-        void WriteObject(byte[] data);
+        Task<bool> WriteObjectAsync(object dataObject);
 
-        void WriteObject(string json);
 
     }
 }

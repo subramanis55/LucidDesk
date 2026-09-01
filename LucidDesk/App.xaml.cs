@@ -61,7 +61,7 @@ namespace LucidDesk
             if (deskMacAddress == null)
             {
                 DeskMessageBox.ShowMessageBox("Something Wrong SetUp ", "Error", UserControls.MessageBoxType.Ok);
-                LogManager.LogException("Something Wrong SetUp ");
+                LogManager.LogException("deskMacAddress Not found in SetUp ");
                 ShutdownApp();
             }
             else
@@ -83,10 +83,8 @@ namespace LucidDesk
 
         private void StartNetWorkServerConnection()
         {
-
-            if (ConnectionManager.IsSeverStarted) return;
+            if (ConnectionManager.IsLocalSeverStarted) return;
             ConnectionManager.StartConnectionServer();
-
         }
         private void AppDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {

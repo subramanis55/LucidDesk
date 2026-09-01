@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -56,7 +57,6 @@ namespace LucidDesk.Manager.Network.TCP
             tcpListener = new TcpListener(IPAddress.Any, PORT);
             tcpListener.Start();
             Task.Run(() => AcceptClients(cancellationTokenSource.Token));
-            // Check every 30 seconds
             remainTimer = new System.Threading.Timer(RemainingClientsCheck, null, TimeSpan.Zero, TimeSpan.FromSeconds(30));
             isStarted = true;
             return isStarted;
@@ -97,19 +97,20 @@ namespace LucidDesk.Manager.Network.TCP
 
         private void RemainingClientsCheck(object state)
         {
-            foreach (var clientEntry in connectedClients)
+            var list = connectedClients.Keys.ToList();
+            foreach (var clientEntry in list)
             {
                 try
                 {
-                    var client = clientEntry.Key;
-                    if ((client.Connected && client.GetStream().CanWrite))
+                    var client = clientEntry;
+                    if (!client.Connected || !client.GetStream().CanWrite)
                     {
                         DisconnectClient(client);
                     }
                 }
                 catch (Exception ex)
                 {
-                    DisconnectClient(clientEntry.Key);
+                    DisconnectClient(clientEntry);
                 }
             }
         }
@@ -139,7 +140,14 @@ namespace LucidDesk.Manager.Network.TCP
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            cancellationTokenSource?.Cancel();
+            tcpListener?.Stop();
+            remainTimer?.Dispose();
+            foreach (var client in connectedClients.Values)
+            {
+                client.Close();
+            }
+            connectedClients.Clear();
         }
     }
 }
